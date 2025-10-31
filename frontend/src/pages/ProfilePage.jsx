@@ -33,7 +33,7 @@ const ProfilePage = () => {
 
       // Load posts count
       const postsResponse = await postService.getUserPosts(user._id);
-      const postsCount = postsResponse.data?.count || 0;
+      const postsCount = postsResponse.data?.count || postsResponse.data?.data?.length || 0;
 
       // Load orders
       const ordersResponse = await orderService.getOrders();

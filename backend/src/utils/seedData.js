@@ -335,7 +335,9 @@ const seedData = async () => {
     await seedProducts(adminUser._id);
     await seedServices(adminUser._id);
     const pets = await seedPets(adminUser._id);
-    await seedPosts(adminUser._id, pets[0]._id);
+    if (pets && pets.length > 0) {
+      await seedPosts(adminUser._id, pets[0]._id);
+    }
 
     console.log('\n✅ Database seeded successfully!');
     console.log('\nAdmin login credentials:');

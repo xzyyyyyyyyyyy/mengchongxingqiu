@@ -114,7 +114,7 @@ const AdminDashboard = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-4">最新帖子</h2>
           <div className="space-y-3">
-            {stats.recent?.posts && stats.recent.posts.length > 0 ? (
+            {stats.recent?.posts?.length > 0 ? (
               stats.recent.posts.map((post) => (
                 <div key={post._id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
                   <img
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-4">最新订单</h2>
           <div className="space-y-3">
-            {stats.recent?.orders && stats.recent.orders.length > 0 ? (
+            {stats.recent?.orders?.length > 0 ? (
               stats.recent.orders.map((order) => (
                 <div key={order._id} className="p-3 bg-gray-50 rounded-lg">
                   <div className="flex justify-between items-start mb-2">

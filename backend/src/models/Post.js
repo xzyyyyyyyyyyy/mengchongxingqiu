@@ -107,5 +107,6 @@ postSchema.index({ hashtags: 1, createdAt: -1 });
 postSchema.index({ category: 1, createdAt: -1 });
 postSchema.index({ likesCount: -1, createdAt: -1 });
 postSchema.index({ 'location.coordinates': '2dsphere' });
+postSchema.index({ isPublic: 1, createdAt: -1 }); // For trending hashtags query
 
 module.exports = mongoose.model('Post', postSchema);

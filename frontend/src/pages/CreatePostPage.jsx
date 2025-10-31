@@ -21,16 +21,20 @@ const CreatePostPage = () => {
     { value: 'other', label: '其他', icon: '📌' },
   ];
 
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!formData.content.trim()) {
-      alert('请输入内容');
+      setError('请输入内容');
       return;
     }
 
     try {
       setSubmitting(true);
+      setError('');
       
       // Parse hashtags
       const hashtags = formData.hashtags
@@ -45,11 +49,11 @@ const CreatePostPage = () => {
         mediaType: 'text'
       });
 
-      alert('发布成功！');
-      navigate('/');
+      setSuccess('发布成功！');
+      setTimeout(() => navigate('/'), 1000);
     } catch (error) {
       console.error('Failed to create post:', error);
-      alert('发布失败，请重试');
+      setError('发布失败，请重试');
     } finally {
       setSubmitting(false);
     }
@@ -72,6 +76,18 @@ const CreatePostPage = () => {
           <h1 className="text-2xl font-bold text-text-primary">发布动态</h1>
           <div className="w-16"></div>
         </div>
+
+        {/* Error/Success Messages */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+            {success}
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="card space-y-6">

@@ -20,7 +20,8 @@ const PostDetailPage = () => {
     try {
       setLoading(true);
       const response = await postService.getPost(id);
-      setPost(response.data.data || response.data);
+      // Handle both response formats for consistency
+      setPost(response.data?.data || response.data);
     } catch (error) {
       console.error('Failed to load post:', error);
     } finally {

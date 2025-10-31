@@ -285,6 +285,7 @@ exports.getTrendingHashtags = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     
     // Aggregate hashtags by count
+    // TODO: Consider implementing caching for this frequently accessed data
     const trending = await Post.aggregate([
       { $match: { isPublic: true } },
       { $unwind: '$hashtags' },
