@@ -43,8 +43,8 @@ app.use('/api/health', require('./routes/healthRoutes'));
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({
-    success: true,
+  res.json({ 
+    success: true, 
     message: '萌宠星球 API 运行正常',
     timestamp: new Date().toISOString()
   });

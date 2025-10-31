@@ -27,7 +27,6 @@ const serviceSchema = new mongoose.Schema({
     province: String,
     coordinates: {
       type: [Number],
-      index: '2dsphere',
       required: true
     }
   },
@@ -117,6 +116,7 @@ const serviceSchema = new mongoose.Schema({
 });
 
 // Indexes
+serviceSchema.index({ 'location.coordinates': '2dsphere' });
 serviceSchema.index({ category: 1, 'rating.average': -1 });
 serviceSchema.index({ starLevel: -1 });
 
