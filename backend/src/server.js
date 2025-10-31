@@ -40,6 +40,10 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/pets', require('./routes/petRoutes'));
 app.use('/api/posts', require('./routes/postRoutes'));
 app.use('/api/health', require('./routes/healthRoutes'));
+app.use('/api/services', require('./routes/serviceRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/bookings', require('./routes/bookingRoutes'));
+app.use('/api/orders', require('./routes/orderRoutes'));
 
 // Health check
 app.get('/health', (req, res) => {

@@ -38,6 +38,7 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
+      // eslint-disable-next-line no-unused-vars
       const { confirmPassword, ...registerData } = formData;
       await register(registerData);
       navigate('/');

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { petService } from '../api/petService';
 import { healthService } from '../api/healthService';
@@ -12,11 +12,7 @@ const PetDetailPage = () => {
   const [activeTab, setActiveTab] = useState('info');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadPetData();
-  }, [id]);
-
-  const loadPetData = async () => {
+  const loadPetData = useCallback(async () => {
     try {
       setLoading(true);
       const [petResponse, logsResponse, analyticsResponse] = await Promise.all([
@@ -32,7 +28,11 @@ const PetDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    loadPetData();
+  }, [loadPetData]);
 
   if (loading) {
     return (
