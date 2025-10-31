@@ -11,6 +11,8 @@ const PetDetailPage = () => {
   const [analytics, setAnalytics] = useState(null);
   const [activeTab, setActiveTab] = useState('info');
   const [loading, setLoading] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editData, setEditData] = useState({});
 
   const loadPetData = useCallback(async () => {
     try {
@@ -33,6 +35,54 @@ const PetDetailPage = () => {
   useEffect(() => {
     loadPetData();
   }, [loadPetData]);
+
+  const handleEditToggle = () => {
+    if (!isEditMode) {
+      setEditData({
+        name: pet.name,
+        breed: pet.breed,
+        gender: pet.gender,
+        birthDate: pet.birthDate ? new Date(pet.birthDate).toISOString().split('T')[0] : '',
+        appearance: {
+          color: pet.appearance?.color || '',
+          weight: pet.appearance?.weight || '',
+        },
+        personality: {
+          temperament: pet.personality?.temperament || '',
+          traits: pet.personality?.traits || [],
+        }
+      });
+    }
+    setIsEditMode(!isEditMode);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      await petService.updatePet(id, editData);
+      setIsEditMode(false);
+      loadPetData();
+    } catch (error) {
+      console.error('Failed to update pet:', error);
+      alert('更新失败，请重试');
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setEditData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleNestedInputChange = (parent, field, value) => {
+    setEditData(prev => ({
+      ...prev,
+      [parent]: {
+        ...prev[parent],
+        [field]: value
+      }
+    }));
+  };
 
   if (loading) {
     return (
@@ -75,21 +125,48 @@ const PetDetailPage = () => {
             返回
           </button>
 
-          <div className="flex items-center space-x-6">
-            <img
-              src={pet.avatar || '/default-pet.png'}
-              alt={pet.name}
-              className="w-24 h-24 rounded-full object-cover"
-            />
-            <div>
-              <h1 className="text-3xl font-bold text-text-primary mb-2">{pet.name}</h1>
-              <p className="text-text-secondary">
-                {speciesNames[pet.species]} · {pet.breed}
-              </p>
-              {pet.birthDate && (
-                <p className="text-text-secondary text-sm mt-1">
-                  {calculateAge(pet.birthDate)}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <img
+                src={pet.avatar || '/default-pet.png'}
+                alt={pet.name}
+                className="w-24 h-24 rounded-full object-cover"
+              />
+              <div>
+                <h1 className="text-3xl font-bold text-text-primary mb-2">{pet.name}</h1>
+                <p className="text-text-secondary">
+                  {speciesNames[pet.species]} · {pet.breed}
                 </p>
+                {pet.birthDate && (
+                  <p className="text-text-secondary text-sm mt-1">
+                    {calculateAge(pet.birthDate)}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div>
+              {!isEditMode ? (
+                <button
+                  onClick={handleEditToggle}
+                  className="btn-primary"
+                >
+                  编辑资料
+                </button>
+              ) : (
+                <div className="flex space-x-2">
+                  <button
+                    onClick={handleEditToggle}
+                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    取消
+                  </button>
+                  <button
+                    onClick={handleSaveEdit}
+                    className="btn-primary"
+                  >
+                    保存
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -129,30 +206,106 @@ const PetDetailPage = () => {
             {/* Basic Info */}
             <div className="card">
               <h3 className="text-xl font-bold mb-4">基本信息</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <InfoItem label="性别" value={pet.gender === 'male' ? '雄性' : pet.gender === 'female' ? '雌性' : '未知'} />
-                <InfoItem label="品种" value={pet.breed} />
-                <InfoItem label="颜色" value={pet.appearance?.color || '-'} />
-                <InfoItem label="体重" value={pet.appearance?.weight ? `${pet.appearance.weight} kg` : '-'} />
-              </div>
+              {isEditMode ? (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">姓名</label>
+                    <input
+                      type="text"
+                      value={editData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">品种</label>
+                    <input
+                      type="text"
+                      value={editData.breed}
+                      onChange={(e) => handleInputChange('breed', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">性别</label>
+                    <select
+                      value={editData.gender}
+                      onChange={(e) => handleInputChange('gender', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    >
+                      <option value="male">雄性</option>
+                      <option value="female">雌性</option>
+                      <option value="unknown">未知</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">出生日期</label>
+                    <input
+                      type="date"
+                      value={editData.birthDate}
+                      onChange={(e) => handleInputChange('birthDate', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">颜色</label>
+                    <input
+                      type="text"
+                      value={editData.appearance?.color || ''}
+                      onChange={(e) => handleNestedInputChange('appearance', 'color', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">体重 (kg)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={editData.appearance?.weight || ''}
+                      onChange={(e) => handleNestedInputChange('appearance', 'weight', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  <InfoItem label="性别" value={pet.gender === 'male' ? '雄性' : pet.gender === 'female' ? '雌性' : '未知'} />
+                  <InfoItem label="品种" value={pet.breed} />
+                  <InfoItem label="颜色" value={pet.appearance?.color || '-'} />
+                  <InfoItem label="体重" value={pet.appearance?.weight ? `${pet.appearance.weight} kg` : '-'} />
+                </div>
+              )}
             </div>
 
             {/* Personality */}
-            {pet.personality && (
-              <div className="card">
-                <h3 className="text-xl font-bold mb-4">性格特征</h3>
-                <p className="text-gray-700">{pet.personality.temperament || '暂无描述'}</p>
-                {pet.personality.traits && pet.personality.traits.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {pet.personality.traits.map((trait, index) => (
-                      <span key={index} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
-                        {trait}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+            <div className="card">
+              <h3 className="text-xl font-bold mb-4">性格特征</h3>
+              {isEditMode ? (
+                <div>
+                  <label className="block text-sm text-gray-600 mb-1">性格描述</label>
+                  <textarea
+                    value={editData.personality?.temperament || ''}
+                    onChange={(e) => handleNestedInputChange('personality', 'temperament', e.target.value)}
+                    rows="3"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                    placeholder="描述宠物的性格..."
+                  />
+                </div>
+              ) : (
+                <>
+                  <p className="text-gray-700">{pet.personality?.temperament || '暂无描述'}</p>
+                  {pet.personality?.traits && pet.personality.traits.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {pet.personality.traits.map((trait, index) => (
+                        <span key={index} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                          {trait}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
 
             {/* Health Summary */}
             <div className="card">

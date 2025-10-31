@@ -9,7 +9,7 @@ exports.getPosts = async (req, res) => {
     const limit = parseInt(req.query.limit) || 20;
     const skip = (page - 1) * limit;
 
-    const { category, tag, hashtag } = req.query;
+    const { category, tag, hashtag, species } = req.query;
     
     let query = { isPublic: true };
 
@@ -17,12 +17,19 @@ exports.getPosts = async (req, res) => {
     if (tag) query.tags = tag;
     if (hashtag) query.hashtags = hashtag;
 
-    const posts = await Post.find(query)
+    // First get posts
+    let posts = await Post.find(query)
       .populate('author', 'username avatar')
       .populate('pet', 'name avatar species')
       .sort('-createdAt')
-      .limit(limit)
+      .limit(species ? limit * 2 : limit) // Get more if filtering by species
       .skip(skip);
+
+    // Filter by pet species if specified
+    if (species) {
+      posts = posts.filter(post => post.pet && post.pet.species === species);
+      posts = posts.slice(0, limit); // Trim to requested limit
+    }
 
     const total = await Post.countDocuments(query);
 

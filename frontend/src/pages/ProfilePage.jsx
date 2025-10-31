@@ -74,9 +74,9 @@ const ProfilePage = () => {
       icon: '📊',
       items: [
         { name: '我的宠物', count: stats.pets, icon: '🐾', path: '/pets' },
-        { name: '我的帖子', count: stats.posts, icon: '📝', path: '#' },
-        { name: '我的收藏', count: 0, icon: '⭐', path: '#' },
-        { name: '浏览历史', count: 0, icon: '👁️', path: '#' },
+        { name: '我的帖子', count: stats.posts, icon: '📝', path: '/my-posts' },
+        { name: '我的收藏', count: 0, icon: '⭐', path: '#', disabled: true },
+        { name: '浏览历史', count: 0, icon: '👁️', path: '#', disabled: true },
       ],
     },
     {
@@ -84,10 +84,10 @@ const ProfilePage = () => {
       title: '订单管理',
       icon: '📦',
       items: [
-        { name: '待付款', count: stats.orders.pending, icon: '💳', path: '#' },
-        { name: '待发货', count: stats.orders.shipping, icon: '📮', path: '#' },
-        { name: '待收货', count: stats.orders.delivered, icon: '🚚', path: '#' },
-        { name: '已完成', count: stats.orders.completed, icon: '✓', path: '#' },
+        { name: '待付款', count: stats.orders.pending, icon: '💳', path: '#', disabled: true },
+        { name: '待发货', count: stats.orders.shipping, icon: '📮', path: '#', disabled: true },
+        { name: '待收货', count: stats.orders.delivered, icon: '🚚', path: '#', disabled: true },
+        { name: '已完成', count: stats.orders.completed, icon: '✓', path: '#', disabled: true },
       ],
     },
     {
@@ -95,18 +95,18 @@ const ProfilePage = () => {
       title: '服务预约',
       icon: '📅',
       items: [
-        { name: '待确认', count: stats.bookings.pending, icon: '⏰', path: '#' },
-        { name: '进行中', count: stats.bookings.ongoing, icon: '🔄', path: '#' },
-        { name: '已完成', count: stats.bookings.completed, icon: '✓', path: '#' },
+        { name: '待确认', count: stats.bookings.pending, icon: '⏰', path: '#', disabled: true },
+        { name: '进行中', count: stats.bookings.ongoing, icon: '🔄', path: '#', disabled: true },
+        { name: '已完成', count: stats.bookings.completed, icon: '✓', path: '#', disabled: true },
       ],
     },
   ];
 
   const quickActions = [
-    { name: '宠物证件夹', icon: '📋', path: '/documents' },
-    { name: '健康记录导出', icon: '📄', path: '/export' },
-    { name: '积分商城', icon: '🎁', path: '/points' },
-    { name: '邀请好友', icon: '👥', path: '/invite' },
+    { name: '宠物证件夹', icon: '📋', path: '/documents', disabled: true },
+    { name: '健康记录导出', icon: '📄', path: '/export', disabled: true },
+    { name: '积分商城', icon: '🎁', path: '/points', disabled: true },
+    { name: '邀请好友', icon: '👥', path: '/invite', disabled: true },
   ];
 
   const themes = [
@@ -170,15 +170,27 @@ const ProfilePage = () => {
                   {section.items.map((item, index) => (
                     <button
                       key={index}
-                      onClick={() => item.path && item.path !== '#' && navigate(item.path)}
-                      className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-center"
+                      onClick={() => !item.disabled && item.path && item.path !== '#' && navigate(item.path)}
+                      disabled={item.disabled}
+                      className={`p-4 bg-gray-50 rounded-lg transition-colors text-center ${
+                        item.disabled 
+                          ? 'opacity-50 cursor-not-allowed' 
+                          : 'hover:bg-gray-100 cursor-pointer'
+                      }`}
                     >
                       <div className="text-2xl mb-2">{item.icon}</div>
                       <p className="font-medium text-sm mb-1">{item.name}</p>
-                      {item.count > 0 && (
-                        <span className="inline-block px-2 py-0.5 bg-primary text-white text-xs rounded-full">
+                      {item.count !== undefined && (
+                        <span className={`inline-block px-2 py-0.5 text-xs rounded-full ${
+                          item.count > 0 
+                            ? 'bg-primary text-white' 
+                            : 'bg-gray-300 text-gray-600'
+                        }`}>
                           {item.count}
                         </span>
+                      )}
+                      {item.disabled && (
+                        <span className="block text-xs text-gray-400 mt-1">即将上线</span>
                       )}
                     </button>
                   ))}
@@ -193,11 +205,19 @@ const ProfilePage = () => {
                 {quickActions.map((action, index) => (
                   <button
                     key={index}
-                    onClick={() => navigate(action.path)}
-                    className="p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg hover:shadow-md transition-all text-center"
+                    onClick={() => !action.disabled && navigate(action.path)}
+                    disabled={action.disabled}
+                    className={`p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg transition-all text-center ${
+                      action.disabled 
+                        ? 'opacity-50 cursor-not-allowed' 
+                        : 'hover:shadow-md cursor-pointer'
+                    }`}
                   >
                     <div className="text-3xl mb-2">{action.icon}</div>
                     <p className="font-medium text-sm">{action.name}</p>
+                    {action.disabled && (
+                      <span className="block text-xs text-gray-400 mt-1">即将上线</span>
+                    )}
                   </button>
                 ))}
               </div>

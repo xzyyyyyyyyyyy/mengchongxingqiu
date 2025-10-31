@@ -13,11 +13,10 @@ const CommunityPage = () => {
     try {
       setLoading(true);
       const params = { 
-        limit: 9,
-        sort: 'likes'
+        limit: 9
       };
       if (selectedCategory !== 'all') {
-        params.category = selectedCategory;
+        params.species = selectedCategory;
       }
       const response = await postService.getPosts(params);
       setTopPosts(response.data.data || []);
@@ -115,6 +114,7 @@ const CommunityPage = () => {
                       {sortedPosts.length > 0 ? sortedPosts.map((post, postIndex) => (
                         <div
                           key={postIndex}
+                          onClick={() => navigate(`/posts/${post._id}`)}
                           className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                         >
                           <div className={`w-8 h-8 flex items-center justify-center rounded-full ${

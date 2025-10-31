@@ -12,6 +12,7 @@ import CommunityPage from './pages/CommunityPage';
 import ServicesPage from './pages/ServicesPage';
 import ShopPage from './pages/ShopPage';
 import ProfilePage from './pages/ProfilePage';
+import MyPostsPage from './pages/MyPostsPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminServices from './pages/admin/AdminServices';
@@ -144,6 +145,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <ProfilePage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-posts"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MyPostsPage />
                 </Layout>
               </ProtectedRoute>
             }
