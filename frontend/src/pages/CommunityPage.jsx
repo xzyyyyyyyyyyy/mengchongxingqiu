@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { postService } from '../api/postService';
 
 const CommunityPage = () => {
@@ -6,11 +6,7 @@ const CommunityPage = () => {
   const [topPosts, setTopPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadTopPosts();
-  }, [selectedCategory]);
-
-  const loadTopPosts = async () => {
+  const loadTopPosts = useCallback(async () => {
     try {
       setLoading(true);
       const params = { 
@@ -27,7 +23,11 @@ const CommunityPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    loadTopPosts();
+  }, [loadTopPosts]);
 
   const categories = [
     { id: 'all', name: '全部', icon: '🌟', color: 'bg-gray-100' },

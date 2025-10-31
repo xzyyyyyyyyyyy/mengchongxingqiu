@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { productService } from '../api/productService';
 
 const ShopPage = () => {
@@ -7,11 +7,7 @@ const ShopPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    loadProducts();
-  }, [selectedCategory, searchTerm]);
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       setLoading(true);
       const params = {};
@@ -29,7 +25,11 @@ const ShopPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, searchTerm]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
 
   const categories = [
     { id: 'all', name: '全部', icon: '🛍️' },

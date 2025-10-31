@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { postService } from '../../api/postService';
 
 const AdminPosts = () => {
@@ -6,11 +6,7 @@ const AdminPosts = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  useEffect(() => {
-    loadPosts();
-  }, [selectedCategory]);
-
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     try {
       setLoading(true);
       const params = { limit: 50 };
@@ -24,7 +20,11 @@ const AdminPosts = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    loadPosts();
+  }, [loadPosts]);
 
   const handleDelete = async (id) => {
     if (!confirm('确定要删除这个帖子吗？')) return;

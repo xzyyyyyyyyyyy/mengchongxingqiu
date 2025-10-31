@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { serviceService } from '../api/serviceService';
 
 const ServicesPage = () => {
@@ -7,11 +7,7 @@ const ServicesPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    loadServices();
-  }, [selectedCategory, searchTerm]);
-
-  const loadServices = async () => {
+  const loadServices = useCallback(async () => {
     try {
       setLoading(true);
       const params = {};
@@ -29,7 +25,11 @@ const ServicesPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, searchTerm]);
+
+  useEffect(() => {
+    loadServices();
+  }, [loadServices]);
 
   const serviceCategories = [
     { id: 'all', name: '全部服务', icon: '🏪' },

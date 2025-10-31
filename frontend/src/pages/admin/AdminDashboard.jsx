@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { authService } from '../../api/authService';
 import { petService } from '../../api/petService';
 import { postService } from '../../api/postService';
 import { productService } from '../../api/productService';
