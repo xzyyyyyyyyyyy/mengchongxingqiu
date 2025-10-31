@@ -18,6 +18,7 @@ import AdminServices from './pages/admin/AdminServices';
 import AdminPosts from './pages/admin/AdminPosts';
 import HashtagPostsPage from './pages/HashtagPostsPage';
 import PostDetailPage from './pages/PostDetailPage';
+import CreatePostPage from './pages/CreatePostPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -163,6 +164,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <PostDetailPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/posts/create"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CreatePostPage />
                 </Layout>
               </ProtectedRoute>
             }

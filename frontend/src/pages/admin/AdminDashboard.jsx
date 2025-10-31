@@ -1,15 +1,8 @@
 import { useState, useEffect } from 'react';
-import { petService } from '../../api/petService';
-import { postService } from '../../api/postService';
-import { productService } from '../../api/productService';
+import { statsService } from '../../api/statsService';
 
 const AdminDashboard = () => {
-  const [stats, setStats] = useState({
-    users: 0,
-    pets: 0,
-    posts: 0,
-    products: 0,
-  });
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,19 +12,8 @@ const AdminDashboard = () => {
   const loadStats = async () => {
     try {
       setLoading(true);
-      // Load basic stats from APIs
-      const [petsRes, postsRes, productsRes] = await Promise.all([
-        petService.getPets(),
-        postService.getPosts({ limit: 1 }),
-        productService.getProducts({ limit: 1 }),
-      ]);
-
-      setStats({
-        users: 0, // We'll need an admin API to get user count
-        pets: petsRes.data.data?.length || 0,
-        posts: postsRes.data.total || 0,
-        products: productsRes.data.total || 0,
-      });
+      const response = await statsService.getStats();
+      setStats(response.data.data);
     } catch (error) {
       console.error('Failed to load stats:', error);
     } finally {
@@ -59,6 +41,14 @@ const AdminDashboard = () => {
     );
   }
 
+  if (!stats) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500">无法加载统计数据</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -71,25 +61,25 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="总用户数"
-          value={stats.users}
+          value={stats.counts?.users || 0}
           icon="👥"
           color="text-blue-500"
         />
         <StatCard
           title="宠物档案"
-          value={stats.pets}
+          value={stats.counts?.pets || 0}
           icon="🐾"
           color="text-green-500"
         />
         <StatCard
           title="帖子内容"
-          value={stats.posts}
+          value={stats.counts?.posts || 0}
           icon="📝"
           color="text-purple-500"
         />
         <StatCard
           title="商品数量"
-          value={stats.products}
+          value={stats.counts?.products || 0}
           icon="🛍️"
           color="text-orange-500"
         />
@@ -119,32 +109,73 @@ const AdminDashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">最近活动</h2>
-        <div className="space-y-4">
-          <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-            <div className="text-2xl">📝</div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900">新帖子发布</p>
-              <p className="text-xs text-gray-600 mt-1">用户分享了新的宠物日常</p>
-              <p className="text-xs text-gray-500 mt-1">5分钟前</p>
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Posts */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">最新帖子</h2>
+          <div className="space-y-3">
+            {stats.recent?.posts && stats.recent.posts.length > 0 ? (
+              stats.recent.posts.map((post) => (
+                <div key={post._id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                  <img
+                    src={post.author?.avatar || '/default-avatar.png'}
+                    alt={post.author?.username}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900">
+                      {post.author?.username}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                      {post.content}
+                    </p>
+                    <div className="flex items-center space-x-3 mt-2 text-xs text-gray-500">
+                      <span>❤️ {post.likesCount}</span>
+                      <span>💬 {post.commentsCount}</span>
+                      <span>{new Date(post.createdAt).toLocaleDateString('zh-CN')}</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-center py-4">暂无帖子</p>
+            )}
           </div>
-          <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-            <div className="text-2xl">🛍️</div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900">新订单创建</p>
-              <p className="text-xs text-gray-600 mt-1">用户购买了宠物用品</p>
-              <p className="text-xs text-gray-500 mt-1">15分钟前</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-            <div className="text-2xl">👤</div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900">新用户注册</p>
-              <p className="text-xs text-gray-600 mt-1">新用户加入萌宠星球</p>
-              <p className="text-xs text-gray-500 mt-1">1小时前</p>
-            </div>
+        </div>
+
+        {/* Recent Orders */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">最新订单</h2>
+          <div className="space-y-3">
+            {stats.recent?.orders && stats.recent.orders.length > 0 ? (
+              stats.recent.orders.map((order) => (
+                <div key={order._id} className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {order.orderNumber}
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {order.user?.username}
+                      </p>
+                    </div>
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      order.status === 'completed' ? 'bg-green-100 text-green-700' :
+                      order.status === 'processing' ? 'bg-blue-100 text-blue-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {order.status}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs text-gray-500">
+                    <span>¥{order.totalAmount}</span>
+                    <span>{new Date(order.createdAt).toLocaleDateString('zh-CN')}</span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-center py-4">暂无订单</p>
+            )}
           </div>
         </div>
       </div>
