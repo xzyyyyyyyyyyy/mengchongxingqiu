@@ -11,25 +11,50 @@ exports.getPosts = async (req, res) => {
 
     const { category, tag, hashtag, species } = req.query;
     
+    // Use aggregation if filtering by species
+    if (species) {
+      const Pet = require('../models/Pet');
+      
+      // Get pet IDs of the specified species
+      const pets = await Pet.find({ species }).select('_id');
+      const petIds = pets.map(pet => pet._id);
+      
+      let query = { isPublic: true, pet: { $in: petIds } };
+      if (category) query.category = category;
+      if (tag) query.tags = tag;
+      if (hashtag) query.hashtags = hashtag;
+      
+      const posts = await Post.find(query)
+        .populate('author', 'username avatar')
+        .populate('pet', 'name avatar species')
+        .sort('-createdAt')
+        .limit(limit)
+        .skip(skip);
+      
+      const total = await Post.countDocuments(query);
+      
+      return res.json({
+        success: true,
+        count: posts.length,
+        total,
+        page,
+        pages: Math.ceil(total / limit),
+        data: posts
+      });
+    }
+    
+    // Standard query without species filter
     let query = { isPublic: true };
-
     if (category) query.category = category;
     if (tag) query.tags = tag;
     if (hashtag) query.hashtags = hashtag;
 
-    // First get posts
-    let posts = await Post.find(query)
+    const posts = await Post.find(query)
       .populate('author', 'username avatar')
       .populate('pet', 'name avatar species')
       .sort('-createdAt')
-      .limit(species ? limit * 2 : limit) // Get more if filtering by species
+      .limit(limit)
       .skip(skip);
-
-    // Filter by pet species if specified
-    if (species) {
-      posts = posts.filter(post => post.pet && post.pet.species === species);
-      posts = posts.slice(0, limit); // Trim to requested limit
-    }
 
     const total = await Post.countDocuments(query);
 

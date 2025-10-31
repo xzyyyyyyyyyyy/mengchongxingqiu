@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
 import { useAuth } from '../contexts/AuthContext';
+import { isOwner as checkIsOwner } from '../utils/userUtils';
 
 const PostDetailPage = () => {
   const { id } = useParams();
@@ -93,7 +94,7 @@ const PostDetailPage = () => {
     }
   };
 
-  const isOwner = user && post && post.author && (post.author._id === user._id || post.author._id === user.id);
+  const isOwner = checkIsOwner(user, post, 'author');
 
   if (loading) {
     return (
