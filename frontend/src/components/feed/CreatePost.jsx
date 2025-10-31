@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { postService } from '../../api/postService';
 import { petService } from '../../api/petService';
 
@@ -15,7 +15,7 @@ const CreatePost = ({ onPostCreated, onClose }) => {
   const [error, setError] = useState('');
 
   // Load user's pets
-  useState(() => {
+  useEffect(() => {
     const loadPets = async () => {
       try {
         const response = await petService.getPets();

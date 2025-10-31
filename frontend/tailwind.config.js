@@ -23,9 +23,14 @@ export default {
         display: ["Noto Sans SC", "SF Pro", "sans-serif"],
       },
       borderRadius: {
+        none: "0",
+        sm: "0.125rem",
         DEFAULT: "0.5rem",
+        md: "0.375rem",
         lg: "1rem",
         xl: "1.5rem",
+        "2xl": "2rem",
+        "3xl": "3rem",
         full: "9999px",
       },
       boxShadow: {

@@ -219,6 +219,9 @@ function calculateTrend(values) {
   const recentAvg = recent.reduce((a, b) => a + b, 0) / recent.length;
   const olderAvg = older.reduce((a, b) => a + b, 0) / older.length;
   
+  // Handle division by zero
+  if (olderAvg === 0) return recentAvg > 0 ? 'increasing' : 'stable';
+  
   const diff = ((recentAvg - olderAvg) / olderAvg) * 100;
   
   if (diff > 5) return 'increasing';
@@ -243,5 +246,3 @@ function calculateEnergyDistribution(logs) {
 
   return distribution;
 }
-
-module.exports = exports;
