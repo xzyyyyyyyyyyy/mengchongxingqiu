@@ -124,6 +124,21 @@ mongod
 docker run -d -p 27017:27017 --name mongodb mongo:latest
 ```
 
+### 填充测试数据
+
+首次运行时，可以使用种子数据脚本填充数据库：
+```bash
+cd backend
+npm run seed
+```
+
+这将创建：
+- 管理员账户（Email: admin@mengchong.com, Password: admin123）
+- 示例商品数据
+- 示例服务数据
+
+**注意：** 运行种子脚本会清空现有的商品和服务数据。
+
 ## 项目结构
 
 ```
@@ -135,7 +150,7 @@ mengchongxingqiu/
 │   │   ├── middleware/     # 中间件
 │   │   ├── models/         # 数据模型
 │   │   ├── routes/         # 路由
-│   │   ├── services/       # 业务逻辑
+│   │   ├── validators/     # 请求验证
 │   │   ├── utils/          # 工具函数
 │   │   └── server.js       # 入口文件
 │   ├── uploads/            # 上传文件存储
@@ -144,8 +159,12 @@ mengchongxingqiu/
 │   ├── src/
 │   │   ├── api/           # API服务
 │   │   ├── components/    # React组件
+│   │   │   ├── common/    # 通用组件
+│   │   │   └── admin/     # 管理后台组件
 │   │   ├── contexts/      # React上下文
 │   │   ├── pages/         # 页面组件
+│   │   │   ├── admin/     # 管理后台页面
+│   │   │   └── ...        # 其他页面
 │   │   ├── utils/         # 工具函数
 │   │   ├── App.jsx        # 主应用组件
 │   │   └── main.jsx       # 入口文件
@@ -153,6 +172,24 @@ mengchongxingqiu/
 ├── design-mockups/        # UI设计稿
 └── README.md
 ```
+
+## 管理后台
+
+管理员可以通过访问 `/admin` 路径进入管理后台。管理后台功能包括：
+
+### 访问权限
+- 只有角色为 `admin` 的用户可以访问管理后台
+- 默认管理员账号：
+  - Email: admin@mengchong.com
+  - Password: admin123
+
+### 功能模块
+- **仪表盘** - 查看平台关键数据统计
+- **商品管理** - 添加、编辑、删除商品
+- **服务管理** - 管理平台服务提供商
+- **内容管理** - 审核和管理用户发布的帖子
+- **订单管理** - 查看和处理订单
+- **预约管理** - 管理服务预约
 
 ## API文档
 
@@ -186,6 +223,40 @@ mengchongxingqiu/
 - `POST /api/health/:petId` - 创建健康日志
 - `GET /api/health/:petId/analytics` - 获取健康分析
 
+### 服务接口
+- `GET /api/services` - 获取服务列表（支持分类、城市、评分等过滤）
+- `GET /api/services/:id` - 获取服务详情
+- `POST /api/services` - 创建服务（需要认证）
+- `PUT /api/services/:id` - 更新服务（需要认证）
+- `DELETE /api/services/:id` - 删除服务（需要认证）
+- `POST /api/services/:id/reviews` - 添加服务评价
+- `GET /api/services/nearby` - 获取附近服务（基于地理位置）
+
+### 商品接口
+- `GET /api/products` - 获取商品列表（支持分类、价格、宠物类型等过滤）
+- `GET /api/products/:id` - 获取商品详情
+- `GET /api/products/featured` - 获取推荐商品
+- `POST /api/products` - 创建商品（需要认证）
+- `PUT /api/products/:id` - 更新商品（需要认证）
+- `DELETE /api/products/:id` - 删除商品（需要认证）
+- `POST /api/products/:id/reviews` - 添加商品评价
+
+### 预约接口
+- `GET /api/bookings` - 获取用户预约列表（需要认证）
+- `GET /api/bookings/:id` - 获取预约详情
+- `POST /api/bookings` - 创建预约
+- `PUT /api/bookings/:id` - 更新预约
+- `PUT /api/bookings/:id/cancel` - 取消预约
+- `DELETE /api/bookings/:id` - 删除预约
+
+### 订单接口
+- `GET /api/orders` - 获取用户订单列表（需要认证）
+- `GET /api/orders/:id` - 获取订单详情
+- `POST /api/orders` - 创建订单
+- `PUT /api/orders/:id/payment` - 更新支付状态
+- `PUT /api/orders/:id/status` - 更新订单状态（管理员）
+- `PUT /api/orders/:id/cancel` - 取消订单
+
 ## 开发计划
 
 ### 已完成 ✅
@@ -197,13 +268,19 @@ mengchongxingqiu/
 - [x] 社交帖子功能
 - [x] 宠物档案管理
 - [x] 健康日志系统
+- [x] 服务管理API（完整CRUD）
+- [x] 商品管理API（完整CRUD）
+- [x] 订单管理系统
+- [x] 预约管理系统
+- [x] 管理员后台面板
+- [x] 真实数据API集成（替换所有模拟数据）
+- [x] 请求验证和错误处理
 
 ### 进行中 🚧
 - [ ] AI图像识别集成
 - [ ] 虚拟宠物形象生成
-- [ ] 服务预约系统
-- [ ] 电商功能
 - [ ] 支付集成
+- [ ] 图片上传功能完善
 
 ### 待开发 📋
 - [ ] 实时聊天功能
