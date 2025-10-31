@@ -480,3 +480,81 @@ GET /health/:petId/analytics
 - 健康预警触发
 - 提醒到期
 - 订单状态变更
+
+### 获取热门话题
+```http
+GET /posts/trending/hashtags?limit=10
+```
+
+**查询参数**:
+- `limit` (可选): 返回数量，默认 10
+
+**响应**:
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "hashtag": "猫咪日常",
+      "count": 45
+    }
+  ]
+}
+```
+
+### 按话题获取帖子
+```http
+GET /posts/hashtag/:hashtag?page=1&limit=20
+```
+
+**路径参数**:
+- `hashtag`: 话题名称（不含 # 符号）
+
+**查询参数**:
+- `page` (可选): 页码，默认 1
+- `limit` (可选): 每页数量，默认 20
+
+**响应**:
+```json
+{
+  "success": true,
+  "count": 20,
+  "total": 45,
+  "page": 1,
+  "pages": 3,
+  "data": [ ... ]
+}
+```
+
+## 统计接口 (Statistics)
+
+### 获取平台统计数据
+```http
+GET /stats
+```
+🔒 需要认证（管理员）
+
+**响应**:
+```json
+{
+  "success": true,
+  "data": {
+    "counts": {
+      "users": 0,
+      "pets": 0,
+      "posts": 0,
+      "products": 0,
+      "services": 0,
+      "orders": 0,
+      "bookings": 0
+    },
+    "recent": {
+      "posts": [ ... ],
+      "orders": [ ... ]
+    },
+    "top": {
+      "posts": [ ... ]
+    }
+  }
+}
+```
