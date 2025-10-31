@@ -11,6 +11,24 @@ exports.getPosts = async (req, res) => {
 
     const { category, tag, hashtag, species } = req.query;
     
+    // Validate species parameter against allowed values
+    const validSpecies = ['cat', 'dog', 'rabbit', 'hamster', 'bird', 'fish', 'other'];
+    if (species && !validSpecies.includes(species)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid species parameter'
+      });
+    }
+    
+    // Validate category parameter against allowed values
+    const validCategories = ['daily', 'medical', 'training', 'food', 'travel', 'funny', 'other'];
+    if (category && !validCategories.includes(category)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid category parameter'
+      });
+    }
+    
     // Use aggregation if filtering by species
     if (species) {
       const Pet = require('../models/Pet');
