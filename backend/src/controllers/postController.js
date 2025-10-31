@@ -9,10 +9,60 @@ exports.getPosts = async (req, res) => {
     const limit = parseInt(req.query.limit) || 20;
     const skip = (page - 1) * limit;
 
-    const { category, tag, hashtag } = req.query;
+    const { category, tag, hashtag, species } = req.query;
     
+    // Validate species parameter against allowed values
+    const validSpecies = ['cat', 'dog', 'rabbit', 'hamster', 'bird', 'fish', 'other'];
+    if (species && !validSpecies.includes(species)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid species parameter'
+      });
+    }
+    
+    // Validate category parameter against allowed values
+    const validCategories = ['daily', 'medical', 'training', 'food', 'travel', 'funny', 'other'];
+    if (category && !validCategories.includes(category)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid category parameter'
+      });
+    }
+    
+    // Use aggregation if filtering by species
+    if (species) {
+      const Pet = require('../models/Pet');
+      
+      // Get pet IDs of the specified species
+      const pets = await Pet.find({ species }).select('_id');
+      const petIds = pets.map(pet => pet._id);
+      
+      let query = { isPublic: true, pet: { $in: petIds } };
+      if (category) query.category = category;
+      if (tag) query.tags = tag;
+      if (hashtag) query.hashtags = hashtag;
+      
+      const posts = await Post.find(query)
+        .populate('author', 'username avatar')
+        .populate('pet', 'name avatar species')
+        .sort('-createdAt')
+        .limit(limit)
+        .skip(skip);
+      
+      const total = await Post.countDocuments(query);
+      
+      return res.json({
+        success: true,
+        count: posts.length,
+        total,
+        page,
+        pages: Math.ceil(total / limit),
+        data: posts
+      });
+    }
+    
+    // Standard query without species filter
     let query = { isPublic: true };
-
     if (category) query.category = category;
     if (tag) query.tags = tag;
     if (hashtag) query.hashtags = hashtag;

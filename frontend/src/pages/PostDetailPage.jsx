@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
 import { useAuth } from '../contexts/AuthContext';
+import { isOwner as checkIsOwner } from '../utils/userUtils';
 
 const PostDetailPage = () => {
   const { id } = useParams();
@@ -11,6 +12,9 @@ const PostDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [commentText, setCommentText] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     loadPost();
@@ -53,6 +57,44 @@ const PostDetailPage = () => {
       setSubmitting(false);
     }
   };
+
+  const handleEditClick = () => {
+    setEditContent(post.content);
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditContent('');
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editContent.trim()) return;
+
+    try {
+      setSubmitting(true);
+      await postService.updatePost(id, { content: editContent });
+      setIsEditing(false);
+      loadPost();
+    } catch (error) {
+      console.error('Failed to update post:', error);
+      alert('更新失败，请重试');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await postService.deletePost(id);
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to delete post:', error);
+      alert('删除失败，请重试');
+    }
+  };
+
+  const isOwner = checkIsOwner(user, post, 'author');
 
   if (loading) {
     return (
@@ -106,18 +148,69 @@ const PostDetailPage = () => {
                 </p>
               </div>
             </div>
-            {post.category && (
-              <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
-                {getCategoryName(post.category)}
-              </span>
-            )}
+            <div className="flex items-center space-x-2">
+              {post.category && (
+                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                  {getCategoryName(post.category)}
+                </span>
+              )}
+              {isOwner && !isEditing && (
+                <>
+                  <button
+                    onClick={handleEditClick}
+                    className="p-2 text-gray-600 hover:text-primary transition-colors"
+                    title="编辑"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                    title="删除"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Post Content */}
           <div className="mb-4">
-            <p className="text-gray-800 text-lg leading-relaxed whitespace-pre-wrap">
-              {post.content}
-            </p>
+            {isEditing ? (
+              <div>
+                <textarea
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none text-lg"
+                  rows="6"
+                  placeholder="编辑内容..."
+                />
+                <div className="flex justify-end space-x-2 mt-3">
+                  <button
+                    onClick={handleCancelEdit}
+                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    取消
+                  </button>
+                  <button
+                    onClick={handleSaveEdit}
+                    disabled={!editContent.trim() || submitting}
+                    className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {submitting ? '保存中...' : '保存'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-gray-800 text-lg leading-relaxed whitespace-pre-wrap">
+                {post.content}
+              </p>
+            )}
           </div>
 
           {/* Hashtags */}
@@ -251,6 +344,30 @@ const PostDetailPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-xl font-bold mb-4">确认删除</h3>
+            <p className="text-gray-700 mb-6">确定要删除这篇帖子吗？此操作无法撤销。</p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                取消
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+              >
+                删除
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
