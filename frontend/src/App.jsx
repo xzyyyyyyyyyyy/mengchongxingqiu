@@ -5,6 +5,11 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import PetsPage from './pages/PetsPage';
+import PetDetailPage from './pages/PetDetailPage';
+import CommunityPage from './pages/CommunityPage';
+import ServicesPage from './pages/ServicesPage';
+import ShopPage from './pages/ShopPage';
+import ProfilePage from './pages/ProfilePage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -56,10 +61,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <div className="p-8 text-center">
-                    <h2 className="text-2xl font-bold">宠物详情页</h2>
-                    <p className="text-gray-600 mt-2">正在开发中...</p>
-                  </div>
+                  <PetDetailPage />
                 </Layout>
               </ProtectedRoute>
             }
@@ -69,10 +71,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <div className="p-8 text-center">
-                    <h2 className="text-2xl font-bold">社区</h2>
-                    <p className="text-gray-600 mt-2">正在开发中...</p>
-                  </div>
+                  <CommunityPage />
                 </Layout>
               </ProtectedRoute>
             }
@@ -82,10 +81,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <div className="p-8 text-center">
-                    <h2 className="text-2xl font-bold">服务</h2>
-                    <p className="text-gray-600 mt-2">正在开发中...</p>
-                  </div>
+                  <ServicesPage />
                 </Layout>
               </ProtectedRoute>
             }
@@ -95,10 +91,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <div className="p-8 text-center">
-                    <h2 className="text-2xl font-bold">商城</h2>
-                    <p className="text-gray-600 mt-2">正在开发中...</p>
-                  </div>
+                  <ShopPage />
                 </Layout>
               </ProtectedRoute>
             }
@@ -108,10 +101,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <div className="p-8 text-center">
-                    <h2 className="text-2xl font-bold">个人中心</h2>
-                    <p className="text-gray-600 mt-2">正在开发中...</p>
-                  </div>
+                  <ProfilePage />
                 </Layout>
               </ProtectedRoute>
             }
