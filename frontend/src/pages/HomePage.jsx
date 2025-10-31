@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
 import { useAuth } from '../contexts/AuthContext';
+import EmptyState from '../components/common/EmptyState';
 
 const HomePage = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -89,7 +91,11 @@ const HomePage = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {posts.map((post) => (
-              <div key={post._id} className="card hover:shadow-lg transition-shadow cursor-pointer">
+              <div 
+                key={post._id} 
+                onClick={() => navigate(`/posts/${post._id}`)}
+                className="card hover:shadow-lg transition-shadow cursor-pointer"
+              >
                 {/* Post Image */}
                 {post.media && post.media.length > 0 && (
                   <div className="relative mb-3">
@@ -166,10 +172,11 @@ const HomePage = () => {
         )}
 
         {posts.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">暂无内容</p>
-            <p className="text-gray-400 text-sm mt-2">成为第一个分享的人吧！</p>
-          </div>
+          <EmptyState
+            icon="📝"
+            title="暂无内容"
+            description="成为第一个分享的人吧！"
+          />
         )}
       </div>
     </div>
