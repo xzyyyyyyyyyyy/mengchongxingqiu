@@ -8,7 +8,9 @@ const {
   deletePost,
   likePost,
   addComment,
-  getUserPosts
+  getUserPosts,
+  getTrendingHashtags,
+  getPostsByHashtag
 } = require('../controllers/postController');
 const { protect } = require('../middleware/auth');
 
@@ -17,6 +19,8 @@ router.route('/')
   .post(protect, createPost);
 
 router.get('/user/:userId', getUserPosts);
+router.get('/trending/hashtags', getTrendingHashtags);
+router.get('/hashtag/:hashtag', getPostsByHashtag);
 
 router.route('/:id')
   .get(getPost)

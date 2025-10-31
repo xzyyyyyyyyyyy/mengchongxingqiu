@@ -32,4 +32,12 @@ export const postService = {
   getUserPosts: async (userId) => {
     return await axios.get(`/posts/user/${userId}`);
   },
+
+  getTrendingHashtags: async (limit = 10) => {
+    return await axios.get('/posts/trending/hashtags', { params: { limit } });
+  },
+
+  getPostsByHashtag: async (hashtag, params = {}) => {
+    return await axios.get(`/posts/hashtag/${hashtag}`, { params });
+  },
 };

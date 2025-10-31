@@ -276,3 +276,80 @@ exports.getUserPosts = async (req, res) => {
     });
   }
 };
+
+// @desc    Get trending hashtags
+// @route   GET /api/posts/trending/hashtags
+// @access  Public
+exports.getTrendingHashtags = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    
+    // Aggregate hashtags by count
+    const trending = await Post.aggregate([
+      { $match: { isPublic: true } },
+      { $unwind: '$hashtags' },
+      { $group: {
+        _id: '$hashtags',
+        count: { $sum: 1 },
+        posts: { $addToSet: '$_id' }
+      }},
+      { $sort: { count: -1 } },
+      { $limit: limit },
+      { $project: {
+        hashtag: '$_id',
+        count: 1,
+        _id: 0
+      }}
+    ]);
+
+    res.json({
+      success: true,
+      data: trending
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// @desc    Get posts by hashtag
+// @route   GET /api/posts/hashtag/:hashtag
+// @access  Public
+exports.getPostsByHashtag = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    const posts = await Post.find({ 
+      hashtags: req.params.hashtag,
+      isPublic: true 
+    })
+      .populate('author', 'username avatar')
+      .populate('pet', 'name avatar species')
+      .sort('-createdAt')
+      .limit(limit)
+      .skip(skip);
+
+    const total = await Post.countDocuments({ 
+      hashtags: req.params.hashtag,
+      isPublic: true 
+    });
+
+    res.json({
+      success: true,
+      count: posts.length,
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+      data: posts
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};

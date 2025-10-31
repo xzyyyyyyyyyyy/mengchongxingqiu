@@ -1,9 +1,71 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { petService } from '../api/petService';
+import { postService } from '../api/postService';
+import { orderService } from '../api/orderService';
+import { bookingService } from '../api/bookingService';
 
 const ProfilePage = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [stats, setStats] = useState({
+    pets: 0,
+    posts: 0,
+    orders: { pending: 0, shipping: 0, delivered: 0, completed: 0 },
+    bookings: { pending: 0, ongoing: 0, completed: 0 }
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadUserStats();
+  }, [user]);
+
+  const loadUserStats = async () => {
+    if (!user) return;
+    
+    try {
+      setLoading(true);
+      
+      // Load pets count
+      const petsResponse = await petService.getPets();
+      const petsCount = petsResponse.data?.length || 0;
+
+      // Load posts count
+      const postsResponse = await postService.getUserPosts(user._id);
+      const postsCount = postsResponse.data?.count || 0;
+
+      // Load orders
+      const ordersResponse = await orderService.getOrders();
+      const orders = ordersResponse.data?.data || [];
+      const orderStats = {
+        pending: orders.filter(o => o.paymentStatus === 'pending').length,
+        shipping: orders.filter(o => o.status === 'processing' || o.status === 'shipped').length,
+        delivered: orders.filter(o => o.status === 'delivered').length,
+        completed: orders.filter(o => o.status === 'completed').length,
+      };
+
+      // Load bookings
+      const bookingsResponse = await bookingService.getBookings();
+      const bookings = bookingsResponse.data?.data || [];
+      const bookingStats = {
+        pending: bookings.filter(b => b.status === 'pending').length,
+        ongoing: bookings.filter(b => b.status === 'confirmed').length,
+        completed: bookings.filter(b => b.status === 'completed').length,
+      };
+
+      setStats({
+        pets: petsCount,
+        posts: postsCount,
+        orders: orderStats,
+        bookings: bookingStats
+      });
+    } catch (error) {
+      console.error('Failed to load user stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const menuItems = [
     {
@@ -11,10 +73,10 @@ const ProfilePage = () => {
       title: '概览',
       icon: '📊',
       items: [
-        { name: '我的宠物', count: 3, icon: '🐾' },
-        { name: '我的帖子', count: 12, icon: '📝' },
-        { name: '我的收藏', count: 45, icon: '⭐' },
-        { name: '浏览历史', count: 128, icon: '👁️' },
+        { name: '我的宠物', count: stats.pets, icon: '🐾', path: '/pets' },
+        { name: '我的帖子', count: stats.posts, icon: '📝', path: '#' },
+        { name: '我的收藏', count: 0, icon: '⭐', path: '#' },
+        { name: '浏览历史', count: 0, icon: '👁️', path: '#' },
       ],
     },
     {
@@ -22,10 +84,10 @@ const ProfilePage = () => {
       title: '订单管理',
       icon: '📦',
       items: [
-        { name: '待付款', count: 1, icon: '💳' },
-        { name: '待发货', count: 2, icon: '📮' },
-        { name: '待收货', count: 1, icon: '🚚' },
-        { name: '已完成', count: 15, icon: '✓' },
+        { name: '待付款', count: stats.orders.pending, icon: '💳', path: '#' },
+        { name: '待发货', count: stats.orders.shipping, icon: '📮', path: '#' },
+        { name: '待收货', count: stats.orders.delivered, icon: '🚚', path: '#' },
+        { name: '已完成', count: stats.orders.completed, icon: '✓', path: '#' },
       ],
     },
     {
@@ -33,9 +95,9 @@ const ProfilePage = () => {
       title: '服务预约',
       icon: '📅',
       items: [
-        { name: '待确认', count: 1, icon: '⏰' },
-        { name: '进行中', count: 0, icon: '🔄' },
-        { name: '已完成', count: 8, icon: '✓' },
+        { name: '待确认', count: stats.bookings.pending, icon: '⏰', path: '#' },
+        { name: '进行中', count: stats.bookings.ongoing, icon: '🔄', path: '#' },
+        { name: '已完成', count: stats.bookings.completed, icon: '✓', path: '#' },
       ],
     },
   ];
@@ -108,6 +170,7 @@ const ProfilePage = () => {
                   {section.items.map((item, index) => (
                     <button
                       key={index}
+                      onClick={() => item.path && item.path !== '#' && navigate(item.path)}
                       className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-center"
                     >
                       <div className="text-2xl mb-2">{item.icon}</div>
@@ -207,23 +270,23 @@ const ProfilePage = () => {
 
         {/* Stats Card */}
         <div className="mt-6 card bg-gradient-to-r from-primary/10 to-secondary/10">
-          <h3 className="text-xl font-bold mb-4">本月数据</h3>
+          <h3 className="text-xl font-bold mb-4">数据统计</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
-              <p className="text-3xl font-bold text-primary">12</p>
+              <p className="text-3xl font-bold text-primary">{stats.posts}</p>
               <p className="text-sm text-gray-600">发布内容</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-secondary">245</p>
-              <p className="text-sm text-gray-600">获得点赞</p>
+              <p className="text-3xl font-bold text-secondary">{stats.pets}</p>
+              <p className="text-sm text-gray-600">宠物档案</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-accent">3</p>
+              <p className="text-3xl font-bold text-accent">{stats.bookings.completed}</p>
               <p className="text-sm text-gray-600">完成预约</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-purple-500">150</p>
-              <p className="text-sm text-gray-600">获得积分</p>
+              <p className="text-3xl font-bold text-purple-500">{user?.points || 0}</p>
+              <p className="text-sm text-gray-600">积分</p>
             </div>
           </div>
         </div>

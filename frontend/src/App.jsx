@@ -16,6 +16,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminServices from './pages/admin/AdminServices';
 import AdminPosts from './pages/admin/AdminPosts';
+import HashtagPostsPage from './pages/HashtagPostsPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -141,6 +142,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <ProfilePage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/community/hashtag/:hashtag"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <HashtagPostsPage />
                 </Layout>
               </ProtectedRoute>
             }
