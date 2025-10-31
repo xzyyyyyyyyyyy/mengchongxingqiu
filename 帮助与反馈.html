@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>帮助与反馈</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FF6F61",
+              "secondary": "#33C8A0",
+              "accent": "#FFC94A",
+              "background-light": "#F7F7F9",
+              "background-dark": "#1F2328",
+              "text-light": "#1F2328",
+              "text-dark": "#F7F7F9",
+              "card-light": "#FFFFFF",
+              "card-dark": "#2A2E33",
+            },
+            fontFamily: {
+              "display": ['"Noto Sans SC"', '"SF Pro"', 'sans-serif'],
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem",
+              "lg": "1rem",
+              "xl": "1.5rem",
+              "full": "9999px",
+            },
+            boxShadow: {
+              'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+<div class="relative mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between bg-background-light/80 px-4 pb-2 pt-4 backdrop-blur-sm dark:bg-background-dark/80">
+<div class="flex size-8 items-center justify-center">
+<span class="material-symbols-outlined text-2xl">arrow_back_ios_new</span>
+</div>
+<h1 class="flex-1 text-center text-xl font-bold leading-tight">帮助与反馈</h1>
+<div class="size-8 shrink-0"></div>
+</header>
+<main class="flex-1 space-y-6 p-4">
+<!-- Self-Service Section -->
+<section>
+<h2 class="px-2 pb-3 text-lg font-bold">自助服务</h2>
+<div class="space-y-3">
+<div class="flex items-center gap-4 rounded-lg bg-card-light p-4 shadow-soft dark:bg-card-dark">
+<div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-2xl">help_outline</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium">常见问题</p>
+<p class="text-sm text-text-light/60 dark:text-text-dark/60">解答您在使用中的常见疑问</p>
+</div>
+<span class="material-symbols-outlined text-xl text-text-light/40 dark:text-text-dark/40">chevron_right</span>
+</div>
+<div class="flex items-center gap-4 rounded-lg bg-card-light p-4 shadow-soft dark:bg-card-dark">
+<div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-secondary">
+<span class="material-symbols-outlined text-2xl">play_circle</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium">视频教程</p>
+<p class="text-sm text-text-light/60 dark:text-text-dark/60">观看视频快速上手各项功能</p>
+</div>
+<span class="material-symbols-outlined text-xl text-text-light/40 dark:text-text-dark/40">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Contact Us Section -->
+<section>
+<h2 class="px-2 pb-3 text-lg font-bold">联系我们</h2>
+<div class="space-y-3">
+<div class="flex items-center gap-4 rounded-lg bg-card-light p-4 shadow-soft dark:bg-card-dark">
+<div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-2xl">support_agent</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium">在线客服</p>
+<p class="text-sm text-text-light/60 dark:text-text-dark/60">服务时间: 工作日 9:00-21:00</p>
+</div>
+<span class="material-symbols-outlined text-xl text-text-light/40 dark:text-text-dark/40">chevron_right</span>
+</div>
+<div class="flex items-center gap-4 rounded-lg bg-card-light p-4 shadow-soft dark:bg-card-dark">
+<div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+<span class="material-symbols-outlined text-2xl">edit_note</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium">意见反馈</p>
+<p class="text-sm text-text-light/60 dark:text-text-dark/60">提交您的宝贵建议或问题</p>
+</div>
+<span class="material-symbols-outlined text-xl text-text-light/40 dark:text-text-dark/40">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- User Community Section -->
+<section>
+<h2 class="px-2 pb-3 text-lg font-bold">用户社群运营</h2>
+<div class="relative overflow-hidden rounded-lg bg-card-light p-4 shadow-soft dark:bg-card-dark">
+<div class="relative z-10 flex flex-col gap-4">
+<div class="flex items-start gap-3">
+<div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-secondary">
+<span class="material-symbols-outlined text-2xl">groups</span>
+</div>
+<div>
+<h3 class="text-base font-bold">加入萌宠星球用户群</h3>
+<p class="mt-1 text-sm text-text-light/60 dark:text-text-dark/60">与铲屎官们交流心得，获取最新资讯和专属福利。</p>
+</div>
+</div>
+<button class="self-start rounded-full bg-secondary px-5 py-2 text-sm font-bold text-white">立即加入</button>
+</div>
+</div>
+<div class="mt-3 rounded-lg bg-card-light p-4 shadow-soft dark:bg-card-dark">
+<div class="flex items-start gap-3">
+<div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+<span class="material-symbols-outlined text-2xl">campaign</span>
+</div>
+<div>
+<h3 class="text-base font-bold">参与用户座谈会</h3>
+<p class="mt-1 text-sm text-text-light/60 dark:text-text-dark/60">与产品团队面对面，共同打造更好的萌宠星球。</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

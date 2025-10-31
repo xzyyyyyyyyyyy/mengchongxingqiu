@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>智能回忆相册</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: "SF Pro", "思源黑体", "Noto Sans SC", sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FF6F61",
+              "secondary": "#33C8A0",
+              "accent": "#FFC94A",
+              "background": "#F7F7F9",
+              "text-color": "#1F2328",
+              "card-background": "#FFFFFF",
+              "tag-background": "#F0F0F0",
+              "subtle-text": "#8A8A8E"
+            },
+            borderRadius: {
+                DEFAULT: "1rem" /* 16dp */
+            },
+            boxShadow: {
+              'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background">
+<div class="relative mx-auto flex w-full max-w-[1080px] flex-col overflow-x-hidden" style="max-height: 2400px;">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex items-center justify-between bg-background/80 p-4 pb-2 backdrop-blur-sm">
+<h1 class="flex-1 text-xl font-bold text-text-color">智能回忆相册</h1>
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent text-text-color">
+<span class="material-symbols-outlined text-2xl">settings</span>
+</button>
+</header>
+<main class="flex-grow pb-32">
+<!-- Search Bar -->
+<div class="px-4 py-3">
+<div class="relative flex h-12 w-full items-center">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+<span class="material-symbols-outlined text-subtle-text">search</span>
+</div>
+<input class="form-input h-full w-full min-w-0 flex-1 resize-none overflow-hidden rounded-full border-none bg-card-background px-11 text-base font-normal leading-normal text-text-color shadow-soft placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="搜索回忆，如‘生日’、‘第一次洗澡’" type="search" value=""/>
+</div>
+</div>
+<!-- Chips -->
+<div class="flex gap-2 overflow-x-auto p-4 pt-1 scrollbar-hide">
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-tag-background px-4">
+<p class="text-sm font-medium leading-normal text-text-color">#海边假日</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-tag-background px-4">
+<p class="text-sm font-medium leading-normal text-text-color">#搞怪瞬间</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-tag-background px-4">
+<p class="text-sm font-medium leading-normal text-text-color">#打瞌睡</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-tag-background px-4">
+<p class="text-sm font-medium leading-normal text-text-color">#户外</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-tag-background px-4">
+<p class="text-sm font-medium leading-normal text-text-color">#玩球</p>
+</div>
+</div>
+<!-- Weekly Highlights Card -->
+<div class="p-4 pt-2 @container">
+<div class="flex flex-col items-stretch justify-start overflow-hidden rounded-lg bg-card-background shadow-soft">
+<div class="relative w-full">
+<div class="w-full bg-cover bg-center bg-no-repeat aspect-[16/9] rounded-t-lg" data-alt="A happy dog playing with a red ball in a sunny park." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCoBbZ4i46Gl-bIkRf8p06Mbl3hw4F1H9aXOPHENsIr4J7VN8SK0dJa5A3Ap0pyA5kjpdV1aRMTDc3W0NAhDLSBjOtIdLpes2-ddY8-_TjMYtjHsZdwhPkk-VKm5k3zqVaTfIYolqHru_XA_Kfy4Q1yhh70Y_cRd3RfhcxCAgCq_5LzddxfDR7qKKisKhWojrzwRbSKeBAfSgKxd5NIgvZlYGJvm-n8p9gZFCf1scqp_ZF1UsF9PKE0S-JgywdX2vErpMD1FNKd9dY");'></div>
+<div class="absolute inset-0 flex items-center justify-center bg-black/20">
+<button class="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white/30 backdrop-blur-sm">
+<span class="material-symbols-outlined text-4xl text-white">play_arrow</span>
+</button>
+</div>
+</div>
+<div class="flex w-full grow flex-col items-stretch justify-center gap-1 p-4">
+<p class="text-lg font-bold text-text-color">每周精选</p>
+<div class="flex items-end justify-between gap-3">
+<div class="flex flex-col gap-1">
+<p class="text-base font-normal leading-normal text-subtle-text">AI为你生成了上周的精彩视频集锦！</p>
+<p class="text-sm font-normal leading-normal text-subtle-text">01:35</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pet Growth Stories Title -->
+<div class="px-4 pt-4">
+<h2 class="text-xl font-bold text-text-color">宠物成长故事</h2>
+</div>
+<!-- Timeline -->
+<div class="grid grid-cols-[48px_1fr] gap-x-2 px-4 pt-4">
+<!-- Milestone: First Birthday -->
+<div class="flex flex-col items-center gap-1 pt-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-accent/20 text-accent">
+<span class="material-symbols-outlined">cake</span>
+</div>
+<div class="h-full w-[2px] grow bg-tag-background"></div>
+</div>
+<div class="flex flex-1 flex-col pb-6 pt-3">
+<p class="text-base font-bold text-accent">一岁生日</p>
+<p class="text-sm font-normal text-subtle-text">2023年10月26日</p>
+<div class="mt-3 overflow-hidden rounded-lg">
+<img class="h-auto w-full object-cover" data-alt="A cute dog wearing a party hat next to a small birthday cake." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9PmODIod3ORbu6DbAb3MXiIF8V-FwjN5jwSUIKMcCLHmOBr05iW-iAkgPQI3laLyUj7pDqN8Bv9QbtP6LGne3ChfTNlZoewqf1CGt2FxMv3gXv7iW97uVpk4idnzEUoeLF2OKbK3taljGYLJ0j7ljUahAoTnWTWztNFCIq0xqBhhBrlwRMfo-4OLEWJlDgCOd0zbPr85oi3Ihzo685Via9XuhBAupvD-ub5E83Wa4PBqdREGTp0vm6LQjSyCE9cCFm0qsHVoYupY"/>
+</div>
+</div>
+<!-- Memory: First Snow -->
+<div class="flex flex-col items-center gap-1">
+<div class="h-full w-[2px] grow bg-tag-background"></div>
+</div>
+<div class="flex flex-1 flex-col pb-6">
+<p class="text-base font-medium text-text-color">第一次看到雪的兴奋时刻</p>
+<p class="text-sm font-normal text-subtle-text">2023年12月15日</p>
+<div class="mt-3 overflow-hidden rounded-lg">
+<img class="h-auto w-full object-cover" data-alt="A playful cat looking out a window at a snowy landscape." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBxe_ksXyFEf2nLCLVj7v3k-fbzuusNKtydab1-mBASstxs5dPbFuwLdetpCumX4QkuRcJnPsim8L3LTKW1ZqPSVQu21q8_fudOoq4WHUFpTqvTM3VgZuZo0ABBwNebXpwiRNEPJePf68wD0lBZB1V9Xj-8y0WX5Zp--Ok0A35XRJql7ig_djTxmrbe3tZdbj-ccqH8uLsaLvmctZuZxEJmEwhQnh7OUo2NkzPyuKoyV7LGG5cdzg3hG9v6r-u7ABAhlNX-I4av00"/>
+</div>
+</div>
+<!-- AI Feature Card -->
+<div class="col-span-2 py-2">
+<div class="flex items-center gap-4 rounded-lg bg-gradient-to-r from-secondary/20 to-secondary/5 p-4 shadow-soft">
+<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-secondary text-white">
+<span class="material-symbols-outlined text-4xl">brush</span>
+</div>
+<div class="flex flex-1 flex-col">
+<p class="font-bold text-text-color">AI画笔：把宝贝变成卡通主角</p>
+<p class="text-sm text-subtle-text">一键生成萌趣漫画头像</p>
+</div>
+<button class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-secondary text-white">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Memory: New Toy -->
+<div class="flex flex-col items-center gap-1">
+<div class="h-full w-[2px] grow bg-tag-background"></div>
+</div>
+<div class="flex flex-1 flex-col pb-6 pt-6">
+<p class="text-base font-medium text-text-color">与新玩具的初次相遇</p>
+<p class="text-sm font-normal text-subtle-text">2024年1月02日</p>
+<div class="mt-3 overflow-hidden rounded-lg">
+<img class="h-auto w-full object-cover" data-alt="A small kitten playing curiously with a colorful toy mouse." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRwgNL6AvbAoj2dpndWd9JzTmhZvAHV3iOD7NQThljIF7na2Yn_yT-qjoKBgAnBxrEAJYStb8h30vrpMdOF1sZP2gt6_rO5O5lC_MzGrhTY2j4B6lvatwVc2nEB5Hh4DKrsZNcBlM77HIJfrXqSxl_-cpftp1z4Cge-3kFmw45cBROlpPQ4aoyg_BkrLiQv5eXctJZ9KgjHSYZB87gsgZ7Jh8y-OaU11mwQVQQJaoB2_6dC9-Nd6jsgRpMzowo145ZoFTt1aZPX0o"/>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation & FAB -->
+<footer class="fixed bottom-0 left-0 right-0 z-10 mx-auto w-full max-w-[1080px]">
+<div class="relative">
+<!-- FAB -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 transform">
+<button class="flex h-16 w-16 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary text-white shadow-lg shadow-primary/40">
+<span class="material-symbols-outlined text-4xl">add</span>
+</button>
+</div>
+<!-- Tab Bar -->
+<div class="flex h-20 items-center justify-around bg-card-background/80 pt-2 backdrop-blur-sm" style="border-top: 1px solid #E5E5EA;">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">home</span>
+<p class="text-xs font-medium">首页</p>
+</div>
+<div class="flex flex-col items-center gap-1 text-subtle-text">
+<span class="material-symbols-outlined">category</span>
+<p class="text-xs">分类</p>
+</div>
+<div class="w-16"></div> <!-- Spacer for FAB -->
+<div class="flex flex-col items-center gap-1 text-subtle-text">
+<span class="material-symbols-outlined">pets</span>
+<p class="text-xs">服务</p>
+</div>
+<div class="flex flex-col items-center gap-1 text-subtle-text">
+<span class="material-symbols-outlined">person</span>
+<p class="text-xs">我的</p>
+</div>
+</div>
+<!-- iOS Safe Area -->
+<div class="h-8 bg-card-background/80"></div>
+</div>
+</footer>
+</div>
+</body></html>

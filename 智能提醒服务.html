@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>个人主页</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&amp;family=Noto+Sans+SC:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF6F61",
+                        "secondary": "#33C8A0",
+                        "accent": "#FFC94A",
+                        "background-light": "#F7F7F9",
+                        "background-dark": "#1F2328",
+                        "text-light": "#1F2328",
+                        "text-dark": "#F7F7F9",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "Noto Sans SC", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light font-display">
+<div class="relative min-h-screen w-full flex flex-col">
+<main class="flex-1 overflow-y-auto pb-28">
+<div class="p-6">
+<div class="flex items-center justify-between">
+<div class="flex items-start gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-24 w-24 shrink-0 shadow-soft" data-alt="User avatar with a pet illustration." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBE6hWPYE-EfoRd7tZpRKeD-Yyg4O7pOZx9rzWFzg2IqelmfTi46QsilFC978l0LsgRx1U-8rzCgMbb1oCa8pHR5yvyst4chI4RV6f4JmF_oZ0X-I8RQdk_z6JgXGxylRbde_iIwxzVKSpEFJqt4SPLogPPzaOlJ_cCSYEwmeYLPvJd3z8AwYWI0NgZ0DvoHR8lB4oetgz5fs7OWBR_9MXhy7iF8qo1cdSZhjhYh8JizbbMt4HY5TrJHWUqgaD_RBVHSnaSa_aijCQ');"></div>
+<div class="flex flex-col gap-1.5 pt-2">
+<p class="text-text-light text-xl font-bold">宠物大可爱</p>
+<p class="text-text-light/70 text-sm">家有两只布偶猫，欢迎来吸！</p>
+<div class="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
+<span class="material-symbols-outlined !text-sm">pets</span>
+<span>Lv.5 资深铲屎官</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center size-10 rounded-full bg-white/80 shadow-soft">
+<span class="material-symbols-outlined text-text-light/70">qr_code_scanner</span>
+</button>
+<button class="flex items-center justify-center size-10 rounded-full bg-white/80 shadow-soft">
+<span class="material-symbols-outlined text-text-light/70">settings</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex justify-around px-6 pb-6 text-center">
+<div class="flex flex-col items-center">
+<p class="text-text-light text-lg font-bold">1.2w</p>
+<p class="text-text-light/70 text-sm">粉丝</p>
+</div>
+<div class="flex flex-col items-center">
+<p class="text-text-light text-lg font-bold">108</p>
+<p class="text-text-light/70 text-sm">关注</p>
+</div>
+<div class="flex flex-col items-center">
+<p class="text-text-light text-lg font-bold">345</p>
+<p class="text-text-light/70 text-sm">动态</p>
+</div>
+<div class="flex flex-col items-center">
+<p class="text-text-light text-lg font-bold">88.8w</p>
+<p class="text-text-light/70 text-sm">获赞</p>
+</div>
+</div>
+<div class="px-6">
+<div class="rounded-lg bg-white p-4 shadow-soft">
+<div class="grid grid-cols-4 gap-4">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary">favorite</span>
+<h2 class="text-text-light text-sm font-medium">我的收藏</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary">photo_library</span>
+<h2 class="text-text-light text-sm font-medium">我的作品</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary">pets</span>
+<h2 class="text-text-light text-sm font-medium">我的宠物</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary">history</span>
+<h2 class="text-text-light text-sm font-medium">浏览历史</h2>
+</div>
+</div>
+</div>
+</div>
+<div class="px-6 mt-6">
+<div class="rounded-lg bg-white p-4 shadow-soft">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-base font-bold text-text-light">我的好物</h3>
+<a class="flex items-center gap-1 text-sm text-text-light/60" href="#">
+<span>查看全部订单</span>
+<span class="material-symbols-outlined !text-base">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-5 gap-4">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-secondary">payments</span>
+<h2 class="text-text-light text-sm font-medium">待付款</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-secondary">local_shipping</span>
+<h2 class="text-text-light text-sm font-medium">待收货</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-secondary">rate_review</span>
+<h2 class="text-text-light text-sm font-medium">待评价</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-secondary">support_agent</span>
+<h2 class="text-text-light text-sm font-medium">退款/售后</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-secondary">shopping_bag</span>
+<h2 class="text-text-light text-sm font-medium">我的订单</h2>
+</div>
+</div>
+</div>
+</div>
+<div class="px-6 mt-6">
+<div class="rounded-lg bg-white p-4 shadow-soft">
+<h3 class="text-base font-bold text-text-light mb-4">我的工具</h3>
+<div class="grid grid-cols-4 gap-4">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent">badge</span>
+<h2 class="text-text-light text-sm font-medium">宠物证件夹</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent">medical_services</span>
+<h2 class="text-text-light text-sm font-medium">医疗记录</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent">event_note</span>
+<h2 class="text-text-light text-sm font-medium">预约日历</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent">shopping_cart</span>
+<h2 class="text-text-light text-sm font-medium">积分商城</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent">group_add</span>
+<h2 class="text-text-light text-sm font-medium">邀请好友</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent">palette</span>
+<h2 class="text-text-light text-sm font-medium">皮肤切换</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent">view_quilt</span>
+<h2 class="text-text-light text-sm font-medium">首页布局</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent">contact_support</span>
+<h2 class="text-text-light text-sm font-medium">帮助与客服</h2>
+</div>
+</div>
+</div>
+</div>
+<div class="px-6 mt-6">
+<div class="flex flex-col gap-2 rounded-lg bg-white p-2 shadow-soft">
+<div class="flex items-center gap-4 px-2 py-3 justify-between">
+<div class="flex items-center gap-4">
+<div class="text-secondary flex items-center justify-center shrink-0"><span class="material-symbols-outlined">shield_person</span></div>
+<p class="text-text-light text-base">隐私设置</p>
+</div>
+<div class="shrink-0"><span class="material-symbols-outlined text-text-light/50">chevron_right</span></div>
+</div>
+<div class="flex items-center gap-4 px-2 py-3 justify-between">
+<div class="flex items-center gap-4">
+<div class="text-secondary flex items-center justify-center shrink-0"><span class="material-symbols-outlined">notifications_active</span></div>
+<p class="text-text-light text-base">通知设置</p>
+</div>
+<div class="shrink-0"><span class="material-symbols-outlined text-text-light/50">chevron_right</span></div>
+</div>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 h-24 bg-background-light/80 backdrop-blur-sm" style="padding-bottom: env(safe-area-inset-bottom);">
+<div class="flex h-16 items-center justify-around border-t border-gray-200/80 text-text-light/60">
+<a class="flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs">首页</span>
+</a>
+<a class="flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined">widgets</span>
+<span class="text-xs">分类</span>
+</a>
+<div class="w-14 h-14"></div>
+<a class="flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined">apps</span>
+<span class="text-xs">服务</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs font-bold">我的</span>
+</a>
+</div>
+<div class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/3">
+<button class="flex size-14 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-accent shadow-lg">
+<span class="material-symbols-outlined !text-4xl text-white">add</span>
+</button>
+</div>
+</footer>
+</div>
+
+</body></html>

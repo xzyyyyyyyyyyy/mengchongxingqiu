@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI健康管家</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FF6F61",
+              "secondary": "#33C8A0",
+              "accent": "#FFC94A",
+              "background-light": "#F7F7F9",
+              "background-dark": "#1F2328", // Assuming a dark mode equivalent
+              "text-main": "#1F2328",
+              "text-subtle": "#6B7280"
+            },
+            fontFamily: {
+              "display": ["Inter", "Noto Sans SC", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px", 
+              "lg": "16px",
+              "xl": "24px", 
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light group/design-root overflow-x-hidden" style="max-width: 420px; margin: auto;">
+<div class="sticky top-0 z-10 flex items-center justify-between bg-background-light/80 p-4 pb-3 backdrop-blur-sm">
+<div class="text-text-main flex size-10 items-center justify-center">
+<span class="material-symbols-outlined text-3xl">arrow_back_ios_new</span>
+</div>
+<h1 class="text-text-main text-xl font-bold leading-tight tracking-[-0.015em] absolute left-1/2 -translate-x-1/2">AI健康管家</h1>
+</div>
+<div class="px-4">
+<div class="flex flex-col gap-4 rounded-lg bg-white p-4 shadow-[0_4px_16px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="aspect-square size-12 rounded-full bg-cover bg-center bg-no-repeat" data-alt="A cute corgi avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJF-JdOubr48nuP1DQODQQ1DVOgNloi5IU_0yUdw7Bh3lWmUMMNOtYvPfyrQ4J2OeOnQPGLlBO90ET4tW3bvKsnGIDhD0BOCBi7YcxeF0EShKXXXRoMM1FkIq6BWHPtueBSCxHwNo4QL20sxrJ1IGPGZvpZXXHiPAFd7ohpuCnwYIsM1JAicE9wraxz75XVxOCshGj-UE9Dn_GhNeVOplAyx3fzxPAFpbTrN9xiCd3MhTwlVP16vlAJrAZSiurI2gNgGHgypevJC0");'></div>
+<div>
+<p class="text-text-main text-lg font-bold leading-tight">旺财</p>
+<p class="text-sm text-text-subtle">柯基犬 · 3岁 · 雄性</p>
+</div>
+</div>
+<button class="flex shrink-0 items-center gap-1 rounded-full bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary">
+<span class="material-symbols-outlined text-base">folder_open</span>
+<span>数字档案</span>
+</button>
+</div>
+<div class="grid grid-cols-1 gap-3 pt-2">
+<button class="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-100/80 p-2 text-sm text-text-main">
+<span class="material-symbols-outlined text-accent">picture_as_pdf</span>
+<span>生成健康报告</span>
+</button>
+</div>
+</div>
+</div>
+<div class="p-4">
+<div class="flex flex-col gap-4 rounded-lg bg-white p-4 shadow-[0_4px_16px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between">
+<p class="text-text-main text-lg font-bold leading-tight">AI健康洞察</p>
+<p class="text-sm text-text-subtle">今日未记录</p>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<div class="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200/80 bg-white p-3 text-center">
+<span class="material-symbols-outlined text-primary">favorite</span>
+<p class="text-sm font-medium text-text-main">心率</p>
+<p class="text-text-subtle text-xs">85 bpm</p>
+</div>
+<div class="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200/80 bg-white p-3 text-center">
+<span class="material-symbols-outlined text-primary">restaurant</span>
+<p class="text-sm font-medium text-text-main">食量</p>
+<p class="text-text-subtle text-xs">150 g</p>
+</div>
+<div class="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200/80 bg-white p-3 text-center">
+<span class="material-symbols-outlined text-secondary">water_drop</span>
+<p class="text-sm font-medium text-text-main">饮水</p>
+<p class="text-text-subtle text-xs">300 ml</p>
+</div>
+<div class="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200/80 bg-white p-3 text-center">
+<span class="material-symbols-outlined text-secondary">weight</span>
+<p class="text-sm font-medium text-text-main">体重</p>
+<p class="text-text-subtle text-xs">12.5 kg</p>
+</div>
+<div class="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200/80 bg-white p-3 text-center">
+<span class="material-symbols-outlined text-accent">directions_run</span>
+<p class="text-sm font-medium text-text-main">活动</p>
+<p class="text-text-subtle text-xs">2.5 km</p>
+</div>
+<div class="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 bg-gray-50 p-3 text-center">
+<span class="material-symbols-outlined text-text-subtle">add_circle_outline</span>
+<p class="text-sm font-medium text-text-subtle">其他</p>
+</div>
+</div>
+<div class="mt-2 rounded-lg bg-primary/5 p-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">data_usage</span>
+<p class="text-base font-bold text-text-main">个性化健康基线</p>
+</div>
+<span class="material-symbols-outlined text-text-subtle text-xl">expand_more</span>
+</div>
+</div>
+<div>
+<p class="mb-2 text-base font-bold text-text-main">关键指标趋势</p>
+<div class="w-full" data-alt="A line chart showing key health metrics trends over the last 30 days.">
+<img class="h-auto w-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2eYLIX6GDSWS-cvpuPGKw6vYfme9igdT7_PmGajJlu_bIHI689ekQVKGKvP3eJVhOuPtMKIekU_44F-8xJpIPfmTt68eA8Z8_ZdqWFYRuOOyuPc1pSq8gSqprNBPMSV4XUOXQnLE5mln8Iy0yupnQXj3C-kp99EmWnvK6U_onDmvEyBTGNcWx2DcItO6VHdN6zCYmx-bhVtWdxebogPuAaBdRebbeFTGbowC1pMFx3FQ8hX1Vs7wp2xLRdAhQ9oHN5Z8AZx2O1V8"/>
+</div>
+</div>
+</div>
+</div>
+<div class="px-4 pb-4">
+<div class="flex flex-col gap-4 rounded-lg bg-white p-4 shadow-[0_4px_16px_rgba(0,0,0,0.05)]">
+<p class="text-text-main text-lg font-bold leading-tight">AI健康预警</p>
+<div class="flex items-start gap-3 rounded-lg bg-accent/10 p-3">
+<span class="material-symbols-outlined mt-0.5 text-accent">warning</span>
+<div class="flex-1">
+<p class="font-bold text-text-main">饮水量偏低</p>
+<p class="mt-1 text-sm text-text-subtle">旺财近3日日均饮水量低于健康基线20%，可能存在脱水风险。建议引导其多饮水，并观察排尿情况。</p>
+</div>
+</div>
+<div class="flex items-start gap-3 rounded-lg bg-primary/10 p-3">
+<span class="material-symbols-outlined mt-0.5 text-primary">crisis_alert</span>
+<div class="flex-1">
+<p class="font-bold text-text-main">夜间活动异常</p>
+<p class="mt-1 text-sm text-text-subtle">昨晚检测到异常高频的夜间活动，结合医疗记录中的关节炎病史，建议关注其是否有关节不适迹象。</p>
+</div>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-4 bg-primary/10 text-primary text-base font-medium leading-normal">
+<span class="truncate">查看全部健康分析</span>
+</button>
+</div>
+</div>
+<div class="h-28"></div>
+<div class="fixed bottom-0 z-10 w-full max-w-[420px] bg-white/80 pb-safe backdrop-blur-lg" style="box-shadow: 0 -2px 10px rgba(0,0,0,0.04);">
+<div class="relative flex h-20 items-center justify-around text-text-subtle">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs">首页</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-xs">分类</span>
+</a>
+<div class="flex-1"></div>
+<a class="flex flex-1 flex-col items-center justify-center gap-1" href="#">
+<span class="material-symbols-outlined">pets</span>
+<span class="text-xs">服务</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs">我的</span>
+</a>
+<div class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/3">
+<button class="flex size-16 items-center justify-center rounded-full bg-accent text-white shadow-lg shadow-accent/40">
+<span class="material-symbols-outlined text-4xl">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

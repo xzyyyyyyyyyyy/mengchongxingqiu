@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>智能提醒</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FF6F61",
+              "secondary": "#33C8A0",
+              "accent": "#FFC94A",
+              "background": "#F7F7F9",
+              "text-main": "#1F2328",
+              "text-secondary": "#6B7280",
+              "card-background": "#FFFFFF",
+            },
+            fontFamily: {
+              'sans': ['"Noto Sans SC"', 'sans-serif'],
+            },
+            borderRadius: {
+                "DEFAULT": "0.5rem",
+                "lg": "1rem", 
+                "xl": "1.5rem",
+                "full": "9999px",
+            },
+            boxShadow: {
+              'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-sans">
+<div class="relative w-full flex flex-col min-h-screen">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex items-center bg-background/80 backdrop-blur-sm p-4 pb-2 justify-between">
+<span class="material-symbols-outlined text-text-main flex size-12 shrink-0 items-center justify-start">arrow_back_ios_new</span>
+<h1 class="text-text-main text-lg font-bold flex-1 text-center">智能提醒</h1>
+<span class="material-symbols-outlined text-text-main flex size-12 shrink-0 items-center justify-end">settings</span>
+</div>
+<!-- Upcoming Reminders Section -->
+<div>
+<h2 class="text-text-main text-xl font-bold leading-tight px-4 pb-3 pt-5">即将到来</h2>
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-stretch px-4 gap-3">
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[240px]">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col" data-alt="A cute golden retriever puppy looking up." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCilD0KFp_5YoIi3Y_Tq0kjgaJDK-l80xDPeVpv_45Q9_rUAgKHvBip7zBCxmWxU26LeG0X9WU3S1ZOMks3nbdSVJW4Q3w8qL_bD5Cu-8dPehKJKgpXswlZDZgNymAtKQ3-WlXujlla00lq7syoxE-oBybgqX7kJ1n1m3tHaexU2g3bNbE27pq6HJTGMtPfoh0licLEDu9awkJmu4NGyqj8ANpJqT76FxeWhXmFrMUvDH9iKO_YdQzQxEFVJ7eaNEQUsas-exHxrl8');"></div>
+<div>
+<p class="text-text-main text-base font-medium leading-normal">体内驱虫</p>
+<p class="text-text-secondary text-sm font-normal leading-normal">豆豆 - 还有3天</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[240px]">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col" data-alt="A fluffy samoyed dog smiling." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAF0mWWgRqCktohdkpTJgeigKPkGIK1tenDEE1t3sX4uI9aADBso6hrkGsvU7mYO_-8IN649a5L3svPGJSp9uxQqckA0KRit3w_G1-vZJHirdBllOkUITfhfo8WMPFS2x4hsGozEAbaBTLECBjjzIRqZkLW8y9yiCPrk4GndXf33ZoQimftEVhgcs9nuiO6_Qf3U9-CG2XYG0CY0WsbtkdimJBP_2sUfABYnbZG2ZoT_RfrC0vpbAFWPXm7XNHGV0rvSs7cS2FOPEM');"></div>
+<div>
+<p class="text-text-main text-base font-medium leading-normal">疫苗接种</p>
+<p class="text-text-secondary text-sm font-normal leading-normal">旺财 - 还有7天</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[240px]">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col" data-alt="A cat getting a bath." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAoJ5NLcWzNtu1pgT1ZISaw9ps9UQIxAWWLfVyMa98HKjx0QhmOxC8g1DHl55smwR-Kzc7fde1nwdtKG97QzX8v1nWRXyznI8bjJPqJeUDzY8FZSF6HovGal-E7RtfRxbsiDH04d6wwnbB80YrAluYk3sr5zzb4O-ZQF6bS4SWAhf6UE6y_Mt5TC4mI-0Ufh2mXbs4US7xiiRvpg4YiS1TY3zyo_27j7Mi6fg1Dr1EANGhT22UYXBENGz2OFFGmQBv1qk4l1x8ctL8');"></div>
+<div>
+<p class="text-text-main text-base font-medium leading-normal">洗澡清洁</p>
+<p class="text-text-secondary text-sm font-normal leading-normal">豆豆 - 还有10天</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Basic Reminders Section -->
+<div class="mt-4">
+<h3 class="text-text-main text-lg font-bold leading-tight px-4 pb-2 pt-4">基础提醒</h3>
+<div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 p-4">
+<div class="flex flex-1 gap-3 rounded-lg bg-card-background p-4 flex-col shadow-soft">
+<span class="material-symbols-outlined text-primary">pill</span>
+<div class="flex flex-col gap-1 mt-1">
+<h2 class="text-text-main text-base font-bold leading-tight">体内驱虫</h2>
+<p class="text-text-secondary text-sm font-normal leading-normal">每3个月</p>
+</div>
+</div>
+<div class="flex flex-1 gap-3 rounded-lg bg-card-background p-4 flex-col shadow-soft">
+<span class="material-symbols-outlined text-primary">vaccines</span>
+<div class="flex flex-col gap-1 mt-1">
+<h2 class="text-text-main text-base font-bold leading-tight">疫苗接种</h2>
+<p class="text-text-secondary text-sm font-normal leading-normal">每年</p>
+</div>
+</div>
+<div class="flex flex-1 gap-3 rounded-lg bg-card-background p-4 flex-col shadow-soft">
+<span class="material-symbols-outlined text-primary">shower</span>
+<div class="flex flex-col gap-1 mt-1">
+<h2 class="text-text-main text-base font-bold leading-tight">洗澡清洁</h2>
+<p class="text-text-secondary text-sm font-normal leading-normal">每2周</p>
+</div>
+</div>
+<div class="flex flex-1 gap-3 rounded-lg bg-card-background p-4 flex-col shadow-soft">
+<span class="material-symbols-outlined text-primary">bug_report</span>
+<div class="flex flex-col gap-1 mt-1">
+<h2 class="text-text-main text-base font-bold leading-tight">体外驱虫</h2>
+<p class="text-text-secondary text-sm font-normal leading-normal">每月</p>
+</div>
+</div>
+</div>
+</div>
+<!-- New Reminders Section -->
+<div class="mt-2">
+<h3 class="text-text-main text-lg font-bold leading-tight px-4 pb-2 pt-4">新增提醒</h3>
+<div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 p-4">
+<div class="flex flex-1 gap-3 rounded-lg bg-card-background p-4 flex-col shadow-soft">
+<span class="material-symbols-outlined text-secondary">restaurant</span>
+<div class="flex flex-col gap-1 mt-1">
+<h2 class="text-text-main text-base font-bold leading-tight">喂食计划</h2>
+<p class="text-text-secondary text-sm font-normal leading-normal">每日</p>
+</div>
+</div>
+<div class="flex flex-1 gap-3 rounded-lg bg-card-background p-4 flex-col shadow-soft">
+<span class="material-symbols-outlined text-secondary">content_cut</span>
+<div class="flex flex-col gap-1 mt-1">
+<h2 class="text-text-main text-base font-bold leading-tight">美容护理</h2>
+<p class="text-text-secondary text-sm font-normal leading-normal">自定义</p>
+</div>
+</div>
+<div class="flex flex-1 gap-3 rounded-lg bg-card-background p-4 flex-col shadow-soft">
+<span class="material-symbols-outlined text-secondary">pets</span>
+<div class="flex flex-col gap-1 mt-1">
+<h2 class="text-text-main text-base font-bold leading-tight">训练互动</h2>
+<p class="text-text-secondary text-sm font-normal leading-normal">自定义</p>
+</div>
+</div>
+<div class="flex flex-1 gap-3 rounded-lg bg-card-background p-4 flex-col shadow-soft">
+<span class="material-symbols-outlined text-secondary">partly_cloudy_day</span>
+<div class="flex flex-col gap-1 mt-1">
+<h2 class="text-text-main text-base font-bold leading-tight">季节健康</h2>
+<p class="text-text-secondary text-sm font-normal leading-normal">换季时</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 pt-8 pb-32">
+<button class="w-full bg-primary text-white font-bold py-3 px-5 rounded-lg shadow-soft flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add_circle</span>
+<span>添加新提醒</span>
+</button>
+</div>
+</div>
+</body></html>

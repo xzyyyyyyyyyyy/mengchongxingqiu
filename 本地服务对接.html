@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>周边服务</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 300,
+            'GRAD' 0,
+            'opsz' 20
+        }
+    </style>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF6F61",
+                        "secondary": "#33C8A0",
+                        "accent": "#FFC94A",
+                        "background-light": "#F7F7F9",
+                        "text-primary": "#1F2328",
+                        "text-secondary": "#6B7280",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Sans SC", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "8px",
+                        "lg": "12px",
+                        "xl": "16px",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light text-text-primary">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 bg-background-light/80 pt-safe backdrop-blur-sm">
+<div class="flex items-center p-4 pb-2 justify-between">
+<div class="flex size-12 shrink-0 items-center">
+<span class="material-symbols-outlined text-3xl text-text-primary">pets</span>
+</div>
+<h1 class="text-text-primary text-xl font-bold">周边服务</h1>
+<div class="flex w-12 items-center justify-end">
+<button class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-text-primary">
+<span class="material-symbols-outlined text-2xl">search</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Chips -->
+<div class="flex gap-3 px-4 py-2 overflow-x-auto whitespace-nowrap">
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-4">
+<span class="material-symbols-outlined text-xl text-white">medical_services</span>
+<p class="text-white text-sm font-medium">宠物医院</p>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white px-4 shadow-soft">
+<span class="material-symbols-outlined text-xl text-text-primary">shower</span>
+<p class="text-text-primary text-sm font-medium">美容洗护</p>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white px-4 shadow-soft">
+<span class="material-symbols-outlined text-xl text-text-primary">other_houses</span>
+<p class="text-text-primary text-sm font-medium">家庭寄养</p>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white px-4 shadow-soft">
+<span class="material-symbols-outlined text-xl text-text-primary">school</span>
+<p class="text-text-primary text-sm font-medium">行为训练</p>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white px-4 shadow-soft">
+<span class="material-symbols-outlined text-xl text-text-primary">local_shipping</span>
+<p class="text-text-primary text-sm font-medium">宠物运输</p>
+</button>
+</div>
+<!-- Filters -->
+<div class="flex gap-3 px-4 py-3">
+<button class="flex h-8 flex-1 items-center justify-center gap-x-1 rounded-full bg-white text-text-secondary text-sm">
+<span>距离最近</span>
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</button>
+<button class="flex h-8 flex-1 items-center justify-center gap-x-1 rounded-full bg-white text-text-secondary text-sm">
+<span>价格</span>
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</button>
+<button class="flex h-8 flex-1 items-center justify-center gap-x-1 rounded-full bg-white text-text-secondary text-sm">
+<span>评价最好</span>
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</button>
+<button class="flex h-8 w-16 items-center justify-center gap-x-1 rounded-full bg-white text-text-secondary text-sm">
+<span class="material-symbols-outlined text-lg">tune</span>
+<span>筛选</span>
+</button>
+</div>
+<!-- Card List -->
+<div class="flex flex-col gap-4 p-4">
+<!-- Card 1: Platform Star Merchant -->
+<div class="flex flex-col gap-3 rounded-xl bg-white p-4 shadow-soft">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<div class="mb-1 flex items-center gap-2">
+<span class="inline-flex items-center rounded-md bg-accent/20 px-2 py-0.5 text-xs font-medium text-accent">
+<span class="material-symbols-outlined !text-sm !font-semibold mr-1">star</span>平台星级商家
+                            </span>
+</div>
+<p class="text-text-primary text-base font-bold">汪汪之家美容沙龙</p>
+<div class="mt-1 flex items-center gap-1.5 text-text-secondary">
+<span class="material-symbols-outlined !text-base text-accent">grade</span>
+<span class="text-sm font-medium text-accent">5.0</span>
+<span class="text-sm">(215条评价)</span>
+<span class="text-gray-300">|</span>
+<span class="text-sm">1.2km</span>
+</div>
+<p class="text-sm text-text-secondary mt-1">人均 ¥158</p>
+</div>
+<div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-center bg-no-repeat bg-cover" data-alt="A fluffy white poodle getting a haircut" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB-EtsyNRC4775i-bDabLXsHe32lgrA-SYrXzjocRWfPINpzzGihLrhdcOBhDAXpdVMYdznm9Ow-uwHaCTlu5YGEx5wG9xzZuaVUbXN-K0z71dNtl47hIAPtZ1Fu4Hek3EpbH3gj38X0H-LUB98wDTDK5Gg9v-roD40jsyPtbOtLK52wRAr7bl4FDsZ2CrwF1NjMvfZCx9AHoGvoH_XycUDL83tm1Dh57hdbVWQakDPRiXTdvDKLWdWKIYLmHra4GZf1yP2KGTSv0o");'></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-md bg-secondary/10 px-2 py-0.5 text-xs font-medium text-secondary">服务保障</span>
+<span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">可上门</span>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-5 bg-primary text-white text-sm font-medium">
+<span class="truncate">立即预约</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white p-4 shadow-soft">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<p class="text-text-primary text-base font-bold">喵星球宠物医院</p>
+<div class="mt-1 flex items-center gap-1.5 text-text-secondary">
+<span class="material-symbols-outlined !text-base text-accent">grade</span>
+<span class="text-sm font-medium text-accent">4.9</span>
+<span class="text-sm">(500+条评价)</span>
+<span class="text-gray-300">|</span>
+<span class="text-sm">2.5km</span>
+</div>
+<p class="text-sm text-text-secondary mt-1">人均 ¥320</p>
+</div>
+<div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-center bg-no-repeat bg-cover" data-alt="A calm cat being examined by a vet" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCwlEAq36ZeexK5lm90pPIAUK_CENAhiccWOuXkLfCd6ZynkJiInybnOKclAbZhapsU9Q_IQiQvqLAef1_DeQCxNkRBCUxUGfEYtILaFOw2JljlNMdJ09MYjKNupCskLrxFzJrme_zFQ_v0tJFWfi9IGEdWM_WRCvmeO8IGQbnQ5OobaWL55tZCzHPuggWOulJ5qdfVhuCDuugAg15ef4mLcRWxT_lubLO-gIG1qCK3xKBF3q5SK6SjO32OL8Fs_TM4yCnMO6cO4XY");'></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-md bg-secondary/10 px-2 py-0.5 text-xs font-medium text-secondary">服务保障</span>
+<span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">24小时</span>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-5 bg-primary text-white text-sm font-medium">
+<span class="truncate">立即预约</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white p-4 shadow-soft">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<p class="text-text-primary text-base font-bold">宠爱有家专业寄养</p>
+<div class="mt-1 flex items-center gap-1.5 text-text-secondary">
+<span class="material-symbols-outlined !text-base text-accent">grade</span>
+<span class="text-sm font-medium text-accent">4.8</span>
+<span class="text-sm">(88条评价)</span>
+<span class="text-gray-300">|</span>
+<span class="text-sm">5.1km</span>
+</div>
+<p class="text-sm text-text-secondary mt-1">人均 ¥120</p>
+</div>
+<div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-center bg-no-repeat bg-cover" data-alt="Happy golden retriever playing in a spacious yard" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuByeS_CKa-0QJJaDyL22novSs6GClESvpeyoJU4EiXA5mdfGoPWco-WBTNFcqdGDmrYbnvoQfJa8F6ZVogyGxpEoYO6vFzYfoljgyh25y1fXhssYSMTOXIOoWBwBA-RSeLLmcQk-DtLw0tGMvEMCem6CyUa0bv5o5t91cCMO8VqMI7uVFHwpDhIkK-WfoZUDBA6Y9dEDEy3pNMqDvaJd4QrDb8TgLQaFCEL7IYOJawaIgsjn35iFzzWd5USkKALrAeS3C1YhT2VX6w");'></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-md bg-secondary/10 px-2 py-0.5 text-xs font-medium text-secondary">服务保障</span>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-5 bg-primary text-white text-sm font-medium">
+<span class="truncate">立即预约</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

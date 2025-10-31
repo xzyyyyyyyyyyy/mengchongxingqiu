@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Post Detail</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF6F61",
+            "secondary": "#33C8A0",
+            "accent": "#FFC94A",
+            "background-light": "#F7F7F9",
+            "background-dark": "#1A1D21",
+            "text-light": "#1F2328",
+            "text-dark": "#E3E3E3",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full max-w-lg mx-auto flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex h-14 items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm p-4 pb-2 justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark text-2xl">arrow_back</span>
+<div class="flex items-center gap-2">
+<img class="size-8 rounded-full object-cover" data-alt="avatar of pet blogger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnKtgxnx1t70pDIjVbiKU-agfjP_gQSZq5Umvnp0nLWTtA_Sh8gtvlH16vKjUWOx9JmkOHE0IiU8OPS2lBTsgQe04yAqPnKmf3Xzh8EEOQ8SIEuk3M_ZdbhL509ByfgVDwejExvmod0t0xJ1pIlLSjCitcrwTgI1uOzPkGcVjnQkkgwJHq1NaH2mTevdoW3H-9S4LVmsit6byzYWrD9JpEc6O6CunR8B04EAH7guLlyN4urP5VPViXfhT5BvRsQAU12ObEMYiiUtQ"/>
+<h2 class="text-text-light dark:text-text-dark text-base font-bold leading-tight">宠物博主的名字</h2>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center rounded-full bg-primary px-4 py-1.5 text-sm font-bold text-white">关注</button>
+<button class="flex items-center justify-center size-8">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark text-2xl">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Carousel/Image Content -->
+<div class="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden mt-2">
+<div class="flex items-stretch w-full">
+<div class="flex h-full w-full flex-1 flex-col">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover" data-alt="a cute ragdoll cat looking curious" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCADc9A7azb_qG5tKhRm9h5y5O3srpFAavvEBWoK2jLx7fK8N_jbtBlINNVr6xOp1DcL_TIZX0Uj8bNiH0uEJOYnz1oN9AzgZ1AOcJ8UMN9VYnCvlUvWgcLLq2BTucmatZCjWggNWdu5YUQFPbBd-RfzpelGWcQWqBpjhcc2IlvSnUpklNUpzj7XF1gEAMqBZtPrnVzmyzlxwDiuqQun4_TmNbRrINRIcl5Ke0jpEdKwLyXsOw6BN9OGENMKofUY5SFOOeNBTBf7l4");'></div>
+</div>
+</div>
+</div>
+<div class="p-4">
+<!-- Headline Text -->
+<h1 class="text-text-light dark:text-text-dark tracking-light text-xl font-bold leading-tight text-left pb-2">我家猫咪的周末奇遇记</h1>
+<!-- Body Text -->
+<p class="text-text-light dark:text-text-dark text-base font-normal leading-relaxed pb-3">我家布偶猫今天学会了开门，这是它第一次成功后的得意表情，真是又好气又好笑！看看这小眼神，是不是充满了智慧（和一丝丝的挑衅）？</p>
+<!-- Chips/Tags -->
+<div class="flex gap-2 pb-3 flex-wrap">
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-md bg-secondary/20 px-3">
+<p class="text-secondary text-sm font-medium">#布偶猫</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-md bg-secondary/20 px-3">
+<p class="text-secondary text-sm font-medium">#萌宠日常</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-md bg-secondary/20 px-3">
+<p class="text-secondary text-sm font-medium">#猫咪</p>
+</div>
+</div>
+<!-- Timestamp -->
+<p class="text-text-light/60 dark:text-text-dark/60 text-xs font-normal leading-normal">发布于 2小时前</p>
+</div>
+<!-- Separator -->
+<div class="mx-4 h-px bg-text-light/10 dark:bg-text-dark/10"></div>
+<!-- Interaction Bar -->
+<div class="flex justify-around p-4">
+<div class="flex items-center gap-2 text-text-light dark:text-text-dark">
+<span class="material-symbols-outlined text-xl">favorite</span>
+<p class="text-sm font-medium">1.2k</p>
+</div>
+<div class="flex items-center gap-2 text-text-light dark:text-text-dark">
+<span class="material-symbols-outlined text-xl">chat_bubble</span>
+<p class="text-sm font-medium">88</p>
+</div>
+<div class="flex items-center gap-2 text-text-light dark:text-text-dark">
+<span class="material-symbols-outlined text-xl">bookmark</span>
+<p class="text-sm font-medium">345</p>
+</div>
+<div class="flex items-center gap-2 text-text-light dark:text-text-dark">
+<span class="material-symbols-outlined text-xl">share</span>
+<p class="text-sm font-medium">分享</p>
+</div>
+</div>
+<!-- Comments Section -->
+<div class="bg-background-light dark:bg-background-dark/50 p-4 pb-24">
+<h3 class="text-text-light dark:text-text-dark text-base font-bold mb-4">精彩评论</h3>
+<!-- Comment Item 1 -->
+<div class="flex items-start gap-3 mb-5">
+<img class="size-9 rounded-full object-cover mt-1" data-alt="avatar of user xiaoming" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPEIP9cqSQ9VPCJGgK8y1BySmuT2TTnVnms9Ic8X7YKPFQ-1i6FFKWJz2Q7ml65blPeefDOoP8ph0ugCGRtpsv2MkODFK5iPT2o-t57F81I534eSsopSFcN3sTZcQA1a47bjURkvpYjiP-iLwVvD5ZR1iGrSzzmtLUpljh4Q2eqygdp9QYMFNinAvZxowBX4cORicq8Nby-9NqExotq7VnMbf5IXm8FUMrLctaUX2aXND6-3xN3hAA9voY_lqODE5RxjDNOPx0pFQ"/>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="text-text-light/70 dark:text-text-dark/70 text-sm font-medium">小明</p>
+<div class="flex items-center gap-3 text-text-light/50 dark:text-text-dark/50">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+</div>
+</div>
+<p class="text-text-light dark:text-text-dark text-base mt-1">太可爱了吧！眼睛像蓝宝石一样。</p>
+<p class="text-text-light/50 dark:text-text-dark/50 text-xs mt-1.5">1小时前</p>
+</div>
+</div>
+<!-- Comment Item 2 -->
+<div class="flex items-start gap-3">
+<img class="size-9 rounded-full object-cover mt-1" data-alt="avatar of user lili" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo_MO5VXyO1WONUNVnd_WQNTCkDUQqvESGz-2D_bY0BoeS7MlQF__v9p-6DZfPfHjrBz7rXoXQ__od9Kfi_bpVbaVhUF9Y1PInxS7qRVgwU1NXyCZZEltoadf1EmRglFDvHp0TtwyYO1o6yWKuML-QHnMygKZiQ8-G8epHnVGBe0EnWfiYkj3vMnb1VNwHE1RQawA5HioZ_KrW3xkpdEJXff-CK3Hnw36yKXXAv0n_KDTuypi9zjHB6h-taPugLSoOht4jcbBTHOk"/>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="text-text-light/70 dark:text-text-dark/70 text-sm font-medium">莉莉</p>
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<p class="text-text-light dark:text-text-dark text-base mt-1">哈哈哈，我家猫也会，现在已经是开柜子高手了！</p>
+<p class="text-text-light/50 dark:text-text-dark/50 text-xs mt-1.5">45分钟前</p>
+</div>
+</div>
+</div>
+<!-- Sticky Comment Input Footer -->
+<div class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-background-light dark:bg-background-dark border-t border-text-light/10 dark:border-text-dark/10 p-3">
+<div class="flex items-center gap-3">
+<input class="flex-1 bg-text-light/5 dark:bg-text-dark/5 border-none rounded-full h-10 px-4 text-sm text-text-light dark:text-text-dark placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 focus:ring-2 focus:ring-primary/50" placeholder="留下你的精彩评论吧" type="text"/>
+<button class="flex items-center justify-center size-10 rounded-full bg-primary text-white">
+<span class="material-symbols-outlined text-xl">send</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

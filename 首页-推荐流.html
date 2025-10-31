@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="light" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pet Community App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF6F61",
+            "secondary": "#33C8A0",
+            "accent": "#FFC94A",
+            "background-light": "#F7F7F9",
+            "background-dark": "#1F2328",
+            "text-primary": "#1F2328",
+            "text-secondary": "#6B7280",
+          },
+          fontFamily: {
+            "display": ["Noto Sans SC", "Plus Jakarta Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "8px",
+            "lg": "16px",
+            "xl": "24px",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 300,
+      'GRAD' 0,
+      'opsz' 24
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
+<div class="sticky top-0 z-10 bg-background-light/80 pt-safe-top backdrop-blur-sm dark:bg-background-dark/80">
+<div class="flex items-center gap-2 px-4 py-3">
+<div class="flex shrink-0 items-center gap-1 text-text-primary dark:text-white">
+<span class="material-symbols-outlined text-xl text-primary">location_on</span>
+<span class="text-base font-bold">上海</span>
+</div>
+<label class="relative flex-grow">
+<span class="material-symbols-outlined pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary dark:text-gray-400">search</span>
+<input class="form-input h-10 w-full rounded-full border-none bg-gray-100 pl-10 pr-4 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400" placeholder="搜索宠物/话题/医院/好物" type="search"/>
+</label>
+<button class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-text-primary dark:text-white">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+<div class="overflow-x-auto whitespace-nowrap border-b border-gray-200 px-4 dark:border-gray-700">
+<div class="flex items-center space-x-5">
+<a class="inline-block border-b-2 border-primary py-2.5 text-base font-bold text-primary" href="#">推荐</a>
+<a class="inline-block border-b-2 border-transparent py-2.5 text-base font-medium text-text-secondary hover:text-text-primary dark:text-gray-400 dark:hover:text-white" href="#">关注</a>
+<a class="inline-block border-b-2 border-transparent py-2.5 text-base font-medium text-text-secondary hover:text-text-primary dark:text-gray-400 dark:hover:text-white" href="#">宠物粮</a>
+<a class="inline-block border-b-2 border-transparent py-2.5 text-base font-medium text-text-secondary hover:text-text-primary dark:text-gray-400 dark:hover:text-white" href="#">领养</a>
+<a class="inline-block border-b-2 border-transparent py-2.5 text-base font-medium text-text-secondary hover:text-text-primary dark:text-gray-400 dark:hover:text-white" href="#">丢失</a>
+<a class="inline-block border-b-2 border-transparent py-2.5 text-base font-medium text-text-secondary hover:text-text-primary dark:text-gray-400 dark:hover:text-white" href="#">附近</a>
+</div>
+</div>
+</div>
+<main class="flex-grow space-y-4 px-4 pb-28 pt-4">
+<div class="relative w-full overflow-hidden rounded-lg">
+<img class="aspect-[2/1] w-full object-cover" data-alt="Playful banner with illustrations of a cat and dog and Chinese text '萌宠狂欢节'." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk3P9M7BD2tnPF6pelRYe2rWFkC4FLfruNbeVSPfxl8IS-oN0suxWq6oME0J6NndqsAQgfVgB71CVvDshNrOiXpbIbBpysuhkgaf9EW3y1xlvvhAl_vAaMnd-f37iuKiAXq2Ys82PPID3YWI1thWLKS0y27vFT5rcvKkMXVnJ19BJcYBD5l0SD1S7LJUyqCdDM9TurcxN2Qwq9yFsmLqFLjJHnsp-9D6yczwyWDPGKjkJtKg5fjHeAF79hnCn6RgJGcYxw7O4HK28"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<h2 class="text-xl font-bold text-white">萌宠狂欢节</h2>
+<p class="text-sm text-white/90">全场宠物用品低至5折！</p>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<h3 class="text-base font-bold text-text-primary dark:text-white">我的常去板块</h3>
+<a class="text-sm text-text-secondary hover:text-primary dark:text-gray-400" href="#">
+          更多
+          <span class="material-symbols-outlined -mb-0.5 text-base">chevron_right</span></a>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2">
+<a class="shrink-0 rounded-full bg-secondary/20 px-4 py-2 text-sm font-medium text-secondary transition-colors hover:bg-secondary/30" href="#">#金毛俱乐部</a>
+<a class="shrink-0 rounded-full bg-white px-4 py-2 text-sm font-medium text-text-primary shadow-sm transition-colors hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600" href="#">#猫咪摄影</a>
+<a class="shrink-0 rounded-full bg-white px-4 py-2 text-sm font-medium text-text-primary shadow-sm transition-colors hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600" href="#">#新手养狗</a>
+<a class="shrink-0 rounded-full bg-white px-4 py-2 text-sm font-medium text-text-primary shadow-sm transition-colors hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600" href="#">#布偶猫</a>
+<a class="shrink-0 rounded-full bg-white px-4 py-2 text-sm font-medium text-text-primary shadow-sm transition-colors hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600" href="#">#宠物健康</a>
+</div>
+</div>
+<div class="overflow-hidden rounded-lg bg-white shadow-sm dark:bg-gray-800">
+<div class="p-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="h-10 w-10 rounded-full" data-alt="A cute cat with yellow eyes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBXFElKXIEkSLRuwx6bRIB4XQ1J3JvrdQx1PxXCOE3VgXSO5nRre118wpTrOW5tQLKqJW0dsOblRzwdxcF-JauqxGL_vZ7YnPkcNCqWeG_nkcs3hqQvQRyQ-EiaCdWdQM6wa0xptuje-4kfV6PGz_1smyus-h9EgwFZ5lCcPmPjz7-opcjibVHQBYlhvK6OIbAbGebUoGwUozOmqc_Vi60e49x1gKpd9EWPBrBZT3fSbI4B-UK0AtJwfYE36HQQbkIuolqABX0pD4"/>
+<div>
+<p class="font-bold text-text-primary dark:text-white">橘猫</p>
+<p class="text-xs text-text-secondary dark:text-gray-400">来自 小橘子</p>
+</div>
+</div>
+<button class="h-8 rounded-full bg-primary/20 px-4 text-sm font-bold text-primary transition-colors hover:bg-primary/30">关注</button>
+</div>
+<div class="mt-3">
+<p class="text-base leading-relaxed text-text-primary dark:text-white"><span class="mr-2 rounded bg-secondary/20 px-2 py-1 text-sm font-medium text-secondary">#猫咪日常</span><span class="mr-2 rounded bg-secondary/20 px-2 py-1 text-sm font-medium text-secondary">#新手喂养</span>第一次洗澡有点怕怕的，但是洗完好舒服呀！</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-1">
+<div class="aspect-square w-full overflow-hidden bg-gray-200">
+<img class="h-full w-full object-cover" data-alt="A wet ginger cat being held during a bath, looking scared." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH5Gc1gn0xbwRoCmoSVBkT7A8CnmNYFIXzq_5cP0LyH0dsOmeE_bF0yMxs3LbNsgCelc2beQkYy74LogpBcOJcIPkd9ItcO27k--Qkvw6tCEsyGYYZmttANONidG6CeORh_EqdmxnSyqjFXQJ3_mKgUYTepS28prJXbvmG6MkEIKOgvBsZpLB-n5XY_W95D0AssIyZUfE8jzTu4Y_2MNusPYyrgOUrgjsdIcBVXQw2TNTTekbm3F_Dwj7V78oOogyo81rxtdNLgzE"/>
+</div>
+<div class="aspect-square w-full overflow-hidden bg-gray-200">
+<img class="h-full w-full object-cover" data-alt="A cat wrapped in a towel after a bath." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj1DX19AnawQgGEoK64UHuo7jPAyQogAUK-w4sCex1dC6Lz7gvpnon7Bf1oEPWmlgzUOSXSFgvsqxYWcz1iKFfn1y7AJl_RY4Qa85Iwyn-FziYBI7YofiPu-WIx1B9B_hbP8U7lwS7Tmabv5W4TowlppCiWno1mxHTZoWI5DH2p6sFrcbYplodk9saAgHpXyDJ5lbGfL6n-KxAWso2zh1GNgqc0Kjny1iO95GmTD9UUHWB88P6_YWKaHAzloHn0Q2HwhbxvrjosRk"/>
+</div>
+<div class="aspect-square w-full overflow-hidden bg-gray-200">
+<img class="h-full w-full object-cover" data-alt="A fluffy cat blow-drying its fur." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJEkZPgdSQh38qhh9YKZcYvBX9RMdsvA62c9sGe04ihSrO4XuLjoP7SkZdqAdXdx6vH0fGTdS3iw6l9S6U3fvNswVUKT2MhDClM1EHvqd-YoVnaVEmm8Vi_fg413ysAH7BLnN5KagvyFI4ySh3L--wjXXZNpyG7jqsCngUcx9oA-L8hvr-oi9b_r0rIROSh3DZSDIdQjbIrSnwU0SF32bzr4vdVWSwllAsV7zrhMqDD1t_u4H_CRl-JKPJNIMkgBgIP3MwXFPz-2Q"/>
+</div>
+</div>
+<div class="flex justify-around border-t border-gray-100 py-2 dark:border-gray-700">
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-text-secondary transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-2xl">thumb_up</span>
+<span class="text-sm">123</span>
+</button>
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-text-secondary transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-2xl">chat_bubble</span>
+<span class="text-sm">45</span>
+</button>
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-text-secondary transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-2xl">bookmark</span>
+<span class="text-sm">67</span>
+</button>
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-text-secondary transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-2xl">share</span>
+</button>
+</div>
+</div>
+<div class="overflow-hidden rounded-lg bg-white shadow-sm dark:bg-gray-800">
+<div class="p-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="h-10 w-10 rounded-full" data-alt="A happy golden retriever." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3UfRqMZpDe45IMsPC0gYm10bwhNpZV8fbVu3OgFzmzcMiCtFWHgU6aB5UGeFhAcoyy44-Zhcl99mq_1sfcx9YgnzAnHT5wqWcjrmWZz61_W1wJrdU8j1IowSnr4obkfw7z21swOWCO7Pqh60wC44VWPAirKofdOqyWc2FbeCSo4mws8ZIIVNWurqU336vXOqDb_ii2G-i_HroyuIklcyl1sVT8bWNa1fgVth0oD_3T2u1N_7EbJWLGhc5m7HyUbrFjHMswGGY2jo"/>
+<div>
+<p class="font-bold text-text-primary dark:text-white">金毛</p>
+<p class="text-xs text-text-secondary dark:text-gray-400">来自 旺财</p>
+</div>
+</div>
+<button class="h-8 rounded-full bg-primary/20 px-4 text-sm font-bold text-primary transition-colors hover:bg-primary/30">关注</button>
+</div>
+<div class="mt-3">
+<p class="text-base leading-relaxed text-text-primary dark:text-white"><span class="mr-2 rounded bg-secondary/20 px-2 py-1 text-sm font-medium text-secondary">#狗狗</span><span class="mr-2 rounded bg-secondary/20 px-2 py-1 text-sm font-medium text-secondary">#金毛</span>公园的快乐时光！今天和小伙伴们玩疯了！</p>
+</div>
+</div>
+<div class="relative mt-2 aspect-video w-full overflow-hidden bg-gray-900">
+<video autoplay="" class="h-full w-full object-cover" loop="" muted="" playsinline="" poster="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?q=80&amp;w=1974&amp;auto=format&amp;fit=crop">
+<source src="https://cdn.dribbble.com/users/1054366/screenshots/11547843/media/4c1b5a59604130d95d18546995014c2b.mp4" type="video/mp4"/>
+</video>
+<div class="absolute bottom-2 right-2 rounded bg-black/50 px-1.5 py-0.5 text-xs text-white">00:15</div>
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+<span class="material-symbols-outlined text-5xl text-white/80 opacity-0 group-active:opacity-100 transition-opacity" style="font-variation-settings: 'FILL' 1, 'wght' 700; color: #FFC94A;">favorite</span>
+</div>
+</div>
+<div class="flex justify-around border-t border-gray-100 py-2 dark:border-gray-700">
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-text-secondary transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-2xl text-primary" style="font-variation-settings: 'FILL' 1">favorite</span>
+<span class="text-sm text-primary">2.1k</span>
+</button>
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-text-secondary transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-2xl">chat_bubble</span>
+<span class="text-sm">233</span>
+</button>
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-text-secondary transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-2xl">bookmark</span>
+<span class="text-sm">188</span>
+</button>
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-text-secondary transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-2xl">share</span>
+</button>
+</div>
+</div>
+</main>
+<div class="fixed bottom-24 right-4 z-20 space-y-4">
+<button class="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-transform hover:scale-105 active:scale-95 dark:bg-gray-700">
+<span class="material-symbols-outlined text-2xl text-text-primary dark:text-white">arrow_upward</span>
+</button>
+</div>
+<div class="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-md border-t border-gray-200 bg-background-light/80 pb-safe-bottom backdrop-blur-sm dark:border-gray-700 dark:bg-background-dark/80">
+<div class="relative flex h-16 items-center justify-around">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1">pets</span>
+<span class="text-xs font-bold">首页</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary transition-colors hover:text-text-primary dark:text-gray-400 dark:hover:text-white" href="#">
+<span class="material-symbols-outlined text-2xl">category</span>
+<span class="text-xs font-medium">分类</span>
+</a>
+<div class="w-14"></div>
+<a class="flex flex-col items-center gap-1 text-text-secondary transition-colors hover:text-text-primary dark:text-gray-400 dark:hover:text-white" href="#">
+<span class="material-symbols-outlined text-2xl">health_and_safety</span>
+<span class="text-xs font-medium">服务</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary transition-colors hover:text-text-primary dark:text-gray-400 dark:hover:text-white" href="#">
+<span class="material-symbols-outlined text-2xl">account_circle</span>
+<span class="text-xs font-medium">我的</span>
+</a>
+</div>
+<button class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 flex h-16 w-16 items-center justify-center rounded-full bg-accent shadow-lg transition-transform hover:scale-105 active:scale-95">
+<svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+</button>
+</div>
+</div>
+</body></html>

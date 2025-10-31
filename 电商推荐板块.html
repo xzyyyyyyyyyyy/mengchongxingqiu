@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>宠物商城</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF6F61",
+            "secondary": "#33C8A0",
+            "accent": "#FFC94A",
+            "background-light": "#F7F7F9",
+            "background-dark": "#1F2328",
+            "text-color": "#1F2328",
+            "text-color-dark": "#F7F7F9"
+          },
+          fontFamily: {
+            "display": ["Noto Sans SC", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<div class="flex flex-col flex-1 pb-32">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex items-center justify-between p-4 pb-2 bg-background-light dark:bg-background-dark">
+<h1 class="text-text-color dark:text-text-color-dark text-2xl font-bold leading-tight">宠物商城</h1>
+<div class="flex items-center gap-4 text-text-color dark:text-text-color-dark">
+<span class="material-symbols-outlined cursor-pointer">shopping_cart</span>
+<span class="material-symbols-outlined cursor-pointer">chat_bubble</span>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="px-4 py-3">
+<label class="flex flex-col w-full h-12 min-w-40">
+<div class="flex items-stretch flex-1 w-full h-full rounded-lg">
+<div class="text-text-color/60 dark:text-text-color-dark/60 flex items-center justify-center pl-4 bg-white dark:bg-text-color/10 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border-none bg-white dark:bg-text-color/10 px-4 pl-2 text-base font-normal leading-normal text-text-color dark:text-text-color-dark placeholder:text-text-color/60 dark:placeholder:text-text-color-dark/60 focus:border-none focus:outline-0 focus:ring-0 rounded-l-none border-l-0" placeholder="搜索商品或品牌" value=""/>
+</div>
+</label>
+</div>
+<!-- AI Recommendation Carousel -->
+<div class="flex flex-col">
+<div class="flex items-center justify-between px-4 pb-3 pt-5">
+<h2 class="text-text-color dark:text-text-color-dark text-xl font-bold leading-tight tracking-[-0.015em]">专属推荐</h2>
+<a class="flex items-center gap-1 text-sm text-text-color/60 dark:text-text-color-dark/60" href="#">
+<span>查看全部</span>
+<span class="material-symbols-outlined text-base">arrow_forward_ios</span>
+</a>
+</div>
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden pl-4 pr-4">
+<div class="flex items-stretch gap-3 pb-4">
+<div class="flex h-full w-64 flex-shrink-0 flex-col gap-2 rounded-lg bg-white dark:bg-text-color/10 p-3 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="relative w-full overflow-hidden rounded-md">
+<div class="w-full bg-cover bg-center bg-no-repeat aspect-square" data-alt="A cute corgi wearing a yellow hat" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7b3UKiZNOZPwXFYLnAuDPShAe7zmqPbuAxAGF2h7i_IcOarcpTuHMKG9Gn1vnXC9UOK6pqsNt5GoQi4zbEPSWzuSjyhO0ZcwrRsAaVZFp_EHf_DSwXh3wnc64BiOB6LmN5m8nV7FuPDnCqH7F6lhOSgxNyp7ANNNc1K2fxjYqHnG9hERfKzAN6fmIO43IHGkkdjMoSrbrU_ouZWqJTvdzfJS08cTH8MlknFtlhmV6mN6vcY3Bu_IVnjRoyo0BLHLXMoM1AWjjdNY");'></div>
+<div class="absolute top-2 left-2 rounded-full bg-secondary/80 px-2 py-0.5 text-xs text-white backdrop-blur-sm">根据您家「毛毛」的品种推荐</div>
+</div>
+<div class="flex flex-col flex-1 justify-between gap-2 pt-1">
+<div>
+<p class="text-text-color dark:text-text-color-dark text-base font-medium leading-normal">天然无谷全价柯基犬粮</p>
+<p class="text-primary text-sm font-bold leading-normal pt-1">¥188</p>
+</div>
+</div>
+</div>
+<div class="flex h-full w-64 flex-shrink-0 flex-col gap-2 rounded-lg bg-white dark:bg-text-color/10 p-3 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="relative w-full overflow-hidden rounded-md">
+<div class="w-full bg-cover bg-center bg-no-repeat aspect-square" data-alt="A cat playing with a colorful toy" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB3_TFniL6O7-f4VYlsM-Z8C7sHzBrfFZ14CdUODUXN73HgTVUnrTa-y8WNgWhS35lZtl-wGG0srdbWKdFRwPOnWD5mMnW8NY9WBioqW5_A8XupC6HG6AnkyVRxsVImwpWzMa2nVCEPDJA9srFMzdIR9BWPw1GY9sIhJvkJnQav5B8rz8oXLIEsr1185A8rS24qpp4QVGUvHmGTVYffy5LVM09yXAkZxEedaQmduoLy507SDBPE1k4suBVRnywAYIOUeIQkjti7Y9c");'></div>
+<div class="absolute top-2 left-2 rounded-full bg-secondary/80 px-2 py-0.5 text-xs text-white backdrop-blur-sm">猫咪都爱不释手</div>
+</div>
+<div class="flex flex-col flex-1 justify-between gap-2 pt-1">
+<div>
+<p class="text-text-color dark:text-text-color-dark text-base font-medium leading-normal">耐咬磨牙洁齿骨</p>
+<p class="text-primary text-sm font-bold leading-normal pt-1">¥59</p>
+</div>
+</div>
+</div>
+<div class="flex h-full w-64 flex-shrink-0 flex-col gap-2 rounded-lg bg-white dark:bg-text-color/10 p-3 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="relative w-full overflow-hidden rounded-md">
+<div class="w-full bg-cover bg-center bg-no-repeat aspect-square" data-alt="A small white dog being groomed" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC2NTqa-1CwHDvxtF5RuBoS1XMd3IgYJ9jgIIL0ZZCi-CpyLsYphWal9aypFGoXTKpgmBODrJYLf8OHnXduke7RgKkoL5FDlmCeTLvvZvnTRPzE9GJbOrbunCrmoQYomRcIVsu8TkPayPfDeu9m5s7CGQ_Sx5hPPlyYj5ZZuSpFmMgQvmP3KmRioYPO5ORIcQkQMmSQgtQaz0r7eOc7UkGq7-JDTBwrHBl0WiFE2FK1_L-g69ZYEPIiqzP3bnJ06NrHI7xcLEnkXaY");'></div>
+</div>
+<div class="flex flex-col flex-1 justify-between gap-2 pt-1">
+<div>
+<p class="text-text-color dark:text-text-color-dark text-base font-medium leading-normal">除菌除螨沐浴露</p>
+<p class="text-primary text-sm font-bold leading-normal pt-1">¥79</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Category Icon Grid -->
+<div class="grid grid-cols-4 gap-4 px-4 py-5 text-center">
+<div class="flex flex-col items-center gap-2">
+<div class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-3xl">restaurant</span>
+</div>
+<p class="text-sm font-medium text-text-color dark:text-text-color-dark">宠物主粮</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="flex h-14 w-14 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+<span class="material-symbols-outlined text-3xl">pets</span>
+</div>
+<p class="text-sm font-medium text-text-color dark:text-text-color-dark">零食玩具</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="flex h-14 w-14 items-center justify-center rounded-xl bg-accent/20 text-accent">
+<span class="material-symbols-outlined text-3xl">health_and_safety</span>
+</div>
+<p class="text-sm font-medium text-text-color dark:text-text-color-dark">健康保健</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-500/10 text-blue-500">
+<span class="material-symbols-outlined text-3xl">shower</span>
+</div>
+<p class="text-sm font-medium text-text-color dark:text-text-color-dark">清洁美容</p>
+</div>
+</div>
+<!-- Quality Assurance Banner -->
+<div class="px-4 py-3">
+<div class="flex items-center justify-around rounded-lg bg-white dark:bg-text-color/10 p-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex items-center gap-2 text-sm text-text-color dark:text-text-color-dark">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<span class="font-medium">品牌授权</span>
+</div>
+<div class="h-4 w-px bg-black/10 dark:bg-white/10"></div>
+<div class="flex items-center gap-2 text-sm text-text-color dark:text-text-color-dark">
+<span class="material-symbols-outlined text-secondary">thumb_up</span>
+<span class="font-medium">正品保障</span>
+</div>
+<div class="h-4 w-px bg-black/10 dark:bg-white/10"></div>
+<div class="flex items-center gap-2 text-sm text-text-color dark:text-text-color-dark">
+<span class="material-symbols-outlined text-secondary">autorenew</span>
+<span class="font-medium">7天无理由</span>
+</div>
+</div>
+</div>
+<!-- Value-Added Services Section -->
+<div class="px-4 py-5">
+<h2 class="text-text-color dark:text-text-color-dark text-xl font-bold leading-tight tracking-[-0.015em] mb-4">增值服务</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col justify-between rounded-lg bg-gradient-to-br from-secondary/20 to-secondary/5 dark:from-secondary/30 dark:to-secondary/10 p-4">
+<div>
+<h3 class="text-base font-bold text-text-color dark:text-text-color-dark">在线营养师咨询</h3>
+<p class="text-sm text-text-color/70 dark:text-text-color-dark/70 mt-1">专业指导科学喂养</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-4xl self-end mt-2">support_agent</span>
+</div>
+<div class="flex flex-col justify-between rounded-lg bg-gradient-to-br from-accent/20 to-accent/5 dark:from-accent/30 dark:to-accent/10 p-4">
+<div>
+<h3 class="text-base font-bold text-text-color dark:text-text-color-dark">宠物保险</h3>
+<p class="text-sm text-text-color/70 dark:text-text-color-dark/70 mt-1">守护爱宠健康成长</p>
+</div>
+<span class="material-symbols-outlined text-accent text-4xl self-end mt-2">local_hospital</span>
+</div>
+</div>
+</div>
+<!-- Featured Products -->
+<div class="px-4 py-3">
+<h2 class="text-text-color dark:text-text-color-dark text-xl font-bold leading-tight tracking-[-0.015em] mb-4">热销榜单</h2>
+<div class="grid grid-cols-2 gap-3">
+<div class="flex flex-col gap-2 rounded-lg bg-white dark:bg-text-color/10 p-2 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="w-full rounded-md bg-cover bg-center bg-no-repeat aspect-square" data-alt="A golden retriever enjoying a dental chew" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCFj3d2aRJlp7DrDQHPhlNXUf8aU5wvCGfkAXr4yFZLf5iK8r7wDcgs8hD7EVUDJ-pdl1kFfVK1Ya_0sI5QEsW8AX8zUpl6GxSc_p4VxWXb1BfO3QuahsupwzenWZv675rfr96VOiueR47NqnteGcQjOiFO1aM_Fo1IdIKGvPhwH96r4rnPLantRVMx2dyKKMS-2sg-7D6N1XEDsCLYXwSXxkxk3hyL9h-hFqayNsJCAotjBEx0iyejUCPvUueX8EapJqUVMRWoAw");'></div>
+<div class="flex flex-col p-1">
+<p class="text-text-color dark:text-text-color-dark text-sm font-medium leading-normal line-clamp-2">狗狗磨牙棒洁齿骨耐咬</p>
+<div class="flex items-center justify-between mt-1">
+<p class="text-primary text-base font-bold leading-normal">¥39.9</p>
+<p class="text-text-color/50 dark:text-text-color-dark/50 text-xs">已售 1w+</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-lg bg-white dark:bg-text-color/10 p-2 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="w-full rounded-md bg-cover bg-center bg-no-repeat aspect-square" data-alt="A cat bed with a cat sleeping in it" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAoRES1bTDu82tpmevYH58NiTd_FMebbTrOPL9296DUxLltlOkdg5iTrYL6FM11Csot2MSncqEqgQBhRDrsRbesAIt9s1jAFsfJeb6b-LumlOpu8Jb6dNrRDxGSjsm1InDzi7UwnC65SsSSld9LtJpFvzir4cU6gEx5H_uHq0IX--jumRxCgoXtvcand0dqEJguOS2UBsLkkohRcNgDGDijz2wabpVYlV0uFS1VFfSmt_-XK1Zf3y6FXKXjTk7ooIOSPozGSmH8Kas");'></div>
+<div class="flex flex-col p-1">
+<p class="text-text-color dark:text-text-color-dark text-sm font-medium leading-normal line-clamp-2">云朵深度睡眠窝</p>
+<div class="flex items-center justify-between mt-1">
+<p class="text-primary text-base font-bold leading-normal">¥129</p>
+<p class="text-text-color/50 dark:text-text-color-dark/50 text-xs">已售 5k+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-20 h-24 bg-transparent">
+<div class="absolute bottom-0 left-0 right-0 h-20 border-t border-black/10 dark:border-white/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-lg">
+<div class="flex h-full items-center justify-around text-text-color/60 dark:text-text-color-dark/60">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs font-medium">首页</span>
+</a>
+<a class="flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="text-xs font-medium">分类</span>
+</a>
+<div class="w-14"></div> <!-- Placeholder for floating button -->
+<a class="flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="text-xs font-medium">服务</span>
+</a>
+<a class="flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs font-medium">我的</span>
+</a>
+</div>
+</div>
+<div class="absolute bottom-6 left-1/2 flex -translate-x-1/2 transform items-center justify-center">
+<button class="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/40">
+<span class="material-symbols-outlined text-4xl">add</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

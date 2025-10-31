@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pet Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;family=Noto+Sans+SC:wght@400;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+      body {
+        font-family: "Noto Sans SC", "SF Pro", sans-serif;
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FF6F61",
+              "secondary": "#33C8A0",
+              "accent": "#FFC94A",
+              "background-light": "#F7F7F9",
+              "text-primary": "#1F2328",
+              "text-secondary": "#6a6e73"
+            },
+            fontFamily: {
+              "display": ["Noto Sans SC", "SF Pro", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem",
+              "lg": "1rem",
+              "xl": "1.5rem",
+              "full": "9999px"
+            },
+            boxShadow: {
+              'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light font-display">
+<div class="relative mx-auto flex h-auto min-h-screen w-full max-w-lg flex-col bg-background-light group/design-root overflow-x-hidden pb-28">
+<div class="flex items-center bg-background-light p-4 pb-2 justify-between">
+<button class="flex size-10 items-center justify-center text-text-primary">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<div class="flex w-10 items-center justify-end">
+<button class="flex size-10 items-center justify-center text-text-primary">
+<span class="material-symbols-outlined text-2xl">more_horiz</span>
+</button>
+</div>
+</div>
+<div class="px-6 mt-2">
+<div class="flex items-start gap-4">
+<div class="flex flex-col flex-shrink-0 items-center gap-2">
+<img alt="Animated Corgi Illustration" class="w-20 h-20 object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPWMWkSL0NRgvQP_WUsuHgRm4tiFRckmIVXe5Ujh0VOuf68d1CaXsHFt4Y_lr20sB7I-VpYLaN1b-tR5cTsOalf1D661obcBdnu9oVmH1s_clAcyFpLDO90D-4G_nwEb7p-pEcjx5UlGZxEmLkgIHvgaZOV3zbh5t6sPFaOnFSMiNN0klH8WLFN0b7yACreWu7tZhNXNlnrtooZts3-pf1DOoNRHHrk7JFVutj49-qeL4nER3Dbia-IS0ZMA5UGyv9bkyTHHQ08LA"/>
+<h1 class="text-text-primary text-xl font-bold">柯基</h1>
+</div>
+<div class="flex-1 rounded-lg bg-white p-4 shadow-soft">
+<div class="flex items-center justify-between">
+<h3 class="text-text-primary text-base font-bold leading-tight tracking-[-0.015em]">详细评分</h3>
+<div class="flex items-center gap-1 rounded-full bg-accent/20 px-3 py-1 text-sm font-bold text-accent">
+<span class="material-symbols-outlined text-base">star</span>
+<span>4.8</span>
+</div>
+</div>
+<div class="mt-4 space-y-3">
+<div class="flex items-center gap-2">
+<span class="w-16 text-xs text-text-secondary">粘人指数</span>
+<div class="h-1.5 flex-1 rounded-full bg-gray-200">
+<div class="h-1.5 rounded-full bg-primary" style="width: 80%"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-16 text-xs text-text-secondary">聪明指数</span>
+<div class="h-1.5 flex-1 rounded-full bg-gray-200">
+<div class="h-1.5 rounded-full bg-primary" style="width: 90%"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-16 text-xs text-text-secondary">活泼指数</span>
+<div class="h-1.5 flex-1 rounded-full bg-gray-200">
+<div class="h-1.5 rounded-full bg-primary" style="width: 75%"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-16 text-xs text-text-secondary">掉毛程度</span>
+<div class="h-1.5 flex-1 rounded-full bg-gray-200">
+<div class="h-1.5 rounded-full bg-primary" style="width: 60%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p class="mt-4 text-sm leading-relaxed text-text-primary">
+            一只对世界充满好奇心的快乐小柯基！喜欢追球、晒太阳和所有好吃的零食。性格温顺，是家里的开心果。
+        </p>
+</div>
+<div class="flex px-6 @container mt-4">
+<div class="flex w-full flex-col gap-4">
+<div class="flex items-center gap-3">
+<button class="flex-1 flex min-w-0 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="material-symbols-outlined text-xl">favorite_border</span>
+<span class="truncate">想养</span>
+</button>
+<button class="flex-1 flex min-w-0 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-accent text-text-primary text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="material-symbols-outlined text-xl">grade</span>
+<span class="truncate">打分</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-3 px-6 py-3 mt-1">
+<div class="flex min-w-[100px] flex-1 basis-[fit-content] flex-col gap-1.5 rounded-lg border border-gray-200 bg-white p-3 items-center text-center shadow-soft">
+<p class="text-text-primary tracking-light text-xl font-bold leading-tight">1.2w</p>
+<div class="flex items-center gap-2">
+<p class="text-text-secondary text-xs font-normal leading-normal">想养</p>
+</div>
+</div>
+<div class="flex min-w-[100px] flex-1 basis-[fit-content] flex-col gap-1.5 rounded-lg border border-gray-200 bg-white p-3 items-center text-center shadow-soft">
+<p class="text-text-primary tracking-light text-xl font-bold leading-tight">小型犬</p>
+<div class="flex items-center gap-2">
+<p class="text-text-secondary text-xs font-normal leading-normal">体型</p>
+</div>
+</div>
+<div class="flex min-w-[100px] flex-1 basis-[fit-content] flex-col gap-1.5 rounded-lg border border-gray-200 bg-white p-3 items-center text-center shadow-soft">
+<p class="text-text-primary tracking-light text-xl font-bold leading-tight">8.6k</p>
+<div class="flex items-center gap-2">
+<p class="text-text-secondary text-xs font-normal leading-normal">浏览量</p>
+</div>
+</div>
+</div>
+<div class="px-6 py-2 mt-4">
+<div class="border-b border-gray-200">
+<nav aria-label="Tabs" class="-mb-px flex space-x-6">
+<button class="whitespace-nowrap py-3 px-1 border-b-2 font-bold text-sm border-transparent text-text-secondary hover:text-primary hover:border-primary">
+                    领养
+                </button>
+<button class="whitespace-nowrap py-3 px-1 border-b-2 font-bold text-sm border-transparent text-text-secondary hover:text-primary hover:border-primary">
+                    喂养建议
+                </button>
+<button aria-current="page" class="whitespace-nowrap py-3 px-1 border-b-2 font-bold text-sm text-primary border-primary">
+                    用户评价
+                </button>
+<button class="whitespace-nowrap py-3 px-1 border-b-2 font-bold text-sm border-transparent text-text-secondary hover:text-primary hover:border-primary">
+                    视频
+                </button>
+</nav>
+</div>
+<div class="mt-4 space-y-4">
+<div class="flex items-start gap-3 rounded-lg bg-white p-4 shadow-soft">
+<img alt="User avatar" class="h-10 w-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_3-tBqP52OmZ2TabPUQtb5y76THQW7G-Z_afdOOSSJqIyvQp3cUA--M4IcCawi0ns4CJNgLB9LQqMAca3EGxhJUH0ALh_DZj8vNvYB5aIgtD743Xz6RbXCRPvaMVZ6J0W1fZFc3vEaSS0Gk0kejS1ca4Fnnu12aBppT9yHm64AzuWBVLdRCtxpxXKcVg3HPxtBx4-4_OLckgEd0LRUkoscPgypTBJT17P3fDb864OoIzIC_2UZBaw37J-vOnKb2WVlWQH-NyKzp0"/>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<p class="text-sm font-bold text-text-primary">小明</p>
+<p class="text-xs text-text-secondary">2天前</p>
+</div>
+<div class="flex items-center gap-0.5 mt-1">
+<span class="material-symbols-outlined text-base text-accent">star</span>
+<span class="material-symbols-outlined text-base text-accent">star</span>
+<span class="material-symbols-outlined text-base text-accent">star</span>
+<span class="material-symbols-outlined text-base text-accent">star</span>
+<span class="material-symbols-outlined text-base text-accent">star_half</span>
+</div>
+<p class="mt-2 text-sm text-text-primary leading-relaxed">这只柯基也太可爱了吧！性格超好！照片拍得真棒！</p>
+</div>
+</div>
+<div class="flex items-start gap-3 rounded-lg bg-white p-4 shadow-soft">
+<img alt="User avatar" class="h-10 w-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDclkrpnGsUm3G9aU10YEwWe7gwlwMWouru85MImBqpLPdvJc-tc7afHAhRttsK5pInH5Vf84iUcAPF324Ttb4E383cyb038WFWoosyfadyHQBRaXxgbkd_sRRqMxgy56CdGeprNdwXjnADoiGl7mnmFGgbcYJpFO2_bp7yyvOZryuatqyl-XGcVMTp7-9nz_aPOWe8GT94Q_eGLtSugOtx0PI5qwBAsqOKum64hIpynNYUphMBSlbK7PDFg8i75q-GqtBLvDj1a9I"/>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<p class="text-sm font-bold text-text-primary">爱宠人士</p>
+<p class="text-xs text-text-secondary">5天前</p>
+</div>
+<div class="flex items-center gap-0.5 mt-1">
+<span class="material-symbols-outlined text-base text-accent">star</span>
+<span class="material-symbols-outlined text-base text-accent">star</span>
+<span class="material-symbols-outlined text-base text-accent">star</span>
+<span class="material-symbols-outlined text-base text-accent">star</span>
+<span class="material-symbols-outlined text-base text-accent">star</span>
+</div>
+<p class="mt-2 text-sm text-text-primary leading-relaxed">旺仔是社区的小明星，每次看到它心情都变好了！</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-lg">
+<div class="relative bg-white/80 backdrop-blur-lg border-t border-gray-200">
+<div class="flex h-16 items-center justify-around">
+<a class="flex flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs font-medium">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-text-secondary" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="text-xs font-medium">分类</span>
+</a>
+<div class="w-14"></div>
+<a class="flex flex-col items-center justify-center gap-1 text-text-secondary" href="#">
+<span class="material-symbols-outlined">pets</span>
+<span class="text-xs font-medium">服务</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-text-secondary" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs font-medium">我的</span>
+</a>
+</div>
+<button class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+</div>
+</body></html>

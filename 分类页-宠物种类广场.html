@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="light" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pet Category</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF6F61",
+                        "secondary": "#33C8A0",
+                        "accent": "#FFC94A",
+                        "background-light": "#F7F7F9",
+                        "background-dark": "#1F2328",
+                        "text-light": "#1F2328",
+                        "text-dark": "#F7F7F9",
+                        "text-muted-light": "#6b7280",
+                        "text-muted-dark": "#9ca3af",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Sans SC", "SF Pro", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "8px",
+                        "lg": "16px",
+                        "xl": "24px",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        'safe-top': 'env(safe-area-inset-top)',
+                        'safe-bottom': 'env(safe-area-inset-bottom)',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.07)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm z-10 pt-safe-top">
+<div class="flex items-center justify-center p-4">
+<h1 class="text-xl font-bold">分类</h1>
+</div>
+</div>
+<main class="flex-1 px-4 py-4 space-y-6">
+<div class="space-y-3">
+<h2 class="text-lg font-bold">我的关注</h2>
+<div class="flex gap-4 overflow-x-auto whitespace-nowrap pb-2 -mx-4 px-4">
+<div class="flex flex-col items-center gap-2 shrink-0">
+<img alt="Shorthair Cat" class="w-16 h-16 rounded-full object-cover border-2 border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWtb9_jj2nsaVD4NIPdN8iWX1zJcUaqGgGDqOsrihght7SeUPN8AxEhRq8xONKLCiKgT8o5DrKomTHYK2tNN9VABYpIyEx_rxI9czUgSUPytT2vyNtiCrJGqvKZp-dRmNgMstHwGhM9XV6WzpLKgGnqRntLhh5KAU_PLTNZex_-T8OvYv8mB350WhSHtfB_hjg_5K4ovkp78ZLBJL6-KD659k4TbUTbvAZaN7Q8VC7q4I9SCbFj576fJJdbisoRgizkChWaPGQyZ4"/>
+<p class="text-sm font-medium">英短</p>
+</div>
+<div class="flex flex-col items-center gap-2 shrink-0">
+<img alt="Golden Retriever" class="w-16 h-16 rounded-full object-cover border-2 border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_md5d-L8ogaI7wRNx7YAIiyA1Xz29mEDxDQ42VnRmMll21Gvyjd81dyeHes2eLvnxBDMzk5ej2axxMkSLy0ESfLvjQendg4UdsCpwPZ7aLIcvzybdI4Lz3KcOM7i0e37XDqDaq_OGQtX33ai04nnuQdakAiaoWXNJhwRg7EVXJdr7qF8khE2nM6GTkVsiJGOq1Xh4D1GMLDYalnR1H0_GwqowIGDIGxR7Cxpqa0AisByWu_o4ddzxjzM0peQVTy47CsHlvB1NXG8"/>
+<p class="text-sm font-medium">金毛</p>
+</div>
+<div class="flex flex-col items-center gap-2 shrink-0">
+<img alt="Ragdoll Cat" class="w-16 h-16 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA10xymzKNZeJAgcYSycMqFIUJhwLzbGUbvfI63N-9-6DTQkH_b0OoCXu5hU4WfYH-ucUCLcn38xx6cdoMpgKERT-vACBM1y1pcmygDakn-nh9Pp7VUqAzHUjTxY-SDIgAyQlkXIWDhG0tH1zrtUqtLaRlEkRWMSWur7eYjZv3SgK05-5SOY2xOjsU6fMrwm6aHrNHAYg5hJv3KbUJPW6oytTchawZ4lGeB7e9U4J8AoVl-8JtpCQ2SRuBYM4QmRLnTNqeVOrXcEME"/>
+<p class="text-sm font-medium">布偶</p>
+</div>
+<div class="flex flex-col items-center gap-2 shrink-0">
+<img alt="Siberian Husky" class="w-16 h-16 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9wsktYE-d7f_-jU8J4KR8HWrE1-je4K4o9OL4Zk-ZiltGfYjUnTCIGP44dnlqhRdtsoGmO6wQvqVhXmL5v7x32Mst8LpLEz7GSy_94jGLngn6_eXJ8OCjlh9YpYOqBr9irb8YMPYhybfTc2fxN2psNHLLa8iwM_ygkvv0lX5F42hzUS_ul1V9GcGCZLdk_UtcZ5S9hTP5HfcYWT60aBv25XI_Y_NFkFS1IB9BEMaUfkf5Sa9-NaucORv_PK9xqRrzieW0mmuXi90"/>
+<p class="text-sm font-medium">哈士奇</p>
+</div>
+<div class="flex flex-col items-center gap-2 shrink-0">
+<img alt="Hamster" class="w-16 h-16 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALQptrJ5fapKq-EfWa6JqMHBKoh4aQXJgR18NwWBPC5TyLukbhOfjlJZkeolW0UXzOVUzzmUG2jGjz9tPIqErbi0HkbIR_GdnQ6Pr8n4qD61DkNmb0M9TRyie77HbngjefqflPrfKkTXdOjA99jD_z3l8C12Dzn0VWohgFYqFKrapSLp6m_6LkvP2vYdcS5FDU_ySJqaYwwu0jTeDP40mueGADuozSEWm_4gWKV_ZSw3IjH1FLBM7BS_Pccww6VGCJz8Mly_pomiU"/>
+<p class="text-sm font-medium">仓鼠</p>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<h2 class="text-lg font-bold">宠物分类</h2>
+<div class="grid grid-cols-4 gap-4">
+<div class="flex flex-col items-center gap-2 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-soft">
+<img alt="Cat Icon" class="w-12 h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4V-CHOh20UPd311KCTKGv93ItP2MlAMYuCKCCWntlxLdm2snLekJOgp5775HyPQ5kRALGX4wuz8UyFUAMGyWLaQo5r8bLPkXERmQgyZc171WS4jBIQ7IcsS9aYxM5YKmLtSVkM1YC0JfiCGwKxZbKtVTK5lKXBQNU2vgUPgZO6nJ9GDWsGWWrFtPy3W0dWqghCFXBQUypPadY72lHUcbv_vJ_0_X1ZvZqu6F7CqW1RhAtkPxiM01usQxMIT5SUTp2zSMdSOcKP14"/>
+<p class="text-sm font-medium">猫</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-soft">
+<img alt="Dog Icon" class="w-12 h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoj43vrS5Rkd6I6EYopVKtE9VwjMxyYgYfXB7akD8vaPXj8hhvipOxe_nusYhfALY_RH4kEYM0PfLo6PIZ2MTOB4LqskcnruLYgFHEw6zNFsyTcpOQKjcswoJ9DiBSkyJOJ5GfuWHI2DR0S_ufRQiXY1_ChCdSkm5L9i00mtAQ7-h-OoGhTViV0kbbVMYiTu02JjEcd0Nb5J76E9nOCJXBAoFIiWGA2kwWu-SCed4wITIDm2jjmqJg58JXD-2hT4-UAf2hzItMAvE"/>
+<p class="text-sm font-medium">狗</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-soft">
+<img alt="Rabbit Icon" class="w-12 h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNjcs4az6KflaI0ETWdVlKKeqRk3HB-NxLm3aqbFGxY_fGPpK6__tV_WDajccKoOF48m9rbCQdtItFdiUCMnyvnnpz_6GdoOWdgkCYFdKQUa_9KrKFNPzLX0fSx-aXCTEmHNZWVxdLCVBR1rd9Bapamp5hgedhDPZeScrwEiIG52p-Gqb1L7NQ7cOGGKwWPmlCgxrQPi7Qt_IrArtbh5gTcSjRVEW8EIdGrSOmQAA6NDeEJAcPBChLVsxNfx_NndXtGDEkpHhfgHw"/>
+<p class="text-sm font-medium">兔</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-soft">
+<img alt="Hamster Icon" class="w-12 h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwxAczp8oPSWVJPAHT4bCr_1aksskItAqG8p5MujPu1WFiYmXkXCN0J4J-SfOnc_lF8d8NEpGr8CpnFCjyuOr8LI18zXwb-TFbbJqHwJwUS7chXRwIsi9j6WgIrjQs5_FkocoClhorXFDof4q1FsuNCTuI0cYpuDxN9w1lA9Yegnm4mUNxfmV5T-MIGGaD9A-LzdtviJ4_YUyJmehuvlhexyV8wKsHbDX_jnkTt-zVTXWRHheQ4nPMUY6WMwRejpeFqDzCmg8HDfY"/>
+<p class="text-sm font-medium">仓鼠</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-soft">
+<img alt="Parrot Icon" class="w-12 h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXlvXgIpIPj35ht3hoscqkoeg-H3ExovTOpURN59pn8qACSr1ExwYFBAO9zFezpIJu-OFjJcg-H0CBGBKj8U3ltasF-Q_4iZZEgEG_tn-0GdH2xzNvssUc_kR9vTU1cNt5dafrspyWOKagTaTGiVRGw262eP4prFsTUcTmXlvRffj9mIsnQ2g1HdC0FtMRKT9VpMD_iBKmDYG4ePvOb4Nc34qVumC21hYUJijNx1QOLFR7cqDhxsztVX4TdS8apssIaF4OUG9eILg"/>
+<p class="text-sm font-medium">鹦鹉</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-soft">
+<img alt="Fish Icon" class="w-12 h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2Bb4bX3hgT9nsncKxJHlWS-JGwBPTFNdo30bfcTQyPDjJGureQ4fG_QpuiiismqBICLdHbfPa8JR0ypUj89PlMUVb5H5E4Dm_DDLcaeTGu0iUlIpiJzy04MbFCvANASdwI9BMB9EyR3lTVtPEJ0cDc7SolZz9439nzbkGg6W1OYyjHfxZGtpDo2nKyfK2MzW9lvzI7mvSqJDUFKgQa8P-HhZbRbjDErd_J1dz4sEQgVBbE_F3EneAFQW-HlEDwfcPmPtmoQGiGNQ"/>
+<p class="text-sm font-medium">鱼</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-soft">
+<img alt="Turtle Icon" class="w-12 h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDSRtHK9qt75C6sJGqaX01xaKrE9V0x8LBHqOzXN_zPH_CqEuhHzZv1NvBir5x104FUls4pV4tAiQDkVBYJgPzmaDN70RYgOIqRAOFKzJftHScwxKllp8R9r2NQmMr_gwSnmvgtMgN31q6u9sKeqcJfEAb_a5gqCg93WgS3Z4BP2AteI9sl-mTZS94MIEXmMX1Ki4xJ1f6TJ2v2yNK5kIsP74e1GSl36QrTfQQOG74fRjLKpMpOcPaN20VsdPMO1xChGyp3f9tplA"/>
+<p class="text-sm font-medium">龟</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-700">
+<div class="w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-text-muted-light dark:text-text-muted-dark">apps</span>
+</div>
+<p class="text-sm font-medium">全部</p>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-soft p-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-base font-bold">热门榜单</h3>
+<a class="text-sm text-text-muted-light dark:text-text-muted-dark flex items-center" href="#">查看更多 <span class="material-symbols-outlined text-base">chevron_right</span></a>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<div class="w-8 text-center text-lg font-bold text-red-500">1</div>
+<img alt="Shorthair Cat" class="w-12 h-12 rounded-lg object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB66WjmhYrBOCgNPbTh-Sw6ipq7Y13cIxeEK3-nHiApqfcO1_HTRyYcRhx2JBfXkSUhd-gTX4k4_4ggAj_tuq1okvWFJYZ1bWtltkeJIOOZwRWFKl-MeYaEL7qEdOBSPUOGiawyvXt8GlbRFVDWlkAzypY1O1basWOrlxMNkNkfWpyFCEveuupFWr6Xm1bSgMqqSKK98pN0sTG7xeWBl52hKfdtijgsD3tX4Qx-VKeBM1BRjsWdjGVR4PfMQpkmt-nwUovemZZyJvE"/>
+<div class="flex-1">
+<p class="font-semibold">英国短毛猫</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark">粘人指数: ★★★★★</p>
+</div>
+<button class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">关注</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 text-center text-lg font-bold text-orange-500">2</div>
+<img alt="Golden Retriever" class="w-12 h-12 rounded-lg object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4iiK9a1xwco_YjyKEZrQ04My2KlE6yZQYxgIFEeGVrqX5EWX7EJn0OWmX3LXI--6AxhKvoyUBh72d61x8fKuNsovYxIpkWqkwOqk4FkTl_bGWsy7CKa4iYrWUIbqgeoZn0DAPjIB7mx3h8GwGQG3mZa0boOwPkgTfNT_FZb3Pnxd2r4V_8L7cCh6FJ3xmgP9CG_PJJB-kgWL1STINXFl1-txxYAMQLKVH4tJXLxgrVbVBrRPJ_Mz73jw4wWC3J4BZ0n9wmmtOCUo"/>
+<div class="flex-1">
+<p class="font-semibold">金毛寻回犬</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark">聪明指数: ★★★★★</p>
+</div>
+<button class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">关注</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 text-center text-lg font-bold text-yellow-500">3</div>
+<img alt="Ragdoll Cat" class="w-12 h-12 rounded-lg object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF9tIIyTL7jU-j2rtaz4DvOdPsEaxRPe1NyZls0I72fGWh5ksrHCAoO1Pn3THGaNG0F5jjg2IvcTqU8L6jB-iS94ahh-M8jD8Gqz_83WPUyJeTBzKcmaUsiLOw8hZulxkE0UwsXhp20J3HNu1FgMnPeEl-zDyUaaVTcG-56dFvviOgo4M7DIDk4EDAsn6-eCgRzXpPK-B8LS_Zc191c0373Fe63FX-oACR3dIuCzklaYMqoWYvqI8zoX6sYa6ERpPgDUUK3Nb1Rf4"/>
+<div class="flex-1">
+<p class="font-semibold">布偶猫</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark">颜值指数: ★★★★★</p>
+</div>
+<button class="bg-gray-200 dark:bg-gray-600 text-text-light dark:text-text-dark px-3 py-1 rounded-full text-sm font-medium">已关注</button>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-soft p-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-base font-bold">评分榜单</h3>
+<a class="text-sm text-text-muted-light dark:text-text-muted-dark flex items-center" href="#">查看更多 <span class="material-symbols-outlined text-base">chevron_right</span></a>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<div class="w-8 text-center text-lg font-bold text-red-500">1</div>
+<img alt="Siberian Husky" class="w-12 h-12 rounded-lg object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKsi5oXFUDq9JQSMquVz8f5YxSWfaDIGW_0tjrTeIxYuOFaYalAv06Jgu6L1jZMLJidQiy_oaC-pLzoMxz9i1OXRK24C6zli7LIvQzwJ9yFvgzBR6_dDr-malV8qQoqvb2gOSa9egLuy_n_75WAvEj9TQNuJGILZYR4ueQVtfOdO_VvafNbhm4w188vZFPrTeBiuajMtO0VBXVWmfAzudPATvxiXcU2akuArzbajIjF1ORmRc__wJF6sYlrMw2b-iPKDfVMCa6Rdw"/>
+<div class="flex-1">
+<p class="font-semibold">哈士奇</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark flex items-center gap-1"><span class="text-accent">★</span> 4.9 <span class="ml-2"> (2.1k 评论)</span></p>
+</div>
+<button class="bg-gray-200 dark:bg-gray-600 text-text-light dark:text-text-dark px-3 py-1 rounded-full text-sm font-medium">已关注</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 text-center text-lg font-bold text-orange-500">2</div>
+<img alt="Corgi" class="w-12 h-12 rounded-lg object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5XoJeyzYcq6Wc57V2c_LcnAPiC0gvpGw2i3Hj6vzs3s5r0oODmhV3cpbp5c0gL0GbQ_APaHhiauu7kJg1B7cHyArN5xBkCTcV5_TLB9thZT0xtRCjz1cYE2FOGmAeXbE88QN3JM4Bzq5Jz-W95ylg5GCO_t1UuxA0dkpjK6W40jjo7bTbm5l7_LLRFMSYVIRzEFqSRiJcRJ93EF8t1-6WDUzlHW_2fD-HiOmgMwgETo1CDwaBQkfjaCLs4LgTRf4LApe3zslUseI"/>
+<div class="flex-1">
+<p class="font-semibold">柯基</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark flex items-center gap-1"><span class="text-accent">★</span> 4.8 <span class="ml-2"> (1.8k 评论)</span></p>
+</div>
+<button class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">关注</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 text-center text-lg font-bold text-yellow-500">3</div>
+<img alt="Shiba Inu" class="w-12 h-12 rounded-lg object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNjhXEa1wDtii2W40ClYWTob8Bk8LfGs0q8GPpWp4vyVa9rqMkNe6xunASRUxKSaT8IlGP8YuhGqDkIUHMAifsV8Fq5UA4C4jpg-mK8Q0KBKUC632AiUwMCocBke_pNmDBDodFKMtapJ3n-08u4WAR6Unme0oPSCjcodWBEpg71s7fxLQsVln_bhJ8LLB_CBwg3K0_1nypXJWOmmUSOWEg6JvbSHja9nynUsYhqdlYE15HuOh1tHiTH6p7-8N4LdS__5HiDZvaYZg"/>
+<div class="flex-1">
+<p class="font-semibold">柴犬</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark flex items-center gap-1"><span class="text-accent">★</span> 4.7 <span class="ml-2"> (1.5k 评论)</span></p>
+</div>
+<button class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">关注</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="sticky bottom-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 pb-safe-bottom z-20">
+<div class="flex justify-around items-center h-16">
+<a class="flex flex-col items-center justify-center text-text-muted-light dark:text-text-muted-dark w-full" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs font-medium">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary w-full" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="text-xs font-medium">分类</span>
+</a>
+<div class="relative w-full flex justify-center">
+<button class="absolute -top-8 flex items-center justify-center size-16 rounded-full bg-accent text-white shadow-lg z-30">
+<span class="material-symbols-outlined text-4xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center text-text-muted-light dark:text-text-muted-dark w-full" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="text-xs font-medium">服务</span>
+</a>
+<a class="flex flex-col items-center justify-center text-text-muted-light dark:text-text-muted-dark w-full" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs font-medium">我的</span>
+</a>
+</div>
+</div>
+</div>
+
+</body></html>

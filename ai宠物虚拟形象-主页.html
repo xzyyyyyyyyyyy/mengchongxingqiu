@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI 宠物虚拟形象</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        font-size: 24px;
+      }
+    </style>
+<script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FF6F61", // Coral
+              "secondary": "#33C8A0", // Mint
+              "accent": "#FFC94A", // Sunshine Yellow
+              "background-light": "#F7F7F9",
+              "background-dark": "#1F2328", // Not used for light theme, but kept for consistency
+              "text-primary": "#1F2328",
+              "text-secondary": "#6B7280"
+            },
+            fontFamily: {
+              "display": ["Noto Sans SC", "SF Pro", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px", 
+              "lg": "12px", 
+              "xl": "16px",
+              "full": "9999px"
+            },
+            boxShadow: {
+              'soft': '0 4px 12px rgba(0, 0, 0, 0.05)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light font-display">
+<div class="relative w-full max-w-lg mx-auto flex flex-col min-h-screen text-text-primary">
+<!-- Top App Bar -->
+<div class="flex items-center p-4 pb-2 justify-between sticky top-0 bg-background-light/80 backdrop-blur-sm z-10">
+<div class="flex size-10 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-text-primary">arrow_back_ios_new</span>
+</div>
+<h1 class="text-text-primary text-xl font-bold leading-tight flex-1 text-center">AI 虚拟形象</h1>
+<div class="flex w-10 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center rounded-full h-10 bg-transparent text-text-primary p-0">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Interactive Pet Display -->
+<div class="px-4 py-3">
+<div class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-white rounded-xl min-h-[320px] shadow-soft" data-alt="A playful 3D rendered virtual pet cat sitting and smiling in the center." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdWg2lfK7nVwX39NvEyi8vj4R5U7ujW0OKqZ9cwb8bSn9gIK6_gCFl7-A42_r1DBlSDd6qvYcmfEDFL5hSl5fAJHYQ3eW5nSMMXmrU-_PxYnmnVmedTs8FWBtYMsXBFxjzeA_J2ETAvjN65v44sjoBvMMcKwlNo1FfwluRSMsOtPpNj8xosFXY2PLybhySiCIURzlA8UP3ozMoqTwGyf3AFRAItSWVpwlECoChpaA0DmI-QrPXgvAqI8FoLd7O0bHxKYf5JDC7HQ0"); background-size: 80%; background-position: bottom center; background-repeat: no-repeat; background-color: #FFF0EE;'>
+<div class="p-4 flex justify-between items-center">
+<button class="flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full h-10 px-4 gap-1.5 shadow-soft">
+<span class="material-symbols-outlined text-secondary" style="font-size: 20px;">pets</span>
+<span class="text-sm font-medium">抚摸</span>
+</button>
+<button class="flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full h-10 px-4 gap-1.5 shadow-soft">
+<span class="material-symbols-outlined text-secondary" style="font-size: 20px;">lunch_dining</span>
+<span class="text-sm font-medium">喂食</span>
+</button>
+<button class="flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full h-10 px-4 gap-1.5 shadow-soft">
+<span class="material-symbols-outlined text-secondary" style="font-size: 20px;">sports_esports</span>
+<span class="text-sm font-medium">玩耍</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="pb-3 sticky top-[68px] bg-background-light z-10">
+<div class="flex border-b border-gray-200 px-4 justify-between">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-primary pb-3 pt-3 flex-1" href="#">
+<p class="text-base font-bold">形象生成</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-text-secondary pb-3 pt-3 flex-1" href="#">
+<p class="text-base font-medium">互动场景</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-text-secondary pb-3 pt-3 flex-1" href="#">
+<p class="text-base font-medium">心情日记</p>
+</a>
+</div>
+</div>
+<div class="flex-1 px-4">
+<!-- Image Upload Card -->
+<div class="flex flex-col items-stretch justify-start rounded-xl bg-white shadow-soft mb-6">
+<div class="w-full bg-center bg-no-repeat aspect-[2/1] bg-cover rounded-t-xl" data-alt="A photo of a user's real pet cat looking curious." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEvbnrP_Hrkva4kZNaWmSBI7IsWKqjfrXSdLeIPEok0TSEgO9sph1qsLQhVTBbTtDSCT7BTet2YDWQM92obSUNNbWE1WvHVrSOzvA6f_6aQ4zpKelkUD_VmkBwutqou9CR16aMkB7YgqwS4Xc_eWmftxbu3uYxHvzQ0rvx2LN9k5Ty7a3NE3ZOQcNvBKcYcy3QOIgsgTLp_8Qh9ZpsveE0l9Auaa5f1Kd5-Monrckgmlhv0eRPFtPr4QDZg-4hrRRGcspOa8cIP58");'></div>
+<div class="flex w-full min-w-72 grow flex-col items-stretch justify-center gap-1 p-4">
+<p class="text-text-primary text-lg font-bold">上传一张爱宠照片</p>
+<p class="text-text-secondary text-base font-normal">生成专属虚拟形象</p>
+</div>
+</div>
+<!-- Style Selection Carousel -->
+<div class="mb-6">
+<h3 class="text-text-primary text-lg font-bold leading-tight tracking-tight mb-3">选择风格</h3>
+<div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
+<button class="flex flex-col items-center gap-2 flex-shrink-0">
+<div class="w-20 h-20 rounded-xl bg-white bg-cover bg-center border-2 border-primary shadow-soft" data-alt="Cartoon style pet image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBLZ193i0BqUsHdABTNH93FzE_N5A0NWnUkoLrP98bb3ndxPj8jHk1gaqrmq2FARMYtHP9t2E9FYAynLJnWKXmWp1cFOOjXvxVc1q3f_8rqTFNJx-zOYOdQa8FxZBL5jSypT8d6VS6RipwVpwJiqBJ9YGFC3Y2oKCPibT4qkdWOoar_uV-g6zo36QtxFymTDy0Mb8WflB_YO5P9SMIK2dmhSEQxXv80D7oSYDs626dCljrwMOC8t-oSp4djqJt-xWgRcmGZQihsOEY')"></div>
+<span class="text-sm font-medium text-primary">卡通风</span>
+</button>
+<button class="flex flex-col items-center gap-2 flex-shrink-0">
+<div class="w-20 h-20 rounded-xl bg-white bg-cover bg-center border-2 border-transparent" data-alt="Q-version style pet image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDyi1kvPPVj9rlhi7H60_FwpGfnLJCKaCSUidqj3eMgnvZqLyg8cIXWAzE1JDEEAhfHWdFjlmIXz_jquTOPBZcBHYVcCYZ5KifLqueKoZwdjs5YNouv6Z9wmRMNAZEkYHOaPl8F7vD4amHJwfgJCR5iO1W4kRQS82WvKvMpOgMjvOOPQdSzhyGTjqDY6FDpu5N8ctSPbjD4vZUm-FQ8jpgBVwle-Kh39oW99QHbfK4fQrmeo4V7Uszx7iocXYy6OTMVPDjoo82DM08')"></div>
+<span class="text-sm font-normal text-text-secondary">Q版可爱</span>
+</button>
+<button class="flex flex-col items-center gap-2 flex-shrink-0">
+<div class="w-20 h-20 rounded-xl bg-white bg-cover bg-center border-2 border-transparent" data-alt="Realistic style pet image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5yCpSARBFHn-tJgW6Z2exQi0F5Qfjzho2zQd5Dc8mASPI4Hf2_LD8yCkH6vw5c42MgzKJk4U51rZyAY0jKy73-rukTREnoPmP3MRtvgFmtxeZMJJs1WtqcWXIiKd5xqwIRm1ZKWfQ7sUp2uXR6SKb8aY0GGDIkB60zH-c6gCC7q7C1HtgZXOZw3Kwdth88dNieKjBRqtGZUDNKc5oS09ovrg0_szN8RBc0qicldaBFSJIoWCYm4EM_DXChrwYL-o8xZhAvpNmMR0')"></div>
+<span class="text-sm font-normal text-text-secondary">写实感</span>
+</button>
+<button class="flex flex-col items-center gap-2 flex-shrink-0">
+<div class="w-20 h-20 rounded-xl bg-white bg-cover bg-center border-2 border-transparent" data-alt="Chinese style pet image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB1kngbVe1YJRa8HFZhVia2QRR59YKY8V-HnDI40Wj7XjxMsenLTB9aKvI2bqqn3qao1LyS7SPtknGX-QxFVw997ZYRfWK9lK7LiYKiuXCD3-A1NLZIfPNF9lTyicOoKxEZnUcAf2yL1xLrRC_XJOlJIbCItlPfxbylLOb0hvVtp64GtxMC_ExsulCUiYzN79jkz5EgjsMVz5kaR0SL2PuqVo9Amu60qxWi7-92GMkEtnqpoi4O0CmIkmvT8VCfCNFtwN4MX-rzf10')"></div>
+<span class="text-sm font-normal text-text-secondary">中国风</span>
+</button>
+</div>
+</div>
+<!-- Detail Adjustments Accordion -->
+<div class="mb-6">
+<h3 class="text-text-primary text-lg font-bold leading-tight tracking-tight mb-3">细节调整</h3>
+<div class="space-y-3">
+<div class="bg-white rounded-xl p-4 shadow-soft">
+<div class="flex justify-between items-center">
+<span class="font-medium">毛色</span>
+<span class="material-symbols-outlined text-text-secondary">expand_more</span>
+</div>
+</div>
+<div class="bg-white rounded-xl p-4 shadow-soft">
+<div class="flex justify-between items-center">
+<span class="font-medium">可爱配饰</span>
+<span class="material-symbols-outlined text-text-secondary">expand_more</span>
+</div>
+</div>
+<div class="bg-white rounded-xl p-4 shadow-soft">
+<div class="flex justify-between items-center">
+<span class="font-medium">面部表情</span>
+<span class="material-symbols-outlined text-text-secondary">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="py-4 space-y-3">
+<button class="w-full flex items-center justify-center h-14 bg-primary text-white rounded-full text-lg font-bold shadow-soft shadow-primary/30">
+                    立即生成
+                </button>
+<div class="grid grid-cols-3 gap-3">
+<button class="w-full flex flex-col items-center justify-center h-14 bg-white rounded-xl text-sm font-medium shadow-soft">
+<span class="material-symbols-outlined text-secondary" style="font-size:24px;">account_circle</span>
+<span>设为头像</span>
+</button>
+<button class="w-full flex flex-col items-center justify-center h-14 bg-white rounded-xl text-sm font-medium shadow-soft">
+<span class="material-symbols-outlined text-accent" style="font-size:24px;">add_reaction</span>
+<span>添加表情</span>
+</button>
+<button class="w-full flex flex-col items-center justify-center h-14 bg-white rounded-xl text-sm font-medium shadow-soft">
+<span class="material-symbols-outlined text-text-secondary" style="font-size:24px;">download</span>
+<span>保存本地</span>
+</button>
+</div>
+</div>
+<div class="h-8"></div>
+</div>
+</div>
+</body></html>

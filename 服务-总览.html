@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="light" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pet App Services</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF6F61",
+            "secondary": "#33C8A0",
+            "accent": "#FFC94A",
+            "background-light": "#F7F7F9",
+            "background-dark": "#1F2328",
+            "text-primary": "#1F2328",
+            "text-secondary": "#6b7280"
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans", "Noto Sans SC", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+        font-family: 'Noto Sans SC', sans-serif;
+    }
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary dark:text-white">
+<div class="relative w-full max-w-md mx-auto flex flex-col min-h-screen">
+<div class="flex-shrink-0 pt-16 px-4">
+<h1 class="text-2xl font-bold text-text-primary dark:text-white">服务中心</h1>
+</div>
+<div class="flex-shrink-0 p-4">
+<div class="flex flex-col items-center justify-between rounded-xl bg-accent/20 dark:bg-accent/30 shadow-sm p-4 relative overflow-hidden h-48">
+<div class="w-full text-center z-10">
+<h2 class="text-text-primary dark:text-white text-xl font-bold leading-tight">AI扫描定制宠物3D形象</h2>
+<p class="text-text-secondary dark:text-gray-400 text-sm mt-1">上传宠物照片，生成专属3D萌宠</p>
+</div>
+<div class="relative w-40 h-24">
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-center bg-no-repeat bg-contain" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2w7c8IxNQtYNURZFw3GHu2HY9q1n2-SNPDzMIfSyr3-6bRy3mMInVyb4d7iDOaCgyqJL9lwuZ6k4qw3f8CIexBErlL-U7OXjCfC3XD7mCVw6O2uDXJTuB2Bqgev70H1V8iNJDK1bLdB2hfC-o5-3UTtRxBKaBZHWTcVbLrRw8I4TxTQ04CtFieBI08GP1C8zVQyz60UzkAcHv2GaUxBqli27iKKdgGnMBp4KPS-I3yZ1qY70O4wehUx-twu576v6GmG6SSrILONA");'></div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-2.5 rounded-full bg-accent text-white font-medium text-sm mt-2 absolute bottom-4 left-1/2 -translate-x-1/2 max-w-[calc(100%-2rem)]">
+<span class="material-symbols-outlined">pets</span>
+<span>立即生成</span>
+</button>
+</div>
+</div>
+<div class="flex-shrink-0 p-4 pt-0">
+<div class="flex items-center justify-between rounded-xl bg-white dark:bg-background-dark/50 shadow-sm p-4 relative overflow-hidden">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 flex items-center justify-center bg-secondary/10 dark:bg-secondary/20 rounded-full">
+<span class="material-symbols-outlined text-secondary text-3xl">health_and_safety</span>
+</div>
+<div>
+<h2 class="text-text-primary dark:text-white text-base font-bold leading-tight">健康监测中心</h2>
+<p class="text-text-secondary dark:text-gray-400 text-sm">记录饮食饮水，关注健康趋势</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-secondary dark:text-gray-400">chevron_right</span>
+</div>
+</div>
+<div class="flex-shrink-0">
+<h2 class="text-text-primary dark:text-white text-xl font-bold leading-tight px-4 pb-2 pt-0">今日待办</h2>
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-stretch p-4 pt-0 gap-3">
+<div class="flex h-full flex-1 flex-col gap-3 rounded-lg min-w-64 bg-white dark:bg-background-dark/50 p-4 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-secondary/10 dark:bg-secondary/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-2xl">vaccines</span>
+</div>
+<div>
+<p class="text-text-primary dark:text-white text-base font-bold leading-normal">驱虫提醒</p>
+<p class="text-text-secondary dark:text-gray-400 text-sm font-normal leading-normal">该给波比体内驱虫啦</p>
+</div>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-3 rounded-lg min-w-64 bg-white dark:bg-background-dark/50 p-4 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-secondary/10 dark:bg-secondary/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-2xl">calendar_month</span>
+</div>
+<div>
+<p class="text-text-primary dark:text-white text-base font-bold leading-normal">预约进度</p>
+<p class="text-text-secondary dark:text-gray-400 text-sm font-normal leading-normal">洗护美容已预约，明天下午2点</p>
+</div>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col justify-center gap-3 rounded-lg min-w-64 bg-accent/10 dark:bg-accent/20 p-4 shadow-sm border border-dashed border-accent">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-accent/20 dark:bg-accent/30 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-accent text-2xl">add_task</span>
+</div>
+<div>
+<p class="text-text-primary dark:text-white text-base font-bold leading-normal">添加新日程</p>
+<p class="text-text-secondary dark:text-gray-400 text-sm font-normal leading-normal">别忘了把新计划加入日历哦</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-shrink-0 p-4 pt-0">
+<div class="grid grid-cols-4 gap-4 text-center">
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-primary text-3xl">medical_services</span></div>
+<h2 class="text-text-primary dark:text-white text-sm font-medium leading-tight">医疗记录</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-primary text-3xl">store</span></div>
+<h2 class="text-text-primary dark:text-white text-sm font-medium leading-tight">附近服务</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-primary text-3xl">door_front</span></div>
+<h2 class="text-text-primary dark:text-white text-sm font-medium leading-tight">上门喂养</h2>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-primary text-3xl">more_horiz</span></div>
+<h2 class="text-text-primary dark:text-white text-sm font-medium leading-tight">更多功能</h2>
+</div>
+</div>
+</div>
+<div class="flex-shrink-0 p-4 pt-2">
+<div class="flex flex-col items-stretch justify-start rounded-xl bg-white dark:bg-background-dark/50 shadow-sm p-4 relative">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="text-text-primary dark:text-white text-xl font-bold leading-tight">宠物相册</h2>
+</div>
+<span class="material-symbols-outlined text-text-secondary dark:text-gray-400">chevron_right</span>
+</div>
+<div class="mt-2 text-text-secondary dark:text-gray-400 text-sm">自动整理和生成您与宠物的专属回忆</div>
+<div class="grid grid-cols-3 gap-3 my-4">
+<div class="aspect-square bg-cover bg-center rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAMGAeV30eYL7A612cbiu07PjFPcqbIb8DCvfqOrKEVjVQFgdH5K6-pr3OEbuYZHt9Vo4w5TDuU4SOMFQGYmN5TT3PRS-wyw1IN4r00nqCqfXj6HcJbqTDFsOgjb7kvYacP9njor37PRI5kXkoN0UfcrjgSGAqJYNn8Ny33uoD7kllMWFUKfbZffR6P5-Ttv18xfgjqhNOH24l6i3uUED5bTbKfthIE9R5zHEXFPNJIjDo9-flhIVr_Zi1_eqpzPPkAnDzUP2WPbHk");'>
+</div>
+<div class="aspect-square bg-cover bg-center rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCL7aoTuIZ6aw8Mv9kDd87EnCKKLrJfrnkto-fCIcLsPmNeYqaRb89_0XoTpitgqZkZl0PgzZ7vc4iHWqSyTzaeWLTfXhQfv8O-UixUcq4On30SL1bBTR7F437s_01IzLQpLGBFalpJerZOPMhXoDhwJOD2on3IUuOdPvBmiLcbJZLMRt023zBR3Ot0gYlRHBbJvkTs9iZ6eJVbr5m1dzNy1cb62ck0y--K2CouXu7kIeC0z-9GEkEE93OcOD_SGI62Uu3C46PE3uA");'>
+</div>
+<div class="aspect-square rounded-lg flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500">photo_library</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-accent/20 dark:bg-accent/30 text-accent font-medium">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span>AI 智能回忆相册</span>
+</button>
+</div>
+</div>
+<div class="flex-grow"></div>
+<div class="sticky bottom-0 left-0 right-0 w-full bg-white/80 dark:bg-background-dark/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
+<div class="flex justify-around items-center h-20 relative">
+<a class="flex flex-col items-center gap-1 text-text-secondary dark:text-gray-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs">首页</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary dark:text-gray-400" href="#">
+<span class="material-symbols-outlined">apps</span>
+<span class="text-xs">分类</span>
+</a>
+<div class="w-16 h-16"></div>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">cut</span>
+<span class="text-xs">服务</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary dark:text-gray-400" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs">我的</span>
+</a>
+<div class="absolute -top-7">
+<button class="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined text-white text-4xl">add</span>
+</button>
+</div>
+</div>
+<div class="h-[env(safe-area-inset-bottom)] bg-white/80 dark:bg-background-dark/80"></div>
+</div>
+</div>
+</body></html>
