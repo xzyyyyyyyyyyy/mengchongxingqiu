@@ -1,7 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { postService } from '../api/postService';
 
 const CommunityPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [topPosts, setTopPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadTopPosts();
+  }, [selectedCategory]);
+
+  const loadTopPosts = async () => {
+    try {
+      setLoading(true);
+      const params = { 
+        limit: 9,
+        sort: 'likes'
+      };
+      if (selectedCategory !== 'all') {
+        params.category = selectedCategory;
+      }
+      const response = await postService.getPosts(params);
+      setTopPosts(response.data.data || []);
+    } catch (error) {
+      console.error('Failed to load top posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const categories = [
     { id: 'all', name: '全部', icon: '🌟', color: 'bg-gray-100' },
@@ -14,9 +40,9 @@ const CommunityPage = () => {
   ];
 
   const rankings = [
-    { name: '可爱榜', pets: ['Luna', 'Max', 'Bella'], icon: '😍' },
-    { name: '乖巧榜', pets: ['Charlie', 'Daisy', 'Rocky'], icon: '😇' },
-    { name: '活力榜', pets: ['Buddy', 'Lucy', 'Cooper'], icon: '⚡' },
+    { name: '热门榜', icon: '😍', type: 'likes' },
+    { name: '互动榜', icon: '😇', type: 'comments' },
+    { name: '热度榜', icon: '⚡', type: 'views' },
   ];
 
   return (
@@ -48,38 +74,64 @@ const CommunityPage = () => {
 
         {/* Rankings Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-text-primary mb-4">宠物排行榜</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {rankings.map((ranking, index) => (
-              <div key={index} className="card">
-                <div className="flex items-center space-x-2 mb-4">
-                  <span className="text-2xl">{ranking.icon}</span>
-                  <h3 className="text-xl font-bold">{ranking.name}</h3>
-                </div>
-                <div className="space-y-3">
-                  {ranking.pets.map((pet, petIndex) => (
-                    <div
-                      key={petIndex}
-                      className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-                    >
-                      <div className={`w-8 h-8 flex items-center justify-center rounded-full ${
-                        petIndex === 0 ? 'bg-yellow-400 text-white' :
-                        petIndex === 1 ? 'bg-gray-400 text-white' :
-                        'bg-orange-400 text-white'
-                      } font-bold`}>
-                        {petIndex + 1}
-                      </div>
-                      <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
-                      <div className="flex-1">
-                        <p className="font-medium">{pet}</p>
-                        <p className="text-sm text-gray-600">获得 {Math.floor(Math.random() * 1000)} 票</p>
-                      </div>
+          <h2 className="text-2xl font-bold text-text-primary mb-4">热门排行榜</h2>
+          {loading ? (
+            <div className="flex justify-center items-center h-48">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {rankings.map((ranking, index) => {
+                const sortedPosts = [...topPosts]
+                  .sort((a, b) => {
+                    if (ranking.type === 'likes') return (b.likesCount || 0) - (a.likesCount || 0);
+                    if (ranking.type === 'comments') return (b.commentsCount || 0) - (a.commentsCount || 0);
+                    return (b.views || 0) - (a.views || 0);
+                  })
+                  .slice(0, 3);
+
+                return (
+                  <div key={index} className="card">
+                    <div className="flex items-center space-x-2 mb-4">
+                      <span className="text-2xl">{ranking.icon}</span>
+                      <h3 className="text-xl font-bold">{ranking.name}</h3>
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+                    <div className="space-y-3">
+                      {sortedPosts.length > 0 ? sortedPosts.map((post, postIndex) => (
+                        <div
+                          key={postIndex}
+                          className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                        >
+                          <div className={`w-8 h-8 flex items-center justify-center rounded-full ${
+                            postIndex === 0 ? 'bg-yellow-400 text-white' :
+                            postIndex === 1 ? 'bg-gray-400 text-white' :
+                            'bg-orange-400 text-white'
+                          } font-bold`}>
+                            {postIndex + 1}
+                          </div>
+                          <div className="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
+                            {post.author?.avatar && (
+                              <img src={post.author.avatar} alt="" className="w-full h-full object-cover" />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium line-clamp-1">{post.author?.username || '未知用户'}</p>
+                            <p className="text-sm text-gray-600">
+                              {ranking.type === 'likes' && `${post.likesCount || 0} 赞`}
+                              {ranking.type === 'comments' && `${post.commentsCount || 0} 评论`}
+                              {ranking.type === 'views' && `${post.views || 0} 浏览`}
+                            </p>
+                          </div>
+                        </div>
+                      )) : (
+                        <p className="text-gray-500 text-center py-4">暂无数据</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Topics Section */}

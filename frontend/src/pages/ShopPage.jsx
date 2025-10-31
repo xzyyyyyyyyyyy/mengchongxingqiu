@@ -1,7 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { productService } from '../api/productService';
 
 const ShopPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    loadProducts();
+  }, [selectedCategory, searchTerm]);
+
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      const params = {};
+      if (selectedCategory !== 'all') {
+        params.category = selectedCategory;
+      }
+      if (searchTerm) {
+        params.search = searchTerm;
+      }
+      const response = await productService.getProducts(params);
+      setProducts(response.data.data || []);
+    } catch (error) {
+      console.error('Failed to load products:', error);
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const categories = [
     { id: 'all', name: '全部', icon: '🛍️' },
@@ -12,79 +40,6 @@ const ShopPage = () => {
     { id: 'health', name: '健康保健', icon: '💊' },
     { id: 'clothing', name: '服饰配件', icon: '👕' },
   ];
-
-  const products = [
-    {
-      id: 1,
-      name: '皇家猫粮 全价成猫粮 2kg',
-      category: 'food',
-      price: 188,
-      originalPrice: 228,
-      sales: 1234,
-      rating: 4.8,
-      image: '/product1.jpg',
-      tags: ['热销', '包邮'],
-    },
-    {
-      id: 2,
-      name: '宠物自动饮水机 2L大容量',
-      category: 'supplies',
-      price: 89,
-      originalPrice: 129,
-      sales: 856,
-      rating: 4.9,
-      image: '/product2.jpg',
-      tags: ['新品', '智能'],
-    },
-    {
-      id: 3,
-      name: '逗猫棒羽毛玩具套装',
-      category: 'toys',
-      price: 29.9,
-      originalPrice: 49.9,
-      sales: 2341,
-      rating: 4.7,
-      image: '/product3.jpg',
-      tags: ['爆款'],
-    },
-    {
-      id: 4,
-      name: '宠物除毛梳 不锈钢针梳',
-      category: 'grooming',
-      price: 39,
-      originalPrice: 59,
-      sales: 678,
-      rating: 4.6,
-      image: '/product4.jpg',
-      tags: ['推荐'],
-    },
-    {
-      id: 5,
-      name: '狗狗营养膏 120g',
-      category: 'health',
-      price: 45,
-      originalPrice: 68,
-      sales: 543,
-      rating: 4.8,
-      image: '/product5.jpg',
-      tags: ['热销'],
-    },
-    {
-      id: 6,
-      name: '萌宠卫衣 春秋款',
-      category: 'clothing',
-      price: 58,
-      originalPrice: 88,
-      sales: 432,
-      rating: 4.9,
-      image: '/product6.jpg',
-      tags: ['新品'],
-    },
-  ];
-
-  const filteredProducts = selectedCategory === 'all'
-    ? products
-    : products.filter(p => p.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-background-light">
@@ -102,8 +57,10 @@ const ShopPage = () => {
               type="text"
               placeholder="搜索商品..."
               className="input-field flex-1"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className="btn-primary">
+            <button className="btn-primary" onClick={loadProducts}>
               搜索
             </button>
           </div>
@@ -139,63 +96,88 @@ const ShopPage = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="card hover:shadow-xl transition-all cursor-pointer p-0 overflow-hidden"
-            >
-              {/* Product Image */}
-              <div className="w-full aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative">
-                <span className="text-6xl">
-                  {categories.find(c => c.id === product.category)?.icon}
-                </span>
-                {/* Tags */}
-                {product.tags.length > 0 && (
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">暂无商品</p>
+            <p className="text-gray-400 text-sm mt-2">请尝试其他搜索条件</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {products.map((product) => (
+              <div
+                key={product._id}
+                className="card hover:shadow-xl transition-all cursor-pointer p-0 overflow-hidden"
+              >
+                {/* Product Image */}
+                <div className="w-full aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative">
+                  {product.images && product.images.length > 0 ? (
+                    <img
+                      src={product.images[0].url}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-6xl">
+                      {categories.find(c => c.id === product.category?.main)?.icon}
+                    </span>
+                  )}
+                  {/* Tags */}
                   <div className="absolute top-2 left-2 flex gap-1">
-                    {product.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-red-500 text-white text-xs rounded"
-                      >
-                        {tag}
+                    {product.isFeatured && (
+                      <span className="px-2 py-1 bg-red-500 text-white text-xs rounded">
+                        热销
                       </span>
-                    ))}
+                    )}
+                    {product.shipping?.isFreeShipping && (
+                      <span className="px-2 py-1 bg-green-500 text-white text-xs rounded">
+                        包邮
+                      </span>
+                    )}
                   </div>
-                )}
-              </div>
-
-              {/* Product Info */}
-              <div className="p-3 space-y-2">
-                <h3 className="text-sm font-medium text-text-primary line-clamp-2 h-10">
-                  {product.name}
-                </h3>
-
-                {/* Rating */}
-                <div className="flex items-center text-xs">
-                  <span className="text-yellow-400">⭐</span>
-                  <span className="ml-1">{product.rating}</span>
-                  <span className="ml-2 text-gray-500">已售 {product.sales}</span>
                 </div>
 
-                {/* Price */}
-                <div className="flex items-baseline space-x-2">
-                  <span className="text-primary font-bold text-lg">
-                    ¥{product.price}
-                  </span>
-                  <span className="text-gray-400 text-sm line-through">
-                    ¥{product.originalPrice}
-                  </span>
-                </div>
+                {/* Product Info */}
+                <div className="p-3 space-y-2">
+                  <h3 className="text-sm font-medium text-text-primary line-clamp-2 h-10">
+                    {product.name}
+                  </h3>
 
-                {/* Add to Cart Button */}
-                <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-opacity-90 transition-all text-sm font-medium">
-                  加入购物车
-                </button>
+                  {/* Rating */}
+                  <div className="flex items-center text-xs">
+                    <span className="text-yellow-400">⭐</span>
+                    <span className="ml-1">
+                      {product.rating?.average?.toFixed(1) || '0.0'}
+                    </span>
+                    <span className="ml-2 text-gray-500">
+                      已售 {product.salesCount || 0}
+                    </span>
+                  </div>
+
+                  {/* Price */}
+                  <div className="flex items-baseline space-x-2">
+                    <span className="text-primary font-bold text-lg">
+                      ¥{product.pricing?.currentPrice}
+                    </span>
+                    {product.pricing?.originalPrice > product.pricing?.currentPrice && (
+                      <span className="text-gray-400 text-sm line-through">
+                        ¥{product.pricing?.originalPrice}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Add to Cart Button */}
+                  <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-opacity-90 transition-all text-sm font-medium">
+                    加入购物车
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Service Features */}
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
