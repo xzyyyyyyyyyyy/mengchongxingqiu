@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import PetsPage from './pages/PetsPage';
 import PetDetailPage from './pages/PetDetailPage';
+import AddPetPage from './pages/AddPetPage';
 import CommunityPage from './pages/CommunityPage';
 import ServicesPage from './pages/ServicesPage';
 import ShopPage from './pages/ShopPage';
@@ -52,6 +53,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <PetsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pets/new"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AddPetPage />
                 </Layout>
               </ProtectedRoute>
             }
