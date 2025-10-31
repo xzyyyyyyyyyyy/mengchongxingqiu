@@ -78,6 +78,17 @@ const Layout = ({ children }) => {
       {/* Main Content */}
       <main>{children}</main>
 
+      {/* Floating Action Button */}
+      <Link
+        to="/posts/create"
+        className="fixed bottom-20 md:bottom-8 right-8 w-14 h-14 bg-accent hover:bg-accent/90 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 z-40"
+        title="发布动态"
+      >
+        <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+      </Link>
+
       {/* Bottom Navigation (Mobile) */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
         <div className="flex justify-around items-center h-16">

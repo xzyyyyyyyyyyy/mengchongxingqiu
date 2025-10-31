@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
 
 const CommunityPage = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [topPosts, setTopPosts] = useState([]);
+  const [trendingHashtags, setTrendingHashtags] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const loadTopPosts = useCallback(async () => {
@@ -20,14 +23,26 @@ const CommunityPage = () => {
       setTopPosts(response.data.data || []);
     } catch (error) {
       console.error('Failed to load top posts:', error);
+      setTopPosts([]);
     } finally {
       setLoading(false);
     }
   }, [selectedCategory]);
 
+  const loadTrendingHashtags = useCallback(async () => {
+    try {
+      const response = await postService.getTrendingHashtags(6);
+      setTrendingHashtags(response.data.data || []);
+    } catch (error) {
+      console.error('Failed to load trending hashtags:', error);
+      setTrendingHashtags([]);
+    }
+  }, []);
+
   useEffect(() => {
     loadTopPosts();
-  }, [loadTopPosts]);
+    loadTrendingHashtags();
+  }, [loadTopPosts, loadTrendingHashtags]);
 
   const categories = [
     { id: 'all', name: '全部', icon: '🌟', color: 'bg-gray-100' },
@@ -138,25 +153,42 @@ const CommunityPage = () => {
         <div>
           <h2 className="text-2xl font-bold text-text-primary mb-4">热门话题</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { tag: '新手养宠', posts: 1234, description: '养宠新手交流经验' },
-              { tag: '宠物医疗', posts: 892, description: '健康问题咨询讨论' },
-              { tag: '美食分享', posts: 756, description: '分享宠物美食食谱' },
-              { tag: '训练技巧', posts: 654, description: '宠物训练方法分享' },
-              { tag: '萌宠日常', posts: 2341, description: '记录宠物日常生活' },
-              { tag: '宠物旅行', posts: 432, description: '带宠物出游攻略' },
-            ].map((topic, index) => (
-              <div
-                key={index}
-                className="card hover:shadow-lg transition-shadow cursor-pointer"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-lg font-bold text-primary">#{topic.tag}</h3>
-                  <span className="text-sm text-gray-500">{topic.posts} 帖</span>
+            {trendingHashtags.length > 0 ? (
+              trendingHashtags.map((topic, index) => (
+                <div
+                  key={index}
+                  onClick={() => navigate(`/community/hashtag/${topic.hashtag}`)}
+                  className="card hover:shadow-lg transition-shadow cursor-pointer"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-lg font-bold text-primary">#{topic.hashtag}</h3>
+                    <span className="text-sm text-gray-500">{topic.count} 帖</span>
+                  </div>
+                  <p className="text-sm text-gray-600">点击查看相关内容</p>
                 </div>
-                <p className="text-sm text-gray-600">{topic.description}</p>
-              </div>
-            ))}
+              ))
+            ) : (
+              // Fallback mock data when no real data available
+              [
+                { tag: '新手养宠', posts: 0, description: '暂无帖子' },
+                { tag: '宠物医疗', posts: 0, description: '暂无帖子' },
+                { tag: '美食分享', posts: 0, description: '暂无帖子' },
+                { tag: '训练技巧', posts: 0, description: '暂无帖子' },
+                { tag: '萌宠日常', posts: 0, description: '暂无帖子' },
+                { tag: '宠物旅行', posts: 0, description: '暂无帖子' },
+              ].map((topic, index) => (
+                <div
+                  key={index}
+                  className="card hover:shadow-lg transition-shadow cursor-pointer opacity-60"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-lg font-bold text-primary">#{topic.tag}</h3>
+                    <span className="text-sm text-gray-500">{topic.posts} 帖</span>
+                  </div>
+                  <p className="text-sm text-gray-600">{topic.description}</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

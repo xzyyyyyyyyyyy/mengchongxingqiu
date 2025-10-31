@@ -203,6 +203,110 @@ const seedServices = async (userId) => {
   console.log('Services seeded successfully');
 };
 
+const seedPosts = async (userId, petId) => {
+  const posts = [
+    {
+      author: userId,
+      pet: petId,
+      content: '今天带着我家小猫咪去体检了，医生说一切健康！😊',
+      category: 'daily',
+      hashtags: ['猫咪日常', '健康检查', '新手养猫'],
+      likesCount: 45,
+      commentsCount: 8,
+      views: 230
+    },
+    {
+      author: userId,
+      content: '分享一个超好用的宠物美食食谱，我家狗狗超爱吃！',
+      category: 'food',
+      hashtags: ['宠物美食', '狗狗', '食谱分享'],
+      likesCount: 67,
+      commentsCount: 12,
+      views: 345
+    },
+    {
+      author: userId,
+      content: '第一次训练成功啦！坐下、握手都学会了 🐾',
+      category: 'training',
+      hashtags: ['训练技巧', '狗狗训练', '新手养狗'],
+      likesCount: 89,
+      commentsCount: 15,
+      views: 456
+    },
+    {
+      author: userId,
+      content: '猫咪今天特别活泼，玩了一下午的逗猫棒 😺',
+      category: 'funny',
+      hashtags: ['萌宠日常', '猫咪', '搞笑瞬间'],
+      likesCount: 123,
+      commentsCount: 20,
+      views: 567
+    },
+    {
+      author: userId,
+      content: '周末带狗狗去公园，遇到了好多小伙伴！',
+      category: 'daily',
+      hashtags: ['宠物旅行', '户外活动', '狗狗社交'],
+      likesCount: 78,
+      commentsCount: 10,
+      views: 289
+    },
+    {
+      author: userId,
+      content: '新手养宠必看！这些事情一定要注意⚠️',
+      category: 'other',
+      hashtags: ['新手养宠', '养宠知识', '必看攻略'],
+      likesCount: 156,
+      commentsCount: 25,
+      views: 789
+    }
+  ];
+
+  await Post.insertMany(posts);
+  console.log('Posts seeded successfully');
+};
+
+const seedPets = async (userId) => {
+  const pets = [
+    {
+      owner: userId,
+      name: '小橘',
+      species: 'cat',
+      breed: '橘猫',
+      gender: 'male',
+      birthDate: new Date('2022-03-15'),
+      appearance: {
+        color: '橘色',
+        weight: 4.5
+      },
+      personality: {
+        temperament: '活泼好动',
+        traits: ['粘人', '爱玩', '食欲好']
+      }
+    },
+    {
+      owner: userId,
+      name: '旺财',
+      species: 'dog',
+      breed: '金毛',
+      gender: 'male',
+      birthDate: new Date('2021-06-20'),
+      appearance: {
+        color: '金黄色',
+        weight: 28
+      },
+      personality: {
+        temperament: '温顺友好',
+        traits: ['聪明', '听话', '忠诚']
+      }
+    }
+  ];
+
+  const createdPets = await Pet.insertMany(pets);
+  console.log('Pets seeded successfully');
+  return createdPets;
+};
+
 const seedData = async () => {
   try {
     await connectDB();
@@ -211,6 +315,8 @@ const seedData = async () => {
     console.log('Clearing existing data...');
     await Product.deleteMany({});
     await Service.deleteMany({});
+    await Post.deleteMany({});
+    await Pet.deleteMany({});
     
     // Find or create admin user
     let adminUser = await User.findOne({ email: 'admin@mengchong.com' });
@@ -228,11 +334,19 @@ const seedData = async () => {
     // Seed data
     await seedProducts(adminUser._id);
     await seedServices(adminUser._id);
+    const pets = await seedPets(adminUser._id);
+    if (pets && pets.length > 0) {
+      await seedPosts(adminUser._id, pets[0]._id);
+    }
 
     console.log('\n✅ Database seeded successfully!');
     console.log('\nAdmin login credentials:');
     console.log('Email: admin@mengchong.com');
     console.log('Password: admin123');
+    console.log('\nSample data created:');
+    console.log('- Products and Services');
+    console.log('- Sample Pets');
+    console.log('- Sample Posts with Hashtags');
     
     process.exit(0);
   } catch (error) {

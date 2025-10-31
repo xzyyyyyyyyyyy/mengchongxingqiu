@@ -16,6 +16,9 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminServices from './pages/admin/AdminServices';
 import AdminPosts from './pages/admin/AdminPosts';
+import HashtagPostsPage from './pages/HashtagPostsPage';
+import PostDetailPage from './pages/PostDetailPage';
+import CreatePostPage from './pages/CreatePostPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -141,6 +144,36 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <ProfilePage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/community/hashtag/:hashtag"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <HashtagPostsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/posts/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PostDetailPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/posts/create"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CreatePostPage />
                 </Layout>
               </ProtectedRoute>
             }
