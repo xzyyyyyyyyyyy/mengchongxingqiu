@@ -20,6 +20,9 @@ import AdminPosts from './pages/admin/AdminPosts';
 import HashtagPostsPage from './pages/HashtagPostsPage';
 import PostDetailPage from './pages/PostDetailPage';
 import CreatePostPage from './pages/CreatePostPage';
+import HealthCenterPage from './pages/HealthCenterPage';
+import AddHealthLogPage from './pages/AddHealthLogPage';
+import HealthHistoryPage from './pages/HealthHistoryPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -186,6 +189,30 @@ function App() {
                 <Layout>
                   <CreatePostPage />
                 </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pets/:petId/health"
+            element={
+              <ProtectedRoute>
+                <HealthCenterPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pets/:petId/health/add"
+            element={
+              <ProtectedRoute>
+                <AddHealthLogPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pets/:petId/health/history"
+            element={
+              <ProtectedRoute>
+                <HealthHistoryPage />
               </ProtectedRoute>
             }
           />
