@@ -132,6 +132,16 @@ exports.createPost = async (req, res) => {
   try {
     req.body.author = req.user.id;
 
+    // Handle uploaded images
+    if (req.files && req.files.length > 0) {
+      req.body.media = req.files.map(file => ({
+        type: 'image',
+        url: `/uploads/posts/${file.filename}`,
+        thumbnail: `/uploads/posts/${file.filename}` // In a real app, you'd generate thumbnails
+      }));
+      req.body.mediaType = 'image';
+    }
+
     const post = await Post.create(req.body);
 
     res.status(201).json({

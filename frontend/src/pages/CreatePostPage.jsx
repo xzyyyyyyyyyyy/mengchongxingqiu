@@ -10,6 +10,8 @@ const CreatePostPage = () => {
     hashtags: ''
   });
   const [submitting, setSubmitting] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   const categories = [
     { value: 'daily', label: '日常', icon: '📝' },
@@ -23,6 +25,42 @@ const CreatePostPage = () => {
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const handleImageSelect = (e) => {
+    const files = Array.from(e.target.files);
+    
+    // Limit to 9 images
+    if (files.length + selectedImages.length > 9) {
+      setError('最多只能上传9张图片');
+      return;
+    }
+
+    // Check file size (10MB each)
+    const maxSize = 10 * 1024 * 1024;
+    const invalidFiles = files.filter(file => file.size > maxSize);
+    if (invalidFiles.length > 0) {
+      setError('单个图片大小不能超过10MB');
+      return;
+    }
+
+    setSelectedImages([...selectedImages, ...files]);
+
+    // Create previews
+    const newPreviews = files.map(file => URL.createObjectURL(file));
+    setImagePreviews([...imagePreviews, ...newPreviews]);
+    setError('');
+  };
+
+  const removeImage = (index) => {
+    const newImages = selectedImages.filter((_, i) => i !== index);
+    const newPreviews = imagePreviews.filter((_, i) => i !== index);
+    
+    // Revoke the URL to free memory
+    URL.revokeObjectURL(imagePreviews[index]);
+    
+    setSelectedImages(newImages);
+    setImagePreviews(newPreviews);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,12 +80,23 @@ const CreatePostPage = () => {
         .map(tag => tag.trim().replace(/^#/, ''))
         .filter(tag => tag.length > 0);
 
-      await postService.createPost({
-        content: formData.content,
-        category: formData.category,
-        hashtags,
-        mediaType: 'text'
+      // Create FormData for file upload
+      const postData = new FormData();
+      postData.append('content', formData.content);
+      postData.append('category', formData.category);
+      postData.append('mediaType', selectedImages.length > 0 ? 'image' : 'text');
+      
+      // Add hashtags
+      hashtags.forEach(tag => {
+        postData.append('hashtags[]', tag);
       });
+
+      // Add images
+      selectedImages.forEach(image => {
+        postData.append('images', image);
+      });
+
+      await postService.createPostWithImages(postData);
 
       setSuccess('发布成功！');
       setTimeout(() => navigate('/'), 1000);
@@ -107,6 +156,63 @@ const CreatePostPage = () => {
             <p className="text-sm text-gray-500 mt-1">
               {formData.content.length} / 2000
             </p>
+          </div>
+
+          {/* Image Upload */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              图片（可选）
+            </label>
+            
+            {/* Image Previews */}
+            {imagePreviews.length > 0 && (
+              <div className="grid grid-cols-3 gap-3 mb-3">
+                {imagePreviews.map((preview, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={preview}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-32 object-cover rounded-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Upload Button */}
+            {selectedImages.length < 9 && (
+              <div>
+                <input
+                  type="file"
+                  id="image-upload"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageSelect}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="image-upload"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span className="text-sm font-medium">添加图片</span>
+                </label>
+                <p className="text-xs text-gray-500 mt-1">
+                  最多9张，每张不超过10MB
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Category */}

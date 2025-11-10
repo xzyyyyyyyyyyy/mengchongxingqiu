@@ -13,6 +13,14 @@ export const postService = {
     return await axios.post('/posts', postData);
   },
 
+  createPostWithImages: async (formData) => {
+    return await axios.post('/posts', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+
   updatePost: async (postId, postData) => {
     return await axios.put(`/posts/${postId}`, postData);
   },
