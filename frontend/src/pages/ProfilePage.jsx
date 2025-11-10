@@ -179,7 +179,7 @@ const EnhancedProfilePage = () => {
                 </button>
 
                 <button 
-                  onClick={() => navigate('/settings')}
+                  onClick={() => navigate('/history')}
                   className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
                 >
                   <svg className="w-8 h-8 text-purple-500 mb-2" fill="currentColor" viewBox="0 0 20 20">

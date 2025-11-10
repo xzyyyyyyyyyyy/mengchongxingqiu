@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
+import { historyService } from '../api/historyService';
 import { useAuth } from '../contexts/AuthContext';
 import { isOwner as checkIsOwner } from '../utils/userUtils';
 
@@ -22,6 +23,13 @@ const PostDetailPage = () => {
       const response = await postService.getPost(id);
       // Handle both response formats for consistency
       setPost(response.data?.data || response.data);
+      
+      // Track browsing history
+      try {
+        await historyService.addToHistory('post', id);
+      } catch (err) {
+        console.log('Failed to track history:', err);
+      }
     } catch (error) {
       console.error('Failed to load post:', error);
     } finally {
