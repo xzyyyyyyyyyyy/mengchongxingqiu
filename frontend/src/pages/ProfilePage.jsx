@@ -103,7 +103,7 @@ const ProfilePage = () => {
   ];
 
   const quickActions = [
-    { name: '宠物证件夹', icon: '📋', path: '/documents', disabled: true },
+    { name: 'AI虚拟形象', icon: '🎭', path: '/pets/avatar', disabled: false },
     { name: '健康记录导出', icon: '📄', path: '/export', disabled: true },
     { name: '积分商城', icon: '🎁', path: '/points', disabled: true },
     { name: '邀请好友', icon: '👥', path: '/invite', disabled: true },
@@ -264,7 +264,10 @@ const ProfilePage = () => {
                   <span>🔒 隐私设置</span>
                   <span className="text-gray-400">›</span>
                 </button>
-                <button className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors flex items-center justify-between">
+                <button 
+                  onClick={() => navigate('/help')}
+                  className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors flex items-center justify-between"
+                >
                   <span>❓ 帮助与反馈</span>
                   <span className="text-gray-400">›</span>
                 </button>

@@ -309,7 +309,16 @@ const PetDetailPage = () => {
 
             {/* Health Summary */}
             <div className="card">
-              <h3 className="text-xl font-bold mb-4">健康摘要</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold">健康摘要</h3>
+                <button
+                  onClick={() => navigate(`/pets/${id}/health`)}
+                  className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-lg">health_and_safety</span>
+                  <span className="text-sm font-medium">AI健康管家</span>
+                </button>
+              </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-green-50 rounded-lg">
                   <p className="text-2xl font-bold text-green-600">
