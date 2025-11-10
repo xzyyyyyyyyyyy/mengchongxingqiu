@@ -47,6 +47,13 @@ app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/stats', require('./routes/statsRoutes'));
 app.use('/api/feedback', require('./routes/feedbackRoutes'));
 
+// New feature routes
+app.use('/api/rankings', require('./routes/rankings'));
+app.use('/api/points', require('./routes/points'));
+app.use('/api/reminders', require('./routes/reminders'));
+app.use('/api/documents', require('./routes/documents'));
+app.use('/api/settings', require('./routes/settings'));
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ 
