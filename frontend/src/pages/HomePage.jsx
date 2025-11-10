@@ -9,7 +9,10 @@ const EnhancedHomePage = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('recommend');
   const [searchQuery, setSearchQuery] = useState('');
-  const [location] = useState('上海'); // Static for now, can be made dynamic later
+  const [location, setLocation] = useState(() => {
+    return localStorage.getItem('userLocation') || '北京';
+  });
+  const [showLocationModal, setShowLocationModal] = useState(false);
 
   const loadPosts = useCallback(async () => {
     try {
@@ -58,7 +61,10 @@ const EnhancedHomePage = () => {
       <div className="bg-white border-b sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 cursor-pointer hover:text-primary">
+            <div 
+              onClick={() => setShowLocationModal(true)}
+              className="flex items-center space-x-2 cursor-pointer hover:text-primary"
+            >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
               </svg>
@@ -68,7 +74,10 @@ const EnhancedHomePage = () => {
               </svg>
             </div>
 
-            <button className="relative p-2 hover:bg-gray-100 rounded-full">
+            <button 
+              onClick={() => navigate('/notifications')}
+              className="relative p-2 hover:bg-gray-100 rounded-full"
+            >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
@@ -315,6 +324,50 @@ const EnhancedHomePage = () => {
           </div>
         )}
       </div>
+
+      {/* Location Selector Modal */}
+      {showLocationModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b p-4 flex items-center justify-between">
+              <h3 className="text-lg font-bold">选择城市</h3>
+              <button
+                onClick={() => setShowLocationModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-4">
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  '北京', '上海', '广州', '深圳', '杭州', '成都',
+                  '重庆', '武汉', '西安', '南京', '苏州', '天津',
+                  '郑州', '长沙', '沈阳', '青岛', '宁波', '厦门'
+                ].map((city) => (
+                  <button
+                    key={city}
+                    onClick={() => {
+                      setLocation(city);
+                      localStorage.setItem('userLocation', city);
+                      setShowLocationModal(false);
+                    }}
+                    className={`px-4 py-2 rounded-lg transition-colors ${
+                      location === city
+                        ? 'bg-primary text-white'
+                        : 'bg-gray-100 hover:bg-gray-200'
+                    }`}
+                  >
+                    {city}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

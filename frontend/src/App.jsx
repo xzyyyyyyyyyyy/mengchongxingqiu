@@ -28,6 +28,7 @@ import AvatarPage from './pages/AvatarPage';
 import HelpPage from './pages/HelpPage';
 import CategoryPage from './pages/CategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
+import NotificationsPage from './pages/NotificationsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
 import CreateBookingPage from './pages/CreateBookingPage';
@@ -263,6 +264,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <SearchResultsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <NotificationsPage />
                 </Layout>
               </ProtectedRoute>
             }

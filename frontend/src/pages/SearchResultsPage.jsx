@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { postService } from '../api/postService';
 import { productService } from '../api/productService';
 import { serviceService } from '../api/serviceService';
+import { getImageUrl, getMediaUrl } from '../utils/imageUtils';
 
 const SearchResultsPage = () => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const SearchResultsPage = () => {
             >
               <div className="flex items-start space-x-3">
                 <img
-                  src={post.author?.avatar || '/default-avatar.png'}
+                  src={getImageUrl(post.author?.avatar) || '/default-avatar.png'}
                   alt={post.author?.username}
                   className="w-12 h-12 rounded-full"
                 />
@@ -98,7 +99,7 @@ const SearchResultsPage = () => {
                 </div>
                 {post.media && post.media.length > 0 && (
                   <img
-                    src={post.media[0].url}
+                    src={getMediaUrl(post.media[0])}
                     alt=""
                     className="w-20 h-20 rounded-lg object-cover"
                   />
@@ -127,7 +128,7 @@ const SearchResultsPage = () => {
               <div className="w-full aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
                 {product.images && product.images.length > 0 ? (
                   <img
-                    src={product.images[0].url}
+                    src={getMediaUrl(product.images[0])}
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />
@@ -169,7 +170,7 @@ const SearchResultsPage = () => {
               <div className="w-full h-40 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg mb-3 flex items-center justify-center">
                 {service.images && service.images.length > 0 ? (
                   <img
-                    src={service.images[0]}
+                    src={getImageUrl(service.images[0])}
                     alt={service.name}
                     className="w-full h-full object-cover rounded-lg"
                   />
