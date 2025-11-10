@@ -13,7 +13,7 @@ const BookingsPage = () => {
       try {
         setLoading(true);
         const response = await bookingService.getBookings();
-        setBookings(response.data.data || []);
+        setBookings(response.data || []);
       } catch (error) {
         console.error('Failed to load bookings:', error);
         setBookings([]);
@@ -64,7 +64,7 @@ const BookingsPage = () => {
       await bookingService.cancelBooking(bookingId);
       // Reload bookings
       const response = await bookingService.getBookings();
-      setBookings(response.data.data || []);
+      setBookings(response.data || []);
       alert('预约已取消');
     } catch (error) {
       console.error('Failed to cancel booking:', error);

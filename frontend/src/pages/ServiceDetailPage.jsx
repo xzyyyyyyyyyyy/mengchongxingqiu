@@ -15,7 +15,7 @@ const ServiceDetailPage = () => {
       try {
         setLoading(true);
         const response = await serviceService.getService(id);
-        setService(response.data.data);
+        setService(response.data);
       } catch (error) {
         console.error('Failed to load service:', error);
       } finally {

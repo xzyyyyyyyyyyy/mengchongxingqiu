@@ -14,7 +14,7 @@ const AdminPosts = () => {
         params.category = selectedCategory;
       }
       const response = await postService.getPosts(params);
-      setPosts(response.data.data || []);
+      setPosts(response.data || []);
     } catch (error) {
       console.error('Failed to load posts:', error);
     } finally {

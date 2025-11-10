@@ -20,7 +20,7 @@ const ServicesPage = () => {
         params.search = searchTerm.trim();
       }
       const response = await serviceService.getServices(params);
-      setServices(response.data.data || []);
+      setServices(response.data || []);
     } catch (error) {
       console.error('Failed to load services:', error);
       setServices([]);

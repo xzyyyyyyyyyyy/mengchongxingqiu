@@ -15,7 +15,7 @@ const ProductDetailPage = () => {
       try {
         setLoading(true);
         const response = await productService.getProduct(id);
-        setProduct(response.data.data);
+        setProduct(response.data);
       } catch (error) {
         console.error('Failed to load product:', error);
       } finally {
