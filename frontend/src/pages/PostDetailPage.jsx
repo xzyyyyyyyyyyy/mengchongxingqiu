@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
 import { useAuth } from '../contexts/AuthContext';
@@ -16,11 +16,7 @@ const PostDetailPage = () => {
   const [editContent, setEditContent] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  useEffect(() => {
-    loadPost();
-  }, [id]);
-
-  const loadPost = async () => {
+  const loadPost = useCallback(async () => {
     try {
       setLoading(true);
       const response = await postService.getPost(id);
@@ -31,7 +27,11 @@ const PostDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    loadPost();
+  }, [loadPost]);
 
   const handleLike = async () => {
     try {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
 
@@ -8,11 +8,7 @@ const HashtagPostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadPosts();
-  }, [hashtag]);
-
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     try {
       setLoading(true);
       const response = await postService.getPostsByHashtag(hashtag);
@@ -23,7 +19,11 @@ const HashtagPostsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [hashtag]);
+
+  useEffect(() => {
+    loadPosts();
+  }, [loadPosts]);
 
   const handleLike = async (postId) => {
     try {

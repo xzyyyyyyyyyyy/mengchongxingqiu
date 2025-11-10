@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,11 +9,7 @@ const MyPostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadPosts();
-  }, [user]);
-
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     if (!user) return;
     
     try {
@@ -25,7 +21,11 @@ const MyPostsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    loadPosts();
+  }, [loadPosts]);
 
   const getCategoryName = (category) => {
     const names = {

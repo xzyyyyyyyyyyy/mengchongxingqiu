@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { petService } from '../api/petService';
@@ -15,18 +15,11 @@ const ProfilePage = () => {
     orders: { pending: 0, shipping: 0, delivered: 0, completed: 0 },
     bookings: { pending: 0, ongoing: 0, completed: 0 }
   });
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadUserStats();
-  }, [user]);
-
-  const loadUserStats = async () => {
+  const loadUserStats = useCallback(async () => {
     if (!user) return;
     
     try {
-      setLoading(true);
-      
       // Load pets count
       const petsResponse = await petService.getPets();
       const petsCount = petsResponse.data?.length || 0;
@@ -62,10 +55,12 @@ const ProfilePage = () => {
       });
     } catch (error) {
       console.error('Failed to load user stats:', error);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    loadUserStats();
+  }, [loadUserStats]);
 
   const menuItems = [
     {

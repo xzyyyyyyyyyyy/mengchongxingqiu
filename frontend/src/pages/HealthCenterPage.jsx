@@ -67,7 +67,6 @@ const HealthCenterPage = () => {
 
   const handleGenerateReport = async () => {
     try {
-      const token = localStorage.getItem('token');
       // TODO: Implement PDF report generation
       alert('PDF报告生成功能即将上线');
     } catch (error) {
