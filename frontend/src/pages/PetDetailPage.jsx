@@ -4,6 +4,7 @@ import { petService } from '../api/petService';
 import { petRatingService } from '../api/petRatingService';
 import { historyService } from '../api/historyService';
 import { getImageUrl } from '../utils/imageUtils';
+import AIFeedingRecommendations from '../components/ai/AIFeedingRecommendations';
 
 const EnhancedPetDetailPage = () => {
   const { id } = useParams();
@@ -277,13 +278,7 @@ const EnhancedPetDetailPage = () => {
 
         {activeTab === 'feeding' && (
           <div className="bg-white rounded-lg p-6">
-            <h2 className="text-xl font-bold mb-4">喂养建议</h2>
-            <div className="space-y-4 text-gray-700">
-              <p>• 每日喂食2-3次，控制食量避免肥胖</p>
-              <p>• 提供充足的清水，保持水分</p>
-              <p>• 适量运动，每天散步1-2次</p>
-              <p>• 定期梳理毛发，保持清洁</p>
-            </div>
+            <AIFeedingRecommendations pet={pet} />
           </div>
         )}
 
