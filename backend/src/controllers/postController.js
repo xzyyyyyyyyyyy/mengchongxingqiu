@@ -29,6 +29,9 @@ exports.getPosts = async (req, res) => {
       });
     }
     
+    // Sanitize search input to prevent NoSQL injection
+    const sanitizedSearch = search ? String(search).replace(/[<>{}$]/g, '') : null;
+    
     // Use aggregation if filtering by species
     if (species) {
       const Pet = require('../models/Pet');
@@ -41,10 +44,10 @@ exports.getPosts = async (req, res) => {
       if (category) query.category = category;
       if (tag) query.tags = tag;
       if (hashtag) query.hashtags = hashtag;
-      if (search) {
+      if (sanitizedSearch) {
         query.$or = [
-          { content: { $regex: search, $options: 'i' } },
-          { hashtags: { $regex: search, $options: 'i' } }
+          { content: { $regex: sanitizedSearch, $options: 'i' } },
+          { hashtags: { $regex: sanitizedSearch, $options: 'i' } }
         ];
       }
       
@@ -72,10 +75,10 @@ exports.getPosts = async (req, res) => {
     if (category) query.category = category;
     if (tag) query.tags = tag;
     if (hashtag) query.hashtags = hashtag;
-    if (search) {
+    if (sanitizedSearch) {
       query.$or = [
-        { content: { $regex: search, $options: 'i' } },
-        { hashtags: { $regex: search, $options: 'i' } }
+        { content: { $regex: sanitizedSearch, $options: 'i' } },
+        { hashtags: { $regex: sanitizedSearch, $options: 'i' } }
       ];
     }
 
