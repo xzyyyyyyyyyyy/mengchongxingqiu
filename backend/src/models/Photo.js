@@ -59,8 +59,7 @@ const photoSchema = new mongoose.Schema({
   location: {
     name: String,
     coordinates: {
-      type: [Number],
-      index: '2dsphere'
+      type: [Number]
     }
   },
   takenAt: {
@@ -84,5 +83,6 @@ photoSchema.index({ owner: 1, createdAt: -1 });
 photoSchema.index({ 'aiAnalysis.tags.name': 1 });
 photoSchema.index({ milestones: 1 });
 photoSchema.index({ albumCategory: 1, pet: 1 });
+photoSchema.index({ 'location.coordinates': '2dsphere' });
 
 module.exports = mongoose.model('Photo', photoSchema);

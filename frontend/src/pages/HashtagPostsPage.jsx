@@ -12,7 +12,7 @@ const HashtagPostsPage = () => {
     try {
       setLoading(true);
       const response = await postService.getPostsByHashtag(hashtag);
-      setPosts(response.data.data || []);
+      setPosts(response.data || []);
     } catch (error) {
       console.error('Failed to load posts:', error);
       setPosts([]);

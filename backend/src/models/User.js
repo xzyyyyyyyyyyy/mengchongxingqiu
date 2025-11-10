@@ -35,8 +35,7 @@ const userSchema = new mongoose.Schema({
     city: String,
     province: String,
     coordinates: {
-      type: [Number],
-      index: '2dsphere'
+      type: [Number]
     }
   },
   preferences: {
@@ -83,6 +82,9 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+// Indexes
+userSchema.index({ 'location.coordinates': '2dsphere' });
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {

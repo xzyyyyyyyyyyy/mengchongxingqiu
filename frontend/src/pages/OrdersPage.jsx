@@ -13,7 +13,7 @@ const OrdersPage = () => {
       try {
         setLoading(true);
         const response = await orderService.getOrders();
-        setOrders(response.data.data || []);
+        setOrders(response.data || []);
       } catch (error) {
         console.error('Failed to load orders:', error);
         setOrders([]);

@@ -37,6 +37,7 @@ app.use('/uploads', express.static('uploads'));
 
 // API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/pets', require('./routes/petRoutes'));
 app.use('/api/posts', require('./routes/postRoutes'));
 app.use('/api/health', require('./routes/healthRoutes'));
@@ -46,6 +47,13 @@ app.use('/api/bookings', require('./routes/bookingRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/stats', require('./routes/statsRoutes'));
 app.use('/api/feedback', require('./routes/feedbackRoutes'));
+
+// New feature routes
+app.use('/api/rankings', require('./routes/rankings'));
+app.use('/api/points', require('./routes/points'));
+app.use('/api/reminders', require('./routes/reminders'));
+app.use('/api/documents', require('./routes/documents'));
+app.use('/api/settings', require('./routes/settings'));
 
 // Health check
 app.get('/health', (req, res) => {

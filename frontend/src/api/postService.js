@@ -37,6 +37,10 @@ export const postService = {
     return await axios.post(`/posts/${postId}/comments`, { content });
   },
 
+  sharePost: async (postId) => {
+    return await axios.post(`/posts/${postId}/share`);
+  },
+
   getUserPosts: async (userId) => {
     return await axios.get(`/posts/user/${userId}`);
   },

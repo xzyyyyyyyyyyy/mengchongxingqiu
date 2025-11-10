@@ -30,7 +30,7 @@ const AdminProducts = () => {
     try {
       setLoading(true);
       const response = await productService.getProducts({ limit: 50 });
-      setProducts(response.data.data || []);
+      setProducts(response.data || []);
     } catch (error) {
       console.error('Failed to load products:', error);
     } finally {

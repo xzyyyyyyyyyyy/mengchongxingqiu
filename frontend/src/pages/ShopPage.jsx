@@ -23,7 +23,7 @@ const ShopPage = () => {
         params.search = searchTerm.trim();
       }
       const response = await productService.getProducts(params);
-      setProducts(response.data.data || []);
+      setProducts(response.data || []);
     } catch (error) {
       console.error('Failed to load products:', error);
       setProducts([]);

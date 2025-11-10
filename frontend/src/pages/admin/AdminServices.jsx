@@ -33,7 +33,7 @@ const AdminServices = () => {
     try {
       setLoading(true);
       const response = await serviceService.getServices({ limit: 50 });
-      setServices(response.data.data || []);
+      setServices(response.data || []);
     } catch (error) {
       console.error('Failed to load services:', error);
     } finally {

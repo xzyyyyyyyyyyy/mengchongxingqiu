@@ -23,7 +23,7 @@ const CommunityPage = () => {
         params.search = searchTerm.trim();
       }
       const response = await postService.getPosts(params);
-      setTopPosts(response.data.data || []);
+      setTopPosts(response.data || []);
     } catch (error) {
       console.error('Failed to load top posts:', error);
       setTopPosts([]);
@@ -35,7 +35,7 @@ const CommunityPage = () => {
   const loadTrendingHashtags = useCallback(async () => {
     try {
       const response = await postService.getTrendingHashtags(6);
-      setTrendingHashtags(response.data.data || []);
+      setTrendingHashtags(response.data || []);
     } catch (error) {
       console.error('Failed to load trending hashtags:', error);
       setTrendingHashtags([]);
