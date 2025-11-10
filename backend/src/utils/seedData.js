@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const Product = require('../models/Product');
 const Service = require('../models/Service');
@@ -937,6 +938,12 @@ const seedUsers = async () => {
       points: 640
     }
   ];
+
+  // Hash passwords before inserting
+  const salt = await bcrypt.genSalt(10);
+  for (let user of users) {
+    user.password = await bcrypt.hash(user.password, salt);
+  }
 
   const createdUsers = await User.insertMany(users);
   console.log('Users seeded successfully');
