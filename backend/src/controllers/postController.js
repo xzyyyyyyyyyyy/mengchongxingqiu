@@ -329,6 +329,50 @@ exports.addComment = async (req, res) => {
   }
 };
 
+// @desc    Share post
+// @route   POST /api/posts/:id/share
+// @access  Private
+exports.sharePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: '帖子未找到'
+      });
+    }
+
+    // Check if already shared
+    const index = post.shares.indexOf(req.user.id);
+
+    if (index > -1) {
+      // Unshare
+      post.shares.splice(index, 1);
+      post.sharesCount -= 1;
+    } else {
+      // Share
+      post.shares.push(req.user.id);
+      post.sharesCount += 1;
+    }
+
+    await post.save();
+
+    res.json({
+      success: true,
+      data: {
+        sharesCount: post.sharesCount,
+        isShared: index === -1
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
 // @desc    Get user's posts
 // @route   GET /api/posts/user/:userId
 // @access  Public

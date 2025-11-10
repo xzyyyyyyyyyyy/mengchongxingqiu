@@ -8,6 +8,7 @@ const {
   deletePost,
   likePost,
   addComment,
+  sharePost,
   getUserPosts,
   getTrendingHashtags,
   getPostsByHashtag
@@ -30,5 +31,6 @@ router.route('/:id')
 
 router.put('/:id/like', protect, likePost);
 router.post('/:id/comments', protect, addComment);
+router.post('/:id/share', protect, sharePost);
 
 module.exports = router;

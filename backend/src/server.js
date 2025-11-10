@@ -37,6 +37,7 @@ app.use('/uploads', express.static('uploads'));
 
 // API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/pets', require('./routes/petRoutes'));
 app.use('/api/posts', require('./routes/postRoutes'));
 app.use('/api/health', require('./routes/healthRoutes'));
