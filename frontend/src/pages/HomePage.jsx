@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
+import { bookmarkService } from '../api/bookmarkService';
+import { userService } from '../api/userService';
 import { getImageUrl, getMediaUrl } from '../utils/imageUtils';
 
 const EnhancedHomePage = () => {
@@ -52,6 +54,55 @@ const EnhancedHomePage = () => {
       loadPosts();
     } catch (error) {
       console.error('Failed to like post:', error);
+    }
+  };
+
+  const handleBookmark = async (postId, e) => {
+    e.stopPropagation();
+    try {
+      // Find the post to check current bookmark status
+      const post = posts.find(p => p._id === postId);
+      if (post) {
+        await bookmarkService.toggleBookmark(postId, post.isBookmarked);
+        // Update local state
+        setPosts(prevPosts => prevPosts.map(p => 
+          p._id === postId 
+            ? { 
+                ...p, 
+                isBookmarked: !p.isBookmarked,
+                bookmarksCount: p.isBookmarked ? (p.bookmarksCount || 1) - 1 : (p.bookmarksCount || 0) + 1
+              }
+            : p
+        ));
+      }
+    } catch (error) {
+      console.error('Failed to bookmark post:', error);
+    }
+  };
+
+  const handleFollow = async (authorId, e) => {
+    e.stopPropagation();
+    try {
+      // Find the post to check current follow status
+      const post = posts.find(p => p.author?._id === authorId);
+      if (post) {
+        if (post.author.isFollowing) {
+          await userService.unfollowUser(authorId);
+        } else {
+          await userService.followUser(authorId);
+        }
+        // Update local state
+        setPosts(prevPosts => prevPosts.map(p => 
+          p.author?._id === authorId 
+            ? { 
+                ...p, 
+                author: { ...p.author, isFollowing: !p.author.isFollowing }
+              }
+            : p
+        ));
+      }
+    } catch (error) {
+      console.error('Failed to follow/unfollow user:', error);
     }
   };
 
@@ -213,8 +264,15 @@ const EnhancedHomePage = () => {
                       )}
                     </div>
                   </div>
-                  <button className="px-4 py-1 bg-primary text-white rounded-full text-sm hover:bg-primary/90">
-                    关注
+                  <button 
+                    onClick={(e) => handleFollow(post.author?._id, e)}
+                    className={`px-4 py-1 rounded-full text-sm transition-colors ${
+                      post.author?.isFollowing 
+                        ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
+                        : 'bg-primary text-white hover:bg-primary/90'
+                    }`}
+                  >
+                    {post.author?.isFollowing ? '已关注' : '关注'}
                   </button>
                 </div>
 
@@ -297,8 +355,15 @@ const EnhancedHomePage = () => {
                       <span className="text-sm">{post.commentsCount || 0}</span>
                     </button>
 
-                    <button className="flex items-center space-x-1 text-gray-600 hover:text-yellow-500 transition-colors">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button 
+                      onClick={(e) => handleBookmark(post._id, e)}
+                      className={`flex items-center space-x-1 transition-colors ${
+                        post.isBookmarked 
+                          ? 'text-yellow-500 hover:text-yellow-600' 
+                          : 'text-gray-600 hover:text-yellow-500'
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill={post.isBookmarked ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                       </svg>
                       <span className="text-sm">{post.bookmarksCount || 0}</span>

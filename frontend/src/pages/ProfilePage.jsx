@@ -148,7 +148,7 @@ const EnhancedProfilePage = () => {
               <h3 className="font-bold mb-4">快速入口</h3>
               <div className="grid grid-cols-4 gap-4">
                 <button
-                  onClick={() => navigate('/my-posts')}
+                  onClick={() => navigate('/bookmarks')}
                   className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
                 >
                   <svg className="w-8 h-8 text-pink-500 mb-2" fill="currentColor" viewBox="0 0 20 20">

@@ -40,6 +40,7 @@ import PointsMallPage from './pages/PointsMallPage';
 import RemindersPage from './pages/RemindersPage';
 import PetDocumentsPage from './pages/PetDocumentsPage';
 import SettingsPage from './pages/SettingsPage';
+import BookmarksPage from './pages/BookmarksPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -439,6 +440,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <SettingsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookmarks"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BookmarksPage />
                 </Layout>
               </ProtectedRoute>
             }
