@@ -17,6 +17,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminServices from './pages/admin/AdminServices';
 import AdminPosts from './pages/admin/AdminPosts';
+import AdminFeedback from './pages/admin/AdminFeedback';
 import HashtagPostsPage from './pages/HashtagPostsPage';
 import PostDetailPage from './pages/PostDetailPage';
 import CreatePostPage from './pages/CreatePostPage';
@@ -272,6 +273,16 @@ function App() {
               <AdminRoute>
                 <AdminLayout>
                   <AdminPosts />
+                </AdminLayout>
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/feedback"
+            element={
+              <AdminRoute>
+                <AdminLayout>
+                  <AdminFeedback />
                 </AdminLayout>
               </AdminRoute>
             }
