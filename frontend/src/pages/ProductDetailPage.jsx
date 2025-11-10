@@ -26,6 +26,14 @@ const ProductDetailPage = () => {
     loadProduct();
   }, [id]);
 
+  const handleAddToCart = () => {
+    alert(`已添加 ${quantity} 件商品到购物车`);
+  };
+
+  const handleBuyNow = () => {
+    alert('立即购买功能即将上线，敬请期待！');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background-light flex items-center justify-center">
@@ -190,10 +198,10 @@ const ProductDetailPage = () => {
 
               {/* Action Buttons */}
               <div className="flex space-x-3">
-                <button className="flex-1 btn-primary">
+                <button onClick={handleBuyNow} className="flex-1 btn-primary">
                   立即购买
                 </button>
-                <button className="flex-1 border-2 border-primary text-primary py-3 rounded-lg font-medium hover:bg-primary/10 transition-all">
+                <button onClick={handleAddToCart} className="flex-1 border-2 border-primary text-primary py-3 rounded-lg font-medium hover:bg-primary/10 transition-all">
                   加入购物车
                 </button>
               </div>

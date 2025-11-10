@@ -29,9 +29,9 @@ const EnhancedHomePage = () => {
 
   const quickCategories = [
     { icon: '🍖', label: '宠物粮', path: '/shop?category=food' },
-    { icon: '🏠', label: '领养', path: '/adoption' },
-    { icon: '🔍', label: '丢失', path: '/lost-pets' },
-    { icon: '📍', label: '附近', path: '/nearby' },
+    { icon: '🏠', label: '领养', path: '/category' },
+    { icon: '🔍', label: '丢失', path: '/community' },
+    { icon: '📍', label: '附近', path: '/services' },
   ];
 
   const commonSections = [
@@ -237,21 +237,13 @@ const EnhancedHomePage = () => {
                       {post.media.slice(0, 4).map((item, index) => (
                         <div key={index} className="relative aspect-square overflow-hidden rounded-lg">
                           {item.type === 'video' ? (
-                            <div className="relative w-full h-full bg-black flex items-center justify-center">
+                            <div className="relative w-full h-full bg-black">
                               <video
                                 src={item.url}
                                 className="w-full h-full object-cover"
+                                controls
+                                preload="metadata"
                               />
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="bg-black bg-opacity-50 rounded-full p-3">
-                                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                                  </svg>
-                                </div>
-                              </div>
-                              <div className="absolute bottom-2 right-2 bg-black bg-opacity-60 px-2 py-1 rounded text-white text-xs">
-                                00:15
-                              </div>
                             </div>
                           ) : (
                             <img

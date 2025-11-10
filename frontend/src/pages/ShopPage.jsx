@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { productService } from '../api/productService';
 
 const ShopPage = () => {
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchParams] = useSearchParams();
+  const categoryFromUrl = searchParams.get('category') || 'all';
+  
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,6 +31,11 @@ const ShopPage = () => {
       setLoading(false);
     }
   }, [selectedCategory, searchTerm]);
+
+  useEffect(() => {
+    // Update selected category when URL changes
+    setSelectedCategory(categoryFromUrl);
+  }, [categoryFromUrl]);
 
   useEffect(() => {
     // Debounce search to avoid too many API calls

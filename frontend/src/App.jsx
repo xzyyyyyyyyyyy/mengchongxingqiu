@@ -30,6 +30,9 @@ import CategoryPage from './pages/CategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
+import CreateBookingPage from './pages/CreateBookingPage';
+import OrdersPage from './pages/OrdersPage';
+import BookingsPage from './pages/BookingsPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -275,6 +278,36 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <ServiceDetailPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookings/new"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CreateBookingPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookings"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BookingsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <OrdersPage />
                 </Layout>
               </ProtectedRoute>
             }
