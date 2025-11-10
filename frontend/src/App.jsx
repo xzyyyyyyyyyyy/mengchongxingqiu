@@ -33,6 +33,11 @@ import ServiceDetailPage from './pages/ServiceDetailPage';
 import CreateBookingPage from './pages/CreateBookingPage';
 import OrdersPage from './pages/OrdersPage';
 import BookingsPage from './pages/BookingsPage';
+import PetRankingsPage from './pages/PetRankingsPage';
+import PointsMallPage from './pages/PointsMallPage';
+import RemindersPage from './pages/RemindersPage';
+import PetDocumentsPage from './pages/PetDocumentsPage';
+import SettingsPage from './pages/SettingsPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -362,6 +367,58 @@ function App() {
                   <AdminFeedback />
                 </AdminLayout>
               </AdminRoute>
+            }
+          />
+
+          {/* New Feature Routes */}
+          <Route
+            path="/rankings"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PetRankingsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/points-mall"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PointsMallPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reminders"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <RemindersPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pet-documents"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PetDocumentsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SettingsPage />
+                </Layout>
+              </ProtectedRoute>
             }
           />
 
