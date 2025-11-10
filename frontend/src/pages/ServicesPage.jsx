@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { serviceService } from '../api/serviceService';
 
 const ServicesPage = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,8 +16,8 @@ const ServicesPage = () => {
       if (selectedCategory !== 'all') {
         params.category = selectedCategory;
       }
-      if (searchTerm) {
-        params.search = searchTerm;
+      if (searchTerm.trim()) {
+        params.search = searchTerm.trim();
       }
       const response = await serviceService.getServices(params);
       setServices(response.data.data || []);
@@ -28,7 +30,12 @@ const ServicesPage = () => {
   }, [selectedCategory, searchTerm]);
 
   useEffect(() => {
-    loadServices();
+    // Debounce search to avoid too many API calls
+    const timer = setTimeout(() => {
+      loadServices();
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [loadServices]);
 
   const serviceCategories = [
@@ -53,14 +60,37 @@ const ServicesPage = () => {
         {/* Search and Filter */}
         <div className="mb-6">
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
+            <div className="flex-1 relative">
               <input
                 type="text"
-                placeholder="搜索服务名称..."
-                className="input-field"
+                placeholder="搜索服务名称或描述..."
+                className="input-field w-full pl-10"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
+              <svg
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
             </div>
             <button className="btn-primary whitespace-nowrap">
               <span className="mr-2">📍</span>
@@ -104,6 +134,7 @@ const ServicesPage = () => {
             {services.map((service) => (
               <div
                 key={service._id}
+                onClick={() => navigate(`/services/${service._id}`)}
                 className="card hover:shadow-xl transition-all cursor-pointer"
               >
                 {/* Service Image */}

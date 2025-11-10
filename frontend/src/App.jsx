@@ -27,6 +27,12 @@ import HealthHistoryPage from './pages/HealthHistoryPage';
 import AvatarPage from './pages/AvatarPage';
 import HelpPage from './pages/HelpPage';
 import CategoryPage from './pages/CategoryPage';
+import SearchResultsPage from './pages/SearchResultsPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import ServiceDetailPage from './pages/ServiceDetailPage';
+import CreateBookingPage from './pages/CreateBookingPage';
+import OrdersPage from './pages/OrdersPage';
+import BookingsPage from './pages/BookingsPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -242,6 +248,66 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <CategoryPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SearchResultsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/shop/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ProductDetailPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/services/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ServiceDetailPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookings/new"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CreateBookingPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookings"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BookingsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <OrdersPage />
                 </Layout>
               </ProtectedRoute>
             }
