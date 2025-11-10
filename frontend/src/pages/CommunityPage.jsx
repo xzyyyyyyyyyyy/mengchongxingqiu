@@ -8,6 +8,7 @@ const CommunityPage = () => {
   const [topPosts, setTopPosts] = useState([]);
   const [trendingHashtags, setTrendingHashtags] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const loadTopPosts = useCallback(async () => {
     try {
@@ -18,6 +19,9 @@ const CommunityPage = () => {
       if (selectedCategory !== 'all') {
         params.species = selectedCategory;
       }
+      if (searchTerm.trim()) {
+        params.search = searchTerm.trim();
+      }
       const response = await postService.getPosts(params);
       setTopPosts(response.data.data || []);
     } catch (error) {
@@ -26,7 +30,7 @@ const CommunityPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, searchTerm]);
 
   const loadTrendingHashtags = useCallback(async () => {
     try {
@@ -39,9 +43,17 @@ const CommunityPage = () => {
   }, []);
 
   useEffect(() => {
-    loadTopPosts();
     loadTrendingHashtags();
-  }, [loadTopPosts, loadTrendingHashtags]);
+  }, [loadTrendingHashtags]);
+
+  useEffect(() => {
+    // Debounce search to avoid too many API calls
+    const timer = setTimeout(() => {
+      loadTopPosts();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [loadTopPosts]);
 
   const categories = [
     { id: 'all', name: '全部', icon: '🌟', color: 'bg-gray-100' },
@@ -66,6 +78,42 @@ const CommunityPage = () => {
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-text-primary mb-2">社区广场</h1>
           <p className="text-text-secondary">与同类宠物主人交流分享</p>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="搜索社区内容..."
+              className="input-field w-full pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Category Selection */}

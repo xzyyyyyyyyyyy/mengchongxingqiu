@@ -9,7 +9,7 @@ exports.getPosts = async (req, res) => {
     const limit = parseInt(req.query.limit) || 20;
     const skip = (page - 1) * limit;
 
-    const { category, tag, hashtag, species } = req.query;
+    const { category, tag, hashtag, species, search } = req.query;
     
     // Validate species parameter against allowed values
     const validSpecies = ['cat', 'dog', 'rabbit', 'hamster', 'bird', 'fish', 'other'];
@@ -41,6 +41,12 @@ exports.getPosts = async (req, res) => {
       if (category) query.category = category;
       if (tag) query.tags = tag;
       if (hashtag) query.hashtags = hashtag;
+      if (search) {
+        query.$or = [
+          { content: { $regex: search, $options: 'i' } },
+          { hashtags: { $regex: search, $options: 'i' } }
+        ];
+      }
       
       const posts = await Post.find(query)
         .populate('author', 'username avatar')
@@ -66,6 +72,12 @@ exports.getPosts = async (req, res) => {
     if (category) query.category = category;
     if (tag) query.tags = tag;
     if (hashtag) query.hashtags = hashtag;
+    if (search) {
+      query.$or = [
+        { content: { $regex: search, $options: 'i' } },
+        { hashtags: { $regex: search, $options: 'i' } }
+      ];
+    }
 
     const posts = await Post.find(query)
       .populate('author', 'username avatar')
