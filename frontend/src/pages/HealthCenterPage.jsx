@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '../components/common/Layout';
+import { aiService } from '../api/aiService';
 
 const EnhancedHealthCenterPage = () => {
   const { petId } = useParams();
@@ -9,6 +10,8 @@ const EnhancedHealthCenterPage = () => {
   const [loading, setLoading] = useState(true);
   const [pet, setPet] = useState(null);
   const [todayLog, setTodayLog] = useState(null);
+  const [aiAnalysis, setAiAnalysis] = useState(null);
+  const [aiLoading, setAiLoading] = useState(false);
 
   // Mock data for AI Health Insights
   const healthMetrics = {
@@ -60,6 +63,9 @@ const EnhancedHealthCenterPage = () => {
         if (logsResponse.data.data.length > 0) {
           setTodayLog(logsResponse.data.data[0]);
         }
+
+        // Fetch AI analysis
+        await performAIAnalysis(petResponse.data.data, logsResponse.data.data);
       } catch (error) {
         console.error('Error fetching health data:', error);
         if (error.response?.status === 401) {
@@ -72,6 +78,37 @@ const EnhancedHealthCenterPage = () => {
 
     fetchData();
   }, [petId, navigate]);
+
+  const performAIAnalysis = async (petData, healthLogs) => {
+    try {
+      setAiLoading(true);
+      
+      // Prepare health data for AI analysis
+      const latestLog = healthLogs[0] || {};
+      const healthData = {
+        weight: latestLog.weight || petData.weight || 0,
+        foodIntake: latestLog.foodAmount || 150,
+        waterIntake: latestLog.waterAmount || 300,
+        activity: latestLog.activityLevel || 2.5,
+        heartRate: latestLog.heartRate || 85
+      };
+
+      const result = await aiService.analyzeHealth(
+        petData._id,
+        petData,
+        healthData,
+        healthLogs
+      );
+
+      if (result.success) {
+        setAiAnalysis(result.data);
+      }
+    } catch (error) {
+      console.error('AI analysis failed:', error);
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   const handleAddLog = () => {
     navigate(`/pets/${petId}/health/add`);
@@ -211,6 +248,95 @@ const EnhancedHealthCenterPage = () => {
           </div>
         </div>
 
+        {/* AI Health Score & Recommendations */}
+        {aiAnalysis && (
+          <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Health Score */}
+              <div>
+                <h3 className="font-bold mb-3 flex items-center">
+                  <span className="mr-2">📊</span>
+                  健康评分
+                </h3>
+                <div className="relative w-32 h-32 mx-auto">
+                  <svg className="transform -rotate-90 w-32 h-32">
+                    <circle
+                      cx="64"
+                      cy="64"
+                      r="56"
+                      stroke="#e5e7eb"
+                      strokeWidth="8"
+                      fill="none"
+                    />
+                    <circle
+                      cx="64"
+                      cy="64"
+                      r="56"
+                      stroke="#10b981"
+                      strokeWidth="8"
+                      fill="none"
+                      strokeDasharray={`${2 * Math.PI * 56}`}
+                      strokeDashoffset={`${2 * Math.PI * 56 * (1 - (aiAnalysis.healthScore || 0) / 100)}`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-600">
+                        {aiAnalysis.healthScore}
+                      </div>
+                      <div className="text-xs text-gray-500">/ 100</div>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-center text-sm text-gray-600 mt-2">
+                  {aiAnalysis.insights?.overall}
+                </p>
+              </div>
+
+              {/* AI Recommendations */}
+              <div>
+                <h3 className="font-bold mb-3 flex items-center">
+                  <span className="mr-2">💡</span>
+                  AI个性化建议
+                </h3>
+                <ul className="space-y-2">
+                  {aiAnalysis.insights?.recommendations?.map((rec, idx) => (
+                    <li key={idx} className="flex items-start text-sm">
+                      <span className="text-primary mr-2 mt-0.5">•</span>
+                      <span className="text-gray-700">{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Trends */}
+            {aiAnalysis.insights?.trends && aiAnalysis.insights.trends.length > 0 && (
+              <div className="mt-6 pt-6 border-t">
+                <h3 className="font-bold mb-3 flex items-center">
+                  <span className="mr-2">📈</span>
+                  健康趋势分析
+                </h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                  {aiAnalysis.insights.trends.map((trend, idx) => (
+                    <div key={idx} className="bg-gray-50 rounded-lg p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium">{trend.metric}</span>
+                        <span className={`text-lg ${
+                          trend.trend === 'up' ? '⬆️' : 
+                          trend.trend === 'down' ? '⬇️' : '➡️'
+                        }`}></span>
+                      </div>
+                      <p className="text-xs text-gray-600">{trend.prediction}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* AI Health Alerts */}
         <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
           <h2 className="text-xl font-bold mb-4 flex items-center">
@@ -218,29 +344,66 @@ const EnhancedHealthCenterPage = () => {
             AI健康预警
           </h2>
 
-          <div className="space-y-4">
-            {healthAlerts.map((alert) => (
-              <div
-                key={alert.id}
-                className={`p-4 rounded-lg border-l-4 ${
-                  alert.level === 'warning'
-                    ? 'bg-yellow-50 border-yellow-500'
-                    : 'bg-red-50 border-red-500'
-                }`}
-              >
-                <div className="flex items-start space-x-3">
-                  <span className="text-2xl flex-shrink-0">{alert.icon}</span>
-                  <div className="flex-1">
-                    <h3 className={`font-bold mb-1 ${
-                      alert.level === 'warning' ? 'text-yellow-800' : 'text-red-800'
-                    }`}>
-                      {alert.title}
-                    </h3>
-                    <p className={`text-sm ${
-                      alert.level === 'warning' ? 'text-yellow-700' : 'text-red-700'
-                    }`}>
-                      {alert.description}
-                    </p>
+          {aiLoading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+              <p className="text-gray-500 text-sm">AI正在分析健康数据...</p>
+            </div>
+          ) : aiAnalysis?.insights?.alerts?.length > 0 ? (
+            <div className="space-y-4">
+              {aiAnalysis.insights.alerts.map((alert, index) => (
+                <div
+                  key={index}
+                  className={`p-4 rounded-lg border-l-4 ${
+                    alert.level === 'warning'
+                      ? 'bg-yellow-50 border-yellow-500'
+                      : alert.level === 'alert'
+                      ? 'bg-red-50 border-red-500'
+                      : 'bg-blue-50 border-blue-500'
+                  }`}
+                >
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl flex-shrink-0">
+                      {alert.level === 'warning' ? '⚠️' : alert.level === 'alert' ? '🚨' : 'ℹ️'}
+                    </span>
+                    <div className="flex-1">
+                      <h3 className={`font-bold mb-1 ${
+                        alert.level === 'warning' ? 'text-yellow-800' : 
+                        alert.level === 'alert' ? 'text-red-800' : 'text-blue-800'
+                      }`}>
+                        {alert.title}
+                      </h3>
+                      <p className={`text-sm mb-2 ${
+                        alert.level === 'warning' ? 'text-yellow-700' : 
+                        alert.level === 'alert' ? 'text-red-700' : 'text-blue-700'
+                      }`}>
+                        {alert.description}
+                      </p>
+                      {alert.suggestions && alert.suggestions.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs font-semibold mb-1">建议措施：</p>
+                          <ul className="text-xs space-y-1">
+                            {alert.suggestions.map((suggestion, idx) => (
+                              <li key={idx} className="flex items-start">
+                                <span className="mr-1">•</span>
+                                <span>{suggestion}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <div className="text-5xl mb-2">✅</div>
+              <p className="text-gray-600">暂无健康预警，一切正常！</p>
+              <p className="text-sm text-gray-500 mt-1">AI会持续监控您宠物的健康状况</p>
+            </div>
+          )}
                   </div>
                 </div>
               </div>
