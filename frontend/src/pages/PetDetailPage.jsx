@@ -1,30 +1,50 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { petService } from '../api/petService';
-import { healthService } from '../api/healthService';
 
-const PetDetailPage = () => {
+const EnhancedPetDetailPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [pet, setPet] = useState(null);
-  const [healthLogs, setHealthLogs] = useState([]);
-  const [analytics, setAnalytics] = useState(null);
   const [activeTab, setActiveTab] = useState('info');
   const [loading, setLoading] = useState(true);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [editData, setEditData] = useState({});
+
+  // Mock rating data
+  const ratings = {
+    overall: 4.8,
+    stickiness: 4,
+    intelligence: 5,
+    activeness: 4,
+    shedding: 3
+  };
+
+  const stats = {
+    wantToAdopt: 12000,
+    views: 8600,
+    size: '小型犬'
+  };
+
+  const reviews = [
+    {
+      id: 1,
+      user: { name: '小明', avatar: '/default-avatar.png' },
+      rating: 4.5,
+      date: '2天前',
+      content: '这只柯基也太可爱了吧！性格超好！照片拍得真棒！'
+    },
+    {
+      id: 2,
+      user: { name: '爱宠人士', avatar: '/default-avatar.png' },
+      rating: 5,
+      date: '5天前',
+      content: '旺仔是社区的小明星，每次看到它心情都变好了！'
+    }
+  ];
 
   const loadPetData = useCallback(async () => {
     try {
       setLoading(true);
-      const [petResponse, logsResponse, analyticsResponse] = await Promise.all([
-        petService.getPet(id),
-        healthService.getHealthLogs(id, { limit: 7 }),
-        healthService.getHealthAnalytics(id, 30)
-      ]);
+      const petResponse = await petService.getPet(id);
       setPet(petResponse.data);
-      setHealthLogs(logsResponse.data);
-      setAnalytics(analyticsResponse.data);
     } catch (error) {
       console.error('Failed to load pet data:', error);
     } finally {
@@ -36,53 +56,43 @@ const PetDetailPage = () => {
     loadPetData();
   }, [loadPetData]);
 
-  const handleEditToggle = () => {
-    if (!isEditMode) {
-      setEditData({
-        name: pet.name,
-        breed: pet.breed,
-        gender: pet.gender,
-        birthDate: pet.birthDate ? new Date(pet.birthDate).toISOString().split('T')[0] : '',
-        appearance: {
-          color: pet.appearance?.color || '',
-          weight: pet.appearance?.weight || '',
-        },
-        personality: {
-          temperament: pet.personality?.temperament || '',
-          traits: pet.personality?.traits || [],
-        }
-      });
-    }
-    setIsEditMode(!isEditMode);
-  };
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const stars = [];
 
-  const handleSaveEdit = async () => {
-    try {
-      await petService.updatePet(id, editData);
-      setIsEditMode(false);
-      loadPetData();
-    } catch (error) {
-      console.error('Failed to update pet:', error);
-      alert('更新失败，请重试');
-    }
-  };
-
-  const handleInputChange = (field, value) => {
-    setEditData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleNestedInputChange = (parent, field, value) => {
-    setEditData(prev => ({
-      ...prev,
-      [parent]: {
-        ...prev[parent],
-        [field]: value
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(<span key={i} className="text-yellow-400">★</span>);
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(<span key={i} className="text-yellow-400">⭐</span>);
+      } else {
+        stars.push(<span key={i} className="text-gray-300">★</span>);
       }
-    }));
+    }
+    return stars;
   };
+
+  const renderRatingBar = (label, value) => (
+    <div className="mb-3">
+      <div className="flex justify-between items-center mb-1">
+        <span className="text-sm text-gray-600">{label}</span>
+        <div className="flex">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span key={star} className={star <= value ? 'text-yellow-400' : 'text-gray-300'}>
+              ★
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="w-full bg-gray-200 rounded-full h-2">
+        <div
+          className="bg-yellow-400 h-2 rounded-full transition-all"
+          style={{ width: `${(value / 5) * 100}%` }}
+        />
+      </div>
+    </div>
+  );
 
   if (loading) {
     return (
@@ -100,346 +110,211 @@ const PetDetailPage = () => {
     );
   }
 
-  const speciesNames = {
-    cat: '猫',
-    dog: '狗',
-    rabbit: '兔子',
-    hamster: '仓鼠',
-    bird: '鸟',
-    fish: '鱼',
-    other: '其他',
-  };
-
   return (
-    <div className="min-h-screen bg-background-light pb-8">
-      {/* Header */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <button
-            onClick={() => navigate('/pets')}
-            className="flex items-center text-gray-600 hover:text-primary mb-4"
-          >
-            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-            </svg>
-            返回
-          </button>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="bg-white">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Image */}
+            <div className="relative">
               <img
                 src={pet.avatar || '/default-pet.png'}
                 alt={pet.name}
-                className="w-24 h-24 rounded-full object-cover"
+                className="w-full h-96 object-cover rounded-lg shadow-lg"
               />
-              <div>
-                <h1 className="text-3xl font-bold text-text-primary mb-2">{pet.name}</h1>
-                <p className="text-text-secondary">
-                  {speciesNames[pet.species]} · {pet.breed}
-                </p>
-                {pet.birthDate && (
-                  <p className="text-text-secondary text-sm mt-1">
-                    {calculateAge(pet.birthDate)}
-                  </p>
-                )}
-              </div>
+              <button className="absolute top-4 left-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
             </div>
+
+            {/* Info */}
             <div>
-              {!isEditMode ? (
-                <button
-                  onClick={handleEditToggle}
-                  className="btn-primary"
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h1 className="text-3xl font-bold mb-2">{pet.name}</h1>
+                  <p className="text-gray-600 text-lg">{pet.breed || '柯基犬'} · {pet.age || 3}岁 · {pet.gender === 'male' ? '雄性' : '雌性'}</p>
+                </div>
+                <Link
+                  to={`/pets/${id}/health`}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
                 >
-                  编辑资料
-                </button>
-              ) : (
-                <div className="flex space-x-2">
+                  AI健康管家
+                </Link>
+              </div>
+
+              {/* Rating */}
+              <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-4xl font-bold text-yellow-500">{ratings.overall}</span>
+                    <div>
+                      <div className="flex text-yellow-400 text-xl">
+                        {renderStars(ratings.overall)}
+                      </div>
+                      <p className="text-sm text-gray-600">综合评分</p>
+                    </div>
+                  </div>
                   <button
-                    onClick={handleEditToggle}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                    onClick={() => setActiveTab('rating')}
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm flex items-center space-x-1"
                   >
-                    取消
-                  </button>
-                  <button
-                    onClick={handleSaveEdit}
-                    className="btn-primary"
-                  >
-                    保存
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <span>打分</span>
                   </button>
                 </div>
-              )}
+
+                <div className="space-y-2">
+                  {renderRatingBar('粘人指数', ratings.stickiness)}
+                  {renderRatingBar('聪明指数', ratings.intelligence)}
+                  {renderRatingBar('活泼指数', ratings.activeness)}
+                  {renderRatingBar('掉毛程度', ratings.shedding)}
+                </div>
+              </div>
+
+              {/* Description */}
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                {pet.personality?.temperament || '一只对世界充满好奇心的快乐小柯基！喜欢追球、晒太阳和所有好吃的零食。性格温顺，是家里的开心果。'}
+              </p>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-center space-x-1 mb-1">
+                    <svg className="w-5 h-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                    </svg>
+                    <span className="font-bold text-lg">{stats.wantToAdopt.toLocaleString()}</span>
+                  </div>
+                  <p className="text-xs text-gray-600">想养</p>
+                </div>
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="font-bold text-lg mb-1">{stats.size}</div>
+                  <p className="text-xs text-gray-600">体型</p>
+                </div>
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="font-bold text-lg mb-1">{stats.views.toLocaleString()}</div>
+                  <p className="text-xs text-gray-600">浏览量</p>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex space-x-3">
+                <button className="flex-1 px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-medium flex items-center justify-center space-x-2">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  </svg>
+                  <span>想养</span>
+                </button>
+                <button className="px-6 py-3 border-2 border-gray-300 rounded-lg hover:border-primary hover:text-primary transition-colors font-medium">
+                  领养
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="bg-white border-b border-gray-200 sticky top-16 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-white border-b sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="flex space-x-8">
-            {[
-              { id: 'info', label: '基本信息' },
-              { id: 'health', label: '健康记录' },
-              { id: 'photos', label: '相册' },
-              { id: 'reminders', label: '提醒事项' },
-            ].map((tab) => (
+            {['info', 'feeding', 'reviews', 'videos'].map((tab) => (
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
-                  activeTab === tab.id
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-4 font-medium transition-colors relative ${
+                  activeTab === tab
+                    ? 'text-primary'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                {tab.label}
+                {tab === 'info' && '详细信息'}
+                {tab === 'feeding' && '喂养建议'}
+                {tab === 'reviews' && '用户评价'}
+                {tab === 'videos' && '视频'}
+                {activeTab === tab && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                )}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Tab Content */}
+      <div className="max-w-6xl mx-auto px-4 py-8">
         {activeTab === 'info' && (
-          <div className="space-y-6">
-            {/* Basic Info */}
-            <div className="card">
-              <h3 className="text-xl font-bold mb-4">基本信息</h3>
-              {isEditMode ? (
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">姓名</label>
-                    <input
-                      type="text"
-                      value={editData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">品种</label>
-                    <input
-                      type="text"
-                      value={editData.breed}
-                      onChange={(e) => handleInputChange('breed', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">性别</label>
-                    <select
-                      value={editData.gender}
-                      onChange={(e) => handleInputChange('gender', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    >
-                      <option value="male">雄性</option>
-                      <option value="female">雌性</option>
-                      <option value="unknown">未知</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">出生日期</label>
-                    <input
-                      type="date"
-                      value={editData.birthDate}
-                      onChange={(e) => handleInputChange('birthDate', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">颜色</label>
-                    <input
-                      type="text"
-                      value={editData.appearance?.color || ''}
-                      onChange={(e) => handleNestedInputChange('appearance', 'color', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">体重 (kg)</label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      value={editData.appearance?.weight || ''}
-                      onChange={(e) => handleNestedInputChange('appearance', 'weight', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-4">
-                  <InfoItem label="性别" value={pet.gender === 'male' ? '雄性' : pet.gender === 'female' ? '雌性' : '未知'} />
-                  <InfoItem label="品种" value={pet.breed} />
-                  <InfoItem label="颜色" value={pet.appearance?.color || '-'} />
-                  <InfoItem label="体重" value={pet.appearance?.weight ? `${pet.appearance.weight} kg` : '-'} />
-                </div>
-              )}
+          <div className="bg-white rounded-lg p-6">
+            <h2 className="text-xl font-bold mb-4">详细信息</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-gray-600 mb-1">品种</p>
+                <p className="font-medium">{pet.breed || '柯基犬'}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 mb-1">年龄</p>
+                <p className="font-medium">{pet.age || 3}岁</p>
+              </div>
+              <div>
+                <p className="text-gray-600 mb-1">性别</p>
+                <p className="font-medium">{pet.gender === 'male' ? '雄性' : '雌性'}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 mb-1">体重</p>
+                <p className="font-medium">{pet.appearance?.weight || '12.5'}kg</p>
+              </div>
             </div>
+          </div>
+        )}
 
-            {/* Personality */}
-            <div className="card">
-              <h3 className="text-xl font-bold mb-4">性格特征</h3>
-              {isEditMode ? (
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">性格描述</label>
-                  <textarea
-                    value={editData.personality?.temperament || ''}
-                    onChange={(e) => handleNestedInputChange('personality', 'temperament', e.target.value)}
-                    rows="3"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                    placeholder="描述宠物的性格..."
+        {activeTab === 'feeding' && (
+          <div className="bg-white rounded-lg p-6">
+            <h2 className="text-xl font-bold mb-4">喂养建议</h2>
+            <div className="space-y-4 text-gray-700">
+              <p>• 每日喂食2-3次，控制食量避免肥胖</p>
+              <p>• 提供充足的清水，保持水分</p>
+              <p>• 适量运动，每天散步1-2次</p>
+              <p>• 定期梳理毛发，保持清洁</p>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'reviews' && (
+          <div className="space-y-4">
+            {reviews.map((review) => (
+              <div key={review.id} className="bg-white rounded-lg p-6">
+                <div className="flex items-start space-x-4">
+                  <img
+                    src={review.user.avatar}
+                    alt={review.user.name}
+                    className="w-12 h-12 rounded-full"
                   />
-                </div>
-              ) : (
-                <>
-                  <p className="text-gray-700">{pet.personality?.temperament || '暂无描述'}</p>
-                  {pet.personality?.traits && pet.personality.traits.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {pet.personality.traits.map((trait, index) => (
-                        <span key={index} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
-                          {trait}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-
-            {/* Health Summary */}
-            <div className="card">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold">健康摘要</h3>
-                <button
-                  onClick={() => navigate(`/pets/${id}/health`)}
-                  className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-lg">health_and_safety</span>
-                  <span className="text-sm font-medium">AI健康管家</span>
-                </button>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <p className="text-2xl font-bold text-green-600">
-                    {pet.health?.vaccinations?.length || 0}
-                  </p>
-                  <p className="text-sm text-gray-600">疫苗记录</p>
-                </div>
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <p className="text-2xl font-bold text-blue-600">
-                    {pet.health?.checkups?.length || 0}
-                  </p>
-                  <p className="text-sm text-gray-600">体检记录</p>
-                </div>
-                <div className="text-center p-4 bg-yellow-50 rounded-lg">
-                  <p className="text-2xl font-bold text-yellow-600">
-                    {pet.health?.medications?.length || 0}
-                  </p>
-                  <p className="text-sm text-gray-600">用药记录</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'health' && (
-          <div className="space-y-6">
-            {/* Health Analytics */}
-            {analytics && (
-              <div className="card">
-                <h3 className="text-xl font-bold mb-4">健康趋势（最近30天）</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 bg-primary/5 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">体重</p>
-                    <p className="text-2xl font-bold text-primary">
-                      {analytics.weight?.current ? `${analytics.weight.current} kg` : '-'}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      趋势: {analytics.weight?.trend === 'increasing' ? '↗️ 上升' : analytics.weight?.trend === 'decreasing' ? '↘️ 下降' : '→ 稳定'}
-                    </p>
-                  </div>
-                  <div className="p-4 bg-secondary/5 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">饮水量（平均）</p>
-                    <p className="text-2xl font-bold text-secondary">
-                      {analytics.water?.average ? `${analytics.water.average.toFixed(0)} ml` : '-'}
-                    </p>
-                  </div>
-                  <div className="p-4 bg-accent/5 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">食量（平均）</p>
-                    <p className="text-2xl font-bold text-accent">
-                      {analytics.food?.average ? `${analytics.food.average.toFixed(0)} g` : '-'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Recent Health Logs */}
-            <div className="card">
-              <h3 className="text-xl font-bold mb-4">最近记录</h3>
-              {healthLogs.length > 0 ? (
-                <div className="space-y-3">
-                  {healthLogs.map((log) => (
-                    <div key={log._id} className="p-4 bg-gray-50 rounded-lg">
-                      <div className="flex justify-between items-start mb-2">
-                        <span className="font-medium">
-                          {new Date(log.date).toLocaleDateString('zh-CN')}
-                        </span>
-                        {log.alerts && log.alerts.length > 0 && (
-                          <span className="px-2 py-1 bg-red-100 text-red-600 text-xs rounded">
-                            {log.alerts.length} 个警告
-                          </span>
-                        )}
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <h3 className="font-medium">{review.user.name}</h3>
+                        <p className="text-sm text-gray-500">{review.date}</p>
                       </div>
-                      <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-                        {log.weight && <p>体重: {log.weight} kg</p>}
-                        {log.diet?.waterAmount && <p>饮水: {log.diet.waterAmount} ml</p>}
-                        {log.diet?.foodAmount && <p>食量: {log.diet.foodAmount} g</p>}
-                        {log.energy?.level && <p>精神: {log.energy.level}</p>}
+                      <div className="flex text-yellow-400">
+                        {renderStars(review.rating)}
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500 text-center py-4">暂无健康记录</p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'photos' && (
-          <div className="card">
-            <h3 className="text-xl font-bold mb-4">照片相册</h3>
-            <p className="text-gray-500 text-center py-8">功能开发中...</p>
-          </div>
-        )}
-
-        {activeTab === 'reminders' && (
-          <div className="card">
-            <h3 className="text-xl font-bold mb-4">提醒事项</h3>
-            {pet.reminders && pet.reminders.length > 0 ? (
-              <div className="space-y-3">
-                {pet.reminders.map((reminder, index) => (
-                  <div key={index} className="p-4 bg-gray-50 rounded-lg flex justify-between items-center">
-                    <div>
-                      <p className="font-medium">{reminder.type}</p>
-                      <p className="text-sm text-gray-600">
-                        {new Date(reminder.date).toLocaleDateString('zh-CN')}
-                      </p>
-                      {reminder.note && <p className="text-sm text-gray-500 mt-1">{reminder.note}</p>}
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-sm ${
-                      reminder.completed ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
-                    }`}>
-                      {reminder.completed ? '已完成' : '待办'}
-                    </span>
+                    <p className="text-gray-700">{review.content}</p>
                   </div>
-                ))}
+                </div>
               </div>
-            ) : (
-              <p className="text-gray-500 text-center py-4">暂无提醒事项</p>
-            )}
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'videos' && (
+          <div className="bg-white rounded-lg p-6">
+            <p className="text-gray-500 text-center py-12">暂无视频</p>
           </div>
         )}
       </div>
@@ -447,24 +322,4 @@ const PetDetailPage = () => {
   );
 };
 
-const InfoItem = ({ label, value }) => (
-  <div>
-    <p className="text-sm text-gray-600">{label}</p>
-    <p className="font-medium text-gray-900">{value}</p>
-  </div>
-);
-
-function calculateAge(birthDate) {
-  const birth = new Date(birthDate);
-  const now = new Date();
-  const years = now.getFullYear() - birth.getFullYear();
-  const months = now.getMonth() - birth.getMonth();
-
-  if (years > 0) {
-    return `${years}岁${months > 0 ? months + '个月' : ''}`;
-  } else {
-    return `${months}个月`;
-  }
-}
-
-export default PetDetailPage;
+export default EnhancedPetDetailPage;
