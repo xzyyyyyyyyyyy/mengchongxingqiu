@@ -23,6 +23,8 @@ import CreatePostPage from './pages/CreatePostPage';
 import HealthCenterPage from './pages/HealthCenterPage';
 import AddHealthLogPage from './pages/AddHealthLogPage';
 import HealthHistoryPage from './pages/HealthHistoryPage';
+import AvatarPage from './pages/AvatarPage';
+import HelpPage from './pages/HelpPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -213,6 +215,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <HealthHistoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pets/:petId/avatar"
+            element={
+              <ProtectedRoute>
+                <AvatarPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              <ProtectedRoute>
+                <HelpPage />
               </ProtectedRoute>
             }
           />
