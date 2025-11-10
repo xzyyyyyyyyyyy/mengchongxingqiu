@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { petService } from '../api/petService';
+import { getImageUrl } from '../utils/imageUtils';
 
 const PetsPage = () => {
   const [pets, setPets] = useState([]);
@@ -65,7 +66,7 @@ const PetsPage = () => {
               >
                 <div className="flex items-start space-x-4">
                   <img
-                    src={pet.avatar || '/default-pet.png'}
+                    src={getImageUrl(pet.avatar) || '/default-pet.png'}
                     alt={pet.name}
                     className="w-20 h-20 rounded-full object-cover"
                   />

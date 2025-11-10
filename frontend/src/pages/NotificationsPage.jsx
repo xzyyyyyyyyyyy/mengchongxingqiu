@@ -5,6 +5,7 @@ import { getImageUrl } from '../utils/imageUtils';
 
 const NotificationsPage = () => {
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [activeTab, setActiveTab] = useState('all');
