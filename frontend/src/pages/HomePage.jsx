@@ -1,16 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
-import { useAuth } from '../contexts/AuthContext';
 
 const EnhancedHomePage = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('recommend');
   const [searchQuery, setSearchQuery] = useState('');
-  const [location, setLocation] = useState('上海');
+  const [location] = useState('上海'); // Static for now, can be made dynamic later
 
   const loadPosts = useCallback(async () => {
     try {

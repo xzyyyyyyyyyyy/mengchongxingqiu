@@ -1,20 +1,28 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { petService } from '../api/petService';
 import { postService } from '../api/postService';
 import { orderService } from '../api/orderService';
 import { bookingService } from '../api/bookingService';
 
-const ProfilePage = () => {
+const EnhancedProfilePage = () => {
   const { user, logout } = useAuth();
+  const { userId } = useParams();
   const navigate = useNavigate();
+  const isOwnProfile = !userId || userId === user?._id;
+  
   const [stats, setStats] = useState({
+    followers: 12000,
+    following: 108,
+    posts: 345,
+    likes: 888000,
     pets: 0,
-    posts: 0,
     orders: { pending: 0, shipping: 0, delivered: 0, completed: 0 },
     bookings: { pending: 0, ongoing: 0, completed: 0 }
   });
+
+  const [profileUser, setProfileUser] = useState(null);
 
   const loadUserStats = useCallback(async () => {
     if (!user) return;
@@ -47,12 +55,13 @@ const ProfilePage = () => {
         completed: bookings.filter(b => b.status === 'completed').length,
       };
 
-      setStats({
+      setStats(prevStats => ({
+        ...prevStats,
         pets: petsCount,
         posts: postsCount,
         orders: orderStats,
         bookings: bookingStats
-      });
+      }));
     } catch (error) {
       console.error('Failed to load user stats:', error);
     }
@@ -60,252 +69,336 @@ const ProfilePage = () => {
 
   useEffect(() => {
     loadUserStats();
-  }, [loadUserStats]);
-
-  const menuItems = [
-    {
-      id: 'overview',
-      title: '概览',
-      icon: '📊',
-      items: [
-        { name: '我的宠物', count: stats.pets, icon: '🐾', path: '/pets' },
-        { name: '我的帖子', count: stats.posts, icon: '📝', path: '/my-posts' },
-        { name: '我的收藏', count: 0, icon: '⭐', path: '#', disabled: true },
-        { name: '浏览历史', count: 0, icon: '👁️', path: '#', disabled: true },
-      ],
-    },
-    {
-      id: 'orders',
-      title: '订单管理',
-      icon: '📦',
-      items: [
-        { name: '待付款', count: stats.orders.pending, icon: '💳', path: '#', disabled: true },
-        { name: '待发货', count: stats.orders.shipping, icon: '📮', path: '#', disabled: true },
-        { name: '待收货', count: stats.orders.delivered, icon: '🚚', path: '#', disabled: true },
-        { name: '已完成', count: stats.orders.completed, icon: '✓', path: '#', disabled: true },
-      ],
-    },
-    {
-      id: 'bookings',
-      title: '服务预约',
-      icon: '📅',
-      items: [
-        { name: '待确认', count: stats.bookings.pending, icon: '⏰', path: '#', disabled: true },
-        { name: '进行中', count: stats.bookings.ongoing, icon: '🔄', path: '#', disabled: true },
-        { name: '已完成', count: stats.bookings.completed, icon: '✓', path: '#', disabled: true },
-      ],
-    },
-  ];
-
-  const quickActions = [
-    { name: 'AI虚拟形象', icon: '🎭', path: '/pets/avatar', disabled: false },
-    { name: '健康记录导出', icon: '📄', path: '/export', disabled: true },
-    { name: '积分商城', icon: '🎁', path: '/points', disabled: true },
-    { name: '邀请好友', icon: '👥', path: '/invite', disabled: true },
-  ];
-
-  const themes = [
-    { id: 'default', name: '默认', color: 'bg-gray-200' },
-    { id: 'cute', name: '可爱', color: 'bg-pink-200', locked: false },
-    { id: 'simple', name: '简约', color: 'bg-blue-200', locked: false },
-    { id: 'dark', name: '暗黑', color: 'bg-gray-800', locked: true },
-  ];
+    setProfileUser(user);
+  }, [loadUserStats, user]);
 
   return (
-    <div className="min-h-screen bg-background-light">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* User Profile Header */}
-        <div className="card mb-6">
-          <div className="flex items-center space-x-6">
-            <img
-              src={user?.avatar || '/default-avatar.png'}
-              alt={user?.username}
-              className="w-24 h-24 rounded-full object-cover"
-            />
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold text-text-primary mb-1">
-                {user?.username}
-              </h1>
-              <p className="text-text-secondary mb-2">{user?.email}</p>
-              <div className="flex items-center space-x-4 text-sm">
-                <div className="flex items-center">
-                  <span className="font-medium mr-1">{user?.points || 0}</span>
-                  <span className="text-gray-600">积分</span>
+    <div className="min-h-screen bg-gray-50">
+      {/* Profile Header */}
+      <div className="bg-white border-b">
+        <div className="max-w-4xl mx-auto px-4 py-6">
+          {/* User Info */}
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex items-center space-x-4">
+              <img
+                src={profileUser?.avatar || '/default-avatar.png'}
+                alt={profileUser?.username}
+                className="w-20 h-20 rounded-full border-4 border-white shadow-lg"
+              />
+              <div>
+                <div className="flex items-center space-x-3 mb-2">
+                  <h1 className="text-2xl font-bold">{profileUser?.username || '宠物大可爱'}</h1>
+                  <div className="flex items-center space-x-1 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <span className="font-medium">Lv.5 资深铲屎官</span>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <span className="font-medium mr-1">{user?.following?.length || 0}</span>
-                  <span className="text-gray-600">关注</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-medium mr-1">{user?.followers?.length || 0}</span>
-                  <span className="text-gray-600">粉丝</span>
-                </div>
+                <p className="text-gray-600 mb-2">家有两只布偶猫，欢迎来吸！</p>
               </div>
             </div>
-            <button
-              onClick={() => navigate('/profile/edit')}
-              className="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-all"
-            >
-              编辑资料
-            </button>
+
+            {isOwnProfile && (
+              <div className="flex items-center space-x-2">
+                <button className="p-2 hover:bg-gray-100 rounded-lg">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                  </svg>
+                </button>
+                <button className="p-2 hover:bg-gray-100 rounded-lg">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-4 gap-4 mb-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold">{stats.followers.toLocaleString()}</div>
+              <div className="text-sm text-gray-600">粉丝</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold">{stats.following}</div>
+              <div className="text-sm text-gray-600">关注</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold">{stats.posts}</div>
+              <div className="text-sm text-gray-600">动态</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold">{(stats.likes / 10000).toFixed(1)}w</div>
+              <div className="text-sm text-gray-600">获赞</div>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Main Content Grid */}
+      <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Menu Sections */}
-          <div className="lg:col-span-2 space-y-6">
-            {menuItems.map((section) => (
-              <div key={section.id} className="card">
-                <div className="flex items-center space-x-2 mb-4">
-                  <span className="text-2xl">{section.icon}</span>
-                  <h2 className="text-xl font-bold">{section.title}</h2>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {section.items.map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => !item.disabled && item.path && item.path !== '#' && navigate(item.path)}
-                      disabled={item.disabled}
-                      className={`p-4 bg-gray-50 rounded-lg transition-colors text-center ${
-                        item.disabled 
-                          ? 'opacity-50 cursor-not-allowed' 
-                          : 'hover:bg-gray-100 cursor-pointer'
-                      }`}
-                    >
-                      <div className="text-2xl mb-2">{item.icon}</div>
-                      <p className="font-medium text-sm mb-1">{item.name}</p>
-                      {item.count !== undefined && (
-                        <span className={`inline-block px-2 py-0.5 text-xs rounded-full ${
-                          item.count > 0 
-                            ? 'bg-primary text-white' 
-                            : 'bg-gray-300 text-gray-600'
-                        }`}>
-                          {item.count}
-                        </span>
-                      )}
-                      {item.disabled && (
-                        <span className="block text-xs text-gray-400 mt-1">即将上线</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-4">
             {/* Quick Actions */}
-            <div className="card">
-              <h2 className="text-xl font-bold mb-4">快捷工具</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {quickActions.map((action, index) => (
-                  <button
-                    key={index}
-                    onClick={() => !action.disabled && navigate(action.path)}
-                    disabled={action.disabled}
-                    className={`p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg transition-all text-center ${
-                      action.disabled 
-                        ? 'opacity-50 cursor-not-allowed' 
-                        : 'hover:shadow-md cursor-pointer'
-                    }`}
-                  >
-                    <div className="text-3xl mb-2">{action.icon}</div>
-                    <p className="font-medium text-sm">{action.name}</p>
-                    {action.disabled && (
-                      <span className="block text-xs text-gray-400 mt-1">即将上线</span>
+            <div className="bg-white rounded-lg p-4">
+              <h3 className="font-bold mb-4">快速入口</h3>
+              <div className="grid grid-cols-4 gap-4">
+                <button
+                  onClick={() => navigate('/my-posts')}
+                  className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  <svg className="w-8 h-8 text-pink-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm">我的收藏</span>
+                </button>
+
+                <button className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <svg className="w-8 h-8 text-blue-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                    <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm">我的作品</span>
+                </button>
+
+                <button
+                  onClick={() => navigate('/pets')}
+                  className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  <svg className="w-8 h-8 text-orange-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
+                  </svg>
+                  <span className="text-sm">我的宠物</span>
+                </button>
+
+                <button className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <svg className="w-8 h-8 text-purple-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                  </svg>
+                  <span className="text-sm">浏览历史</span>
+                </button>
+              </div>
+            </div>
+
+            {/* My Orders */}
+            <div className="bg-white rounded-lg p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-bold">我的好物</h3>
+                <button className="text-sm text-primary flex items-center">
+                  查看全部订单
+                  <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-4 gap-4">
+                <button className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="relative mb-2">
+                    <svg className="w-8 h-8 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                      <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
+                    </svg>
+                    {stats.orders.pending > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {stats.orders.pending}
+                      </span>
                     )}
-                  </button>
-                ))}
+                  </div>
+                  <span className="text-sm">待付款</span>
+                </button>
+
+                <button className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="relative mb-2">
+                    <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                      <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
+                    </svg>
+                    {stats.orders.shipping > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {stats.orders.shipping}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-sm">待收货</span>
+                </button>
+
+                <button className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <svg className="w-8 h-8 text-green-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm">待评价</span>
+                </button>
+
+                <button className="flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <svg className="w-8 h-8 text-red-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm">退款/售后</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Shopping Cart */}
+            <div className="bg-white rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold">我的订单</h3>
+                <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                </svg>
               </div>
             </div>
           </div>
 
-          {/* Right Column - Settings & Actions */}
-          <div className="space-y-6">
-            {/* Theme Selection */}
-            <div className="card">
-              <h3 className="text-lg font-bold mb-4">主题皮肤</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {themes.map((theme) => (
-                  <button
-                    key={theme.id}
-                    disabled={theme.locked}
-                    className={`relative p-4 rounded-lg border-2 transition-all ${
-                      theme.id === 'default'
-                        ? 'border-primary'
-                        : 'border-gray-200 hover:border-primary'
-                    } ${theme.locked ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  >
-                    <div className={`w-full h-12 ${theme.color} rounded mb-2`}></div>
-                    <p className="text-sm font-medium">{theme.name}</p>
-                    {theme.locked && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-2xl">🔒</span>
-                      </div>
-                    )}
-                  </button>
-                ))}
+          {/* Sidebar */}
+          <div className="space-y-4">
+            {/* My Tools */}
+            <div className="bg-white rounded-lg p-4">
+              <h3 className="font-bold mb-4">我的工具</h3>
+              <div className="space-y-2">
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">宠物证件夹</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">医疗记录</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">预约日历</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">积分商城</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                    </svg>
+                    <span className="text-sm">邀请好友</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
               </div>
             </div>
 
             {/* Settings */}
-            <div className="card">
-              <h3 className="text-lg font-bold mb-4">设置</h3>
-              <div className="space-y-3">
-                <button className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors flex items-center justify-between">
-                  <span>🔔 通知设置</span>
-                  <span className="text-gray-400">›</span>
+            <div className="bg-white rounded-lg p-4">
+              <h3 className="font-bold mb-4">设置</h3>
+              <div className="space-y-2">
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">皮肤切换</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
                 </button>
-                <button className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors flex items-center justify-between">
-                  <span>🔒 隐私设置</span>
-                  <span className="text-gray-400">›</span>
+
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                    </svg>
+                    <span className="text-sm">首页布局</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
                 </button>
-                <button 
+
+                <button
                   onClick={() => navigate('/help')}
-                  className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors flex items-center justify-between"
+                  className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors"
                 >
-                  <span>❓ 帮助与反馈</span>
-                  <span className="text-gray-400">›</span>
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">帮助与客服</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
                 </button>
-                <button className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors flex items-center justify-between">
-                  <span>ℹ️ 关于我们</span>
-                  <span className="text-gray-400">›</span>
+
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">隐私设置</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+
+                <button className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                    </svg>
+                    <span className="text-sm">通知设置</span>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
                 </button>
               </div>
             </div>
 
-            {/* Logout */}
-            <button
-              onClick={() => {
-                logout();
-                navigate('/login');
-              }}
-              className="w-full p-3 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
-            >
-              退出登录
-            </button>
-          </div>
-        </div>
-
-        {/* Stats Card */}
-        <div className="mt-6 card bg-gradient-to-r from-primary/10 to-secondary/10">
-          <h3 className="text-xl font-bold mb-4">数据统计</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div>
-              <p className="text-3xl font-bold text-primary">{stats.posts}</p>
-              <p className="text-sm text-gray-600">发布内容</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-secondary">{stats.pets}</p>
-              <p className="text-sm text-gray-600">宠物档案</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-accent">{stats.bookings.completed}</p>
-              <p className="text-sm text-gray-600">完成预约</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-purple-500">{user?.points || 0}</p>
-              <p className="text-sm text-gray-600">积分</p>
-            </div>
+            {isOwnProfile && (
+              <button
+                onClick={() => logout()}
+                className="w-full bg-white rounded-lg p-4 text-red-600 hover:bg-red-50 transition-colors font-medium"
+              >
+                退出登录
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -313,4 +406,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default EnhancedProfilePage;
