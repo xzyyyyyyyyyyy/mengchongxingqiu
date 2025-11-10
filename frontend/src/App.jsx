@@ -29,6 +29,7 @@ import HelpPage from './pages/HelpPage';
 import CategoryPage from './pages/CategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import NotificationsPage from './pages/NotificationsPage';
+import PetSpeciesPage from './pages/PetSpeciesPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
 import CreateBookingPage from './pages/CreateBookingPage';
@@ -274,6 +275,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <NotificationsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/species/:species"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PetSpeciesPage />
                 </Layout>
               </ProtectedRoute>
             }
