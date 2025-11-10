@@ -1,19 +1,49 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/common/Layout';
+import { feedbackService } from '../api/feedbackService';
 
 const HelpPage = () => {
   const navigate = useNavigate();
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackType, setFeedbackType] = useState('suggestion');
+  const [contact, setContact] = useState('');
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleSubmitFeedback = (e) => {
+  const handleSubmitFeedback = async (e) => {
     e.preventDefault();
-    // TODO: Implement feedback submission
-    alert('感谢您的反馈！我们会认真处理。');
-    setFeedbackText('');
-    setShowFeedbackForm(false);
+    
+    if (!feedbackText.trim()) {
+      setError('请输入反馈内容');
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      setError('');
+      
+      await feedbackService.submitFeedback({
+        type: feedbackType,
+        content: feedbackText.trim(),
+        contact: contact.trim()
+      });
+
+      setSuccess('感谢您的反馈！我们会认真处理。');
+      setFeedbackText('');
+      setContact('');
+      setTimeout(() => {
+        setShowFeedbackForm(false);
+        setSuccess('');
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to submit feedback:', err);
+      setError('提交失败，请重试');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const faqItems = [
@@ -142,6 +172,19 @@ const HelpPage = () => {
           {/* Feedback Section */}
           <section>
             <h2 className="px-2 pb-3 text-lg font-bold">意见反馈</h2>
+            
+            {/* Error/Success Messages */}
+            {error && (
+              <div className="mb-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="mb-3 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                {success}
+              </div>
+            )}
+            
             {!showFeedbackForm ? (
               <button
                 onClick={() => setShowFeedbackForm(true)}
@@ -163,14 +206,14 @@ const HelpPage = () => {
                   >
                     <option value="suggestion">功能建议</option>
                     <option value="bug">问题反馈</option>
-                    <option value="praise">表扬鼓励</option>
+                    <option value="question">咨询问题</option>
                     <option value="other">其他</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    详细描述
+                    详细描述 *
                   </label>
                   <textarea
                     value={feedbackText}
@@ -179,11 +222,25 @@ const HelpPage = () => {
                     required
                     placeholder="请详细描述您的问题或建议..."
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
-                    maxLength="500"
+                    maxLength="1000"
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    {feedbackText.length}/500
+                    {feedbackText.length}/1000
                   </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    联系方式（可选）
+                  </label>
+                  <input
+                    type="text"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                    placeholder="邮箱或电话，方便我们回复"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    maxLength="100"
+                  />
                 </div>
 
                 <div className="flex gap-3">
@@ -192,16 +249,20 @@ const HelpPage = () => {
                     onClick={() => {
                       setShowFeedbackForm(false);
                       setFeedbackText('');
+                      setContact('');
+                      setError('');
                     }}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    disabled={submitting}
                   >
                     取消
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={submitting || !feedbackText.trim()}
                   >
-                    提交
+                    {submitting ? '提交中...' : '提交'}
                   </button>
                 </div>
               </form>

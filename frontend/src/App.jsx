@@ -17,6 +17,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminServices from './pages/admin/AdminServices';
 import AdminPosts from './pages/admin/AdminPosts';
+import AdminFeedback from './pages/admin/AdminFeedback';
 import HashtagPostsPage from './pages/HashtagPostsPage';
 import PostDetailPage from './pages/PostDetailPage';
 import CreatePostPage from './pages/CreatePostPage';
@@ -25,6 +26,7 @@ import AddHealthLogPage from './pages/AddHealthLogPage';
 import HealthHistoryPage from './pages/HealthHistoryPage';
 import AvatarPage from './pages/AvatarPage';
 import HelpPage from './pages/HelpPage';
+import CategoryPage from './pages/CategoryPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -234,6 +236,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/category"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CategoryPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
           {/* Admin Routes */}
           <Route
@@ -272,6 +284,16 @@ function App() {
               <AdminRoute>
                 <AdminLayout>
                   <AdminPosts />
+                </AdminLayout>
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/feedback"
+            element={
+              <AdminRoute>
+                <AdminLayout>
+                  <AdminFeedback />
                 </AdminLayout>
               </AdminRoute>
             }

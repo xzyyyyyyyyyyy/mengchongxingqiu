@@ -3,14 +3,38 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '../components/common/Layout';
 
-const HealthCenterPage = () => {
+const EnhancedHealthCenterPage = () => {
   const { petId } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [pet, setPet] = useState(null);
   const [todayLog, setTodayLog] = useState(null);
-  const [analytics, setAnalytics] = useState(null);
-  const [recentAlerts, setRecentAlerts] = useState([]);
+
+  // Mock data for AI Health Insights
+  const healthMetrics = {
+    heartRate: { value: 85, unit: 'bpm', icon: '❤️', status: 'normal' },
+    foodIntake: { value: 150, unit: 'g', icon: '🍖', status: 'normal' },
+    waterIntake: { value: 300, unit: 'ml', icon: '💧', status: 'warning' },
+    weight: { value: 12.5, unit: 'kg', icon: '⚖️', status: 'normal' },
+    activity: { value: 2.5, unit: 'km', icon: '🏃', status: 'normal' }
+  };
+
+  const healthAlerts = [
+    {
+      id: 1,
+      level: 'warning',
+      icon: '⚠️',
+      title: '饮水量偏低',
+      description: '旺财近3日日均饮水量低于健康基线20%，可能存在脱水风险。建议引导其多饮水，并观察排尿情况。'
+    },
+    {
+      id: 2,
+      level: 'alert',
+      icon: '🚨',
+      title: '夜间活动异常',
+      description: '昨晚检测到异常高频的夜间活动，结合医疗记录中的关节炎病史，建议关注其是否有关节不适迹象。'
+    }
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,23 +55,11 @@ const HealthCenterPage = () => {
         const today = new Date().toISOString().split('T')[0];
         const logsResponse = await axios.get(`/api/health/${petId}`, {
           headers: { Authorization: `Bearer ${token}` },
-          params: {
-            startDate: today,
-            endDate: today
-          }
+          params: { startDate: today, endDate: today }
         });
         if (logsResponse.data.data.length > 0) {
           setTodayLog(logsResponse.data.data[0]);
         }
-
-        // Fetch analytics
-        const analyticsResponse = await axios.get(`/api/health/${petId}/analytics`, {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { days: 30 }
-        });
-        setAnalytics(analyticsResponse.data.data);
-        setRecentAlerts(analyticsResponse.data.data.alerts || []);
-
       } catch (error) {
         console.error('Error fetching health data:', error);
         if (error.response?.status === 401) {
@@ -65,14 +77,8 @@ const HealthCenterPage = () => {
     navigate(`/pets/${petId}/health/add`);
   };
 
-  const handleGenerateReport = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      // TODO: Implement PDF report generation
-      alert('PDF报告生成功能即将上线');
-    } catch (error) {
-      console.error('Error generating report:', error);
-    }
+  const handleGenerateReport = () => {
+    alert('PDF报告生成功能开发中...');
   };
 
   if (loading) {
@@ -95,232 +101,183 @@ const HealthCenterPage = () => {
     );
   }
 
-  const getTrendIcon = (trend) => {
-    if (trend === 'increasing') return '📈';
-    if (trend === 'decreasing') return '📉';
-    return '➡️';
-  };
-
-  const getAlertColor = (type) => {
-    switch (type) {
-      case 'critical': return 'bg-red-50 border-red-200 text-red-800';
-      case 'warning': return 'bg-yellow-50 border-yellow-200 text-yellow-800';
-      case 'attention': return 'bg-blue-50 border-blue-200 text-blue-800';
-      default: return 'bg-gray-50 border-gray-200 text-gray-800';
-    }
-  };
-
   return (
     <Layout>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-4xl mx-auto px-4 py-6">
         {/* Header */}
-        <div className="sticky top-16 z-10 bg-white/80 backdrop-blur-sm px-4 py-3 border-b">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => navigate(-1)}
-              className="text-gray-600 hover:text-gray-900"
-            >
-              <span className="text-2xl">←</span>
-            </button>
-            <h1 className="text-xl font-bold text-center flex-1">AI健康管家</h1>
-            <div className="w-8"></div>
+        <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-4">
+              <img
+                src={pet.avatar || '/default-pet.png'}
+                alt={pet.name}
+                className="w-16 h-16 rounded-full object-cover"
+              />
+              <div>
+                <h1 className="text-2xl font-bold">{pet.name}</h1>
+                <p className="text-gray-600">{pet.breed} · {pet.age || 3}岁 · {pet.gender === 'male' ? '雄性' : '雌性'}</p>
+              </div>
+            </div>
+            <div className="flex space-x-2">
+              <button className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                </svg>
+                <span>数字档案</span>
+              </button>
+              <button 
+                onClick={handleGenerateReport}
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center space-x-2"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+                </svg>
+                <span>生成健康报告</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="p-4 space-y-4">
-          {/* Pet Info Card */}
-          <div className="bg-white rounded-lg shadow-sm p-4 space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img
-                  src={pet.photos?.[0] || `https://ui-avatars.com/api/?name=${pet.name}`}
-                  alt={pet.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <p className="text-lg font-bold">{pet.name}</p>
-                  <p className="text-sm text-gray-600">
-                    {pet.breed} · {pet.age || '未知'}岁 · {pet.gender === 'male' ? '雄性' : pet.gender === 'female' ? '雌性' : '未知'}
-                  </p>
-                </div>
-              </div>
-              <Link
-                to={`/pets/${petId}`}
-                className="flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary/20"
-              >
-                <span className="material-symbols-outlined text-base">folder_open</span>
-                <span>数字档案</span>
-              </Link>
-            </div>
-            <button
-              onClick={handleGenerateReport}
-              className="w-full flex items-center justify-center gap-2 rounded-lg bg-gray-100 hover:bg-gray-200 p-2 text-sm text-gray-800"
-            >
-              <span className="material-symbols-outlined text-yellow-500">picture_as_pdf</span>
-              <span>生成健康报告</span>
-            </button>
-          </div>
+        {/* AI Health Insights */}
+        <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-6 mb-6">
+          <h2 className="text-xl font-bold mb-4 flex items-center">
+            <span className="text-2xl mr-2">🤖</span>
+            AI健康洞察
+          </h2>
 
-          {/* AI Health Insights */}
-          <div className="bg-white rounded-lg shadow-sm p-4 space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="text-lg font-bold">AI健康洞察</p>
-              <p className="text-sm text-gray-500">
-                {todayLog ? '今日已记录' : '今日未记录'}
-              </p>
-            </div>
-
-            {/* Health Metrics Grid */}
-            <div className="grid grid-cols-3 gap-3">
-              {/* Heart Rate */}
-              <div className="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white p-3 text-center">
-                <span className="material-symbols-outlined text-primary">favorite</span>
-                <p className="text-sm font-medium">心率</p>
-                <p className="text-xs text-gray-500">
-                  {todayLog?.heartRate || '--'} bpm
-                </p>
-              </div>
-
-              {/* Food Amount */}
-              <div className="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white p-3 text-center">
-                <span className="material-symbols-outlined text-primary">restaurant</span>
-                <p className="text-sm font-medium">食量</p>
-                <p className="text-xs text-gray-500">
-                  {todayLog?.diet?.foodAmount || '--'} g
-                </p>
-              </div>
-
-              {/* Water Amount */}
-              <div className="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white p-3 text-center">
-                <span className="material-symbols-outlined text-secondary">water_drop</span>
-                <p className="text-sm font-medium">饮水</p>
-                <p className="text-xs text-gray-500">
-                  {todayLog?.diet?.waterAmount || '--'} ml
-                </p>
-              </div>
-
-              {/* Weight */}
-              <div className="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white p-3 text-center">
-                <span className="material-symbols-outlined text-secondary">weight</span>
-                <p className="text-sm font-medium">体重</p>
-                <p className="text-xs text-gray-500">
-                  {todayLog?.weight || analytics?.weight?.current || '--'} kg
-                </p>
-              </div>
-
-              {/* Activity */}
-              <div className="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white p-3 text-center">
-                <span className="material-symbols-outlined text-yellow-500">directions_run</span>
-                <p className="text-sm font-medium">活动</p>
-                <p className="text-xs text-gray-500">
-                  {todayLog?.activities?.length || 0} 次
-                </p>
-              </div>
-
-              {/* Add More */}
-              <button
-                onClick={handleAddLog}
-                className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 bg-gray-50 p-3 text-center hover:bg-gray-100"
-              >
-                <span className="material-symbols-outlined text-gray-500">add_circle_outline</span>
-                <p className="text-sm font-medium text-gray-500">添加</p>
-              </button>
-            </div>
-
-            {/* Health Baseline */}
-            <div className="rounded-lg bg-primary/5 p-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary">data_usage</span>
-                  <p className="text-base font-bold">个性化健康基线</p>
-                </div>
-                <span className="material-symbols-outlined text-gray-500 text-xl">expand_more</span>
-              </div>
-            </div>
-
-            {/* Key Metrics Trend */}
-            {analytics && (
-              <div>
-                <p className="mb-2 text-base font-bold">关键指标趋势 (30天)</p>
-                <div className="space-y-3 bg-gray-50 rounded-lg p-3">
-                  {analytics.weight && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">体重</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">{analytics.weight.current?.toFixed(1)} kg</span>
-                        <span>{getTrendIcon(analytics.weight.trend)}</span>
-                      </div>
-                    </div>
-                  )}
-                  {analytics.water && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">平均饮水</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">{analytics.water.average?.toFixed(0) || '--'} ml</span>
-                        <span>{getTrendIcon(analytics.water.trend)}</span>
-                      </div>
-                    </div>
-                  )}
-                  {analytics.food && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">平均食量</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">{analytics.food.average?.toFixed(0) || '--'} g</span>
-                        <span>{getTrendIcon(analytics.food.trend)}</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* AI Health Alerts */}
-          {recentAlerts.length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm p-4 space-y-3">
-              <p className="text-lg font-bold">AI健康预警</p>
-              {recentAlerts.map((alert, index) => (
-                <div
-                  key={index}
-                  className={`rounded-lg border p-3 ${getAlertColor(alert.type)}`}
+          {/* Today's Status */}
+          <div className="bg-white/80 backdrop-blur rounded-lg p-4 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-medium text-gray-700">今日状态</h3>
+              {!todayLog && (
+                <button
+                  onClick={handleAddLog}
+                  className="text-sm text-primary hover:text-primary/80 flex items-center space-x-1"
                 >
-                  <div className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-lg">
-                      {alert.type === 'critical' ? 'error' : alert.type === 'warning' ? 'warning' : 'info'}
-                    </span>
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{alert.message}</p>
-                      {alert.suggestion && (
-                        <p className="text-xs mt-1 opacity-80">{alert.suggestion}</p>
-                      )}
-                    </div>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                  </svg>
+                  <span>记录今日数据</span>
+                </button>
+              )}
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              {Object.entries(healthMetrics).map(([key, metric]) => (
+                <div key={key} className="text-center">
+                  <div className={`text-3xl mb-1 ${metric.status === 'warning' ? 'animate-pulse' : ''}`}>
+                    {metric.icon}
                   </div>
+                  <div className="text-sm text-gray-600 mb-1">
+                    {key === 'heartRate' && '心率'}
+                    {key === 'foodIntake' && '食量'}
+                    {key === 'waterIntake' && '饮水'}
+                    {key === 'weight' && '体重'}
+                    {key === 'activity' && '活动'}
+                  </div>
+                  <div className="font-bold text-lg">{metric.value} {metric.unit}</div>
                 </div>
               ))}
             </div>
-          )}
-
-          {/* Quick Actions */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={handleAddLog}
-              className="flex flex-col items-center justify-center gap-2 rounded-lg bg-primary text-white p-4 hover:bg-primary/90"
-            >
-              <span className="material-symbols-outlined text-2xl">add</span>
-              <span className="font-medium">记录今日健康</span>
-            </button>
-            <Link
-              to={`/pets/${petId}/health/history`}
-              className="flex flex-col items-center justify-center gap-2 rounded-lg bg-secondary text-white p-4 hover:bg-secondary/90"
-            >
-              <span className="material-symbols-outlined text-2xl">history</span>
-              <span className="font-medium">查看历史记录</span>
-            </Link>
           </div>
+
+          {/* Health Baseline */}
+          <div className="bg-white/80 backdrop-blur rounded-lg p-4 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-medium text-gray-700 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                </svg>
+                个性化健康基线
+              </h3>
+              <button className="text-sm text-gray-500 hover:text-gray-700">
+                查看详情
+              </button>
+            </div>
+            <div className="h-32 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+              <p className="text-gray-600">基线图表加载中...</p>
+            </div>
+          </div>
+
+          {/* Trend Indicators */}
+          <div className="bg-white/80 backdrop-blur rounded-lg p-4">
+            <button className="w-full flex items-center justify-between">
+              <h3 className="font-medium text-gray-700">关键指标趋势</h3>
+              <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* AI Health Alerts */}
+        <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
+          <h2 className="text-xl font-bold mb-4 flex items-center">
+            <span className="text-2xl mr-2">⚕️</span>
+            AI健康预警
+          </h2>
+
+          <div className="space-y-4">
+            {healthAlerts.map((alert) => (
+              <div
+                key={alert.id}
+                className={`p-4 rounded-lg border-l-4 ${
+                  alert.level === 'warning'
+                    ? 'bg-yellow-50 border-yellow-500'
+                    : 'bg-red-50 border-red-500'
+                }`}
+              >
+                <div className="flex items-start space-x-3">
+                  <span className="text-2xl flex-shrink-0">{alert.icon}</span>
+                  <div className="flex-1">
+                    <h3 className={`font-bold mb-1 ${
+                      alert.level === 'warning' ? 'text-yellow-800' : 'text-red-800'
+                    }`}>
+                      {alert.title}
+                    </h3>
+                    <p className={`text-sm ${
+                      alert.level === 'warning' ? 'text-yellow-700' : 'text-red-700'
+                    }`}>
+                      {alert.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button className="w-full mt-4 py-2 text-primary hover:text-primary/80 font-medium flex items-center justify-center space-x-2">
+            <span>查看全部健康分析</span>
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 gap-4">
+          <Link
+            to={`/pets/${petId}/health/history`}
+            className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow text-center"
+          >
+            <div className="text-4xl mb-3">📊</div>
+            <h3 className="font-bold mb-1">健康历史</h3>
+            <p className="text-sm text-gray-600">查看历史记录</p>
+          </Link>
+
+          <button
+            onClick={handleAddLog}
+            className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow text-center"
+          >
+            <div className="text-4xl mb-3">➕</div>
+            <h3 className="font-bold mb-1">添加记录</h3>
+            <p className="text-sm text-gray-600">记录今日健康数据</p>
+          </button>
         </div>
       </div>
     </Layout>
   );
 };
 
-export default HealthCenterPage;
+export default EnhancedHealthCenterPage;

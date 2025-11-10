@@ -17,6 +17,7 @@ const AdminLayout = ({ children }) => {
     { path: '/admin/services', label: '服务管理', icon: '🏥' },
     { path: '/admin/orders', label: '订单管理', icon: '📦' },
     { path: '/admin/bookings', label: '预约管理', icon: '📅' },
+    { path: '/admin/feedback', label: '用户反馈', icon: '💬' },
   ];
 
   const handleLogout = async () => {

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/common/Layout';
 
 const AvatarPage = () => {
   const navigate = useNavigate();
-  const { petId } = useParams();
+  // const { petId } = useParams(); // Reserved for future use with useParams from 'react-router-dom'
   const [selectedStyle, setSelectedStyle] = useState('cartoon');
   const [activeTab, setActiveTab] = useState('generate');
   const [uploadedImage, setUploadedImage] = useState(null);
