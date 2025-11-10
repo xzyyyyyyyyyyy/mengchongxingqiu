@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const PointsMallPage = () => {
+  // eslint-disable-next-line no-unused-vars
   const { user } = useAuth();
   const [activeCategory, setActiveCategory] = useState('all');
   const [items, setItems] = useState([]);

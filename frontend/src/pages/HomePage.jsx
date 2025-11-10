@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
+import { getImageUrl, getMediaUrl } from '../utils/imageUtils';
 
 const EnhancedHomePage = () => {
   const navigate = useNavigate();
@@ -191,7 +192,7 @@ const EnhancedHomePage = () => {
                 <div className="p-4 flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <img
-                      src={post.author?.avatar || '/default-avatar.png'}
+                      src={getImageUrl(post.author?.avatar) || '/default-avatar.png'}
                       alt={post.author?.username}
                       className="w-10 h-10 rounded-full cursor-pointer"
                       onClick={() => navigate(`/profile/${post.author?._id}`)}
@@ -239,7 +240,7 @@ const EnhancedHomePage = () => {
                           {item.type === 'video' ? (
                             <div className="relative w-full h-full bg-black">
                               <video
-                                src={item.url}
+                                src={getMediaUrl(item)}
                                 className="w-full h-full object-cover"
                                 controls
                                 preload="metadata"
@@ -247,7 +248,7 @@ const EnhancedHomePage = () => {
                             </div>
                           ) : (
                             <img
-                              src={item.url}
+                              src={getMediaUrl(item)}
                               alt=""
                               className="w-full h-full object-cover"
                             />

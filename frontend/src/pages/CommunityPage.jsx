@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
+import { getImageUrl } from '../utils/imageUtils';
 
 const CommunityPage = () => {
   const navigate = useNavigate();
@@ -174,7 +175,7 @@ const CommunityPage = () => {
                           </div>
                           <div className="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
                             {post.author?.avatar && (
-                              <img src={post.author.avatar} alt="" className="w-full h-full object-cover" />
+                              <img src={getImageUrl(post.author.avatar)} alt="" className="w-full h-full object-cover" />
                             )}
                           </div>
                           <div className="flex-1">

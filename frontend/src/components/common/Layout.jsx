@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { getImageUrl } from '../../utils/imageUtils';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -15,6 +16,14 @@ const Layout = ({ children }) => {
     { path: '/pets', label: '宠物', icon: '🐾' },
     { path: '/services', label: '服务', icon: '🏥' },
     { path: '/shop', label: '商城', icon: '🛒' },
+  ];
+
+  const mobileNavItems = [
+    { path: '/', label: '首页', icon: '🏠' },
+    { path: '/community', label: '社区', icon: '👥' },
+    { path: '/pets', label: '宠物', icon: '🐾' },
+    { path: '/services', label: '服务', icon: '🏥' },
+    { path: '/profile', label: '我的', icon: '👤' },
   ];
 
   return (
@@ -53,7 +62,7 @@ const Layout = ({ children }) => {
                 className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
               >
                 <img
-                  src={user?.avatar || '/default-avatar.png'}
+                  src={getImageUrl(user?.avatar) || '/default-avatar.png'}
                   alt={user?.username}
                   className="w-8 h-8 rounded-full"
                 />
@@ -92,7 +101,7 @@ const Layout = ({ children }) => {
       {/* Bottom Navigation (Mobile) */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
         <div className="flex justify-around items-center h-16">
-          {navItems.map((item) => (
+          {mobileNavItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}

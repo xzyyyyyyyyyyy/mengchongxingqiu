@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const PetDocumentsPage = () => {
-  const [documents, setDocuments] = useState([
+  const [documents] = useState([
     {
       id: 1,
       type: 'vaccine',

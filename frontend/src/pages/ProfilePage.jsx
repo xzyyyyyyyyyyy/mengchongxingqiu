@@ -5,6 +5,7 @@ import { petService } from '../api/petService';
 import { postService } from '../api/postService';
 import { orderService } from '../api/orderService';
 import { bookingService } from '../api/bookingService';
+import { getImageUrl } from '../utils/imageUtils';
 
 const EnhancedProfilePage = () => {
   const { user, logout } = useAuth();
@@ -81,7 +82,7 @@ const EnhancedProfilePage = () => {
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center space-x-4">
               <img
-                src={profileUser?.avatar || '/default-avatar.png'}
+                src={getImageUrl(profileUser?.avatar) || '/default-avatar.png'}
                 alt={profileUser?.username}
                 className="w-20 h-20 rounded-full border-4 border-white shadow-lg"
               />
