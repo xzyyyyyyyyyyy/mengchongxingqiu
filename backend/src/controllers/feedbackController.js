@@ -76,8 +76,18 @@ exports.getAllFeedback = async (req, res) => {
     const skip = (page - 1) * limit;
     const { status } = req.query;
 
+    // Validate status parameter against allowed values
+    const validStatuses = ['pending', 'processing', 'resolved', 'closed'];
+    
     let query = {};
     if (status) {
+      // Only allow valid status values to prevent injection
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid status parameter'
+        });
+      }
       query.status = status;
     }
 
@@ -111,6 +121,15 @@ exports.getAllFeedback = async (req, res) => {
 exports.updateFeedback = async (req, res) => {
   try {
     const { status, response } = req.body;
+
+    // Validate status parameter if provided
+    const validStatuses = ['pending', 'processing', 'resolved', 'closed'];
+    if (status && !validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid status value'
+      });
+    }
 
     const feedback = await Feedback.findById(req.params.id);
 
