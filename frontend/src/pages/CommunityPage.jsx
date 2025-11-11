@@ -117,8 +117,8 @@ const CommunityPage = () => {
           </div>
         </div>
 
-        {/* Category Selection */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-8">
+        {/* Category Selection - Mobile Optimized */}
+        <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-4 mb-6 sm:mb-8">
           {categories.map((category) => (
             <div
               key={category.id}
@@ -126,22 +126,22 @@ const CommunityPage = () => {
             >
               <button
                 onClick={() => setSelectedCategory(category.id)}
-                className={`w-full ${category.color} p-4 rounded-xl transition-all ${
+                className={`w-full ${category.color} p-2 sm:p-4 rounded-lg sm:rounded-xl transition-all ${
                   selectedCategory === category.id
                     ? 'ring-2 ring-primary scale-105'
                     : 'hover:scale-105'
                 }`}
               >
-                <div className="text-4xl mb-2">{category.icon}</div>
-                <p className="font-medium text-gray-800">{category.name}</p>
+                <div className="text-2xl sm:text-4xl mb-1 sm:mb-2">{category.icon}</div>
+                <p className="font-medium text-gray-800 text-xs sm:text-base">{category.name}</p>
               </button>
               {category.id !== 'all' && (
                 <button
                   onClick={() => navigate(`/species/${category.id}`)}
-                  className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
+                  className="absolute top-1 right-1 sm:top-2 sm:right-2 p-0.5 sm:p-1 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
                   title="进入专栏"
                 >
-                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
@@ -150,9 +150,9 @@ const CommunityPage = () => {
           ))}
         </div>
 
-        {/* Rankings Section */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-text-primary mb-4">热门排行榜</h2>
+        {/* Rankings Section - Compact on Mobile */}
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-text-primary mb-3 sm:mb-4">🐾 热门宠物榜</h2>
           {loading ? (
             <div className="flex justify-center items-center h-48">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>

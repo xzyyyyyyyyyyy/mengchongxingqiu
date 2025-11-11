@@ -22,7 +22,7 @@ exports.getPetRatings = async (req, res) => {
 
     // Calculate average ratings
     const avgRatings = await PetRating.aggregate([
-      { $match: { pet: mongoose.Types.ObjectId(req.params.petId) } },
+      { $match: { pet: new mongoose.Types.ObjectId(req.params.petId) } },
       {
         $group: {
           _id: null,

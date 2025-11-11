@@ -24,8 +24,11 @@ app.use(cors({
   credentials: true
 }));
 
-// Security headers
-app.use(helmet());
+// Security headers - Configure helmet to allow image loading
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  crossOriginEmbedderPolicy: false
+}));
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
