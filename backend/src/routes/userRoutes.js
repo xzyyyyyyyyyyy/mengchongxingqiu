@@ -7,7 +7,8 @@ const {
   uploadAvatar,
   avatarUpload,
   getFollowers,
-  getFollowing
+  getFollowing,
+  getUserStats
 } = require('../controllers/userController');
 const { protect } = require('../middleware/auth');
 
@@ -15,6 +16,11 @@ const { protect } = require('../middleware/auth');
 // @desc    Get user profile
 // @access  Public
 router.get('/:id', getUserProfile);
+
+// @route   GET /api/users/:id/stats
+// @desc    Get user statistics
+// @access  Public
+router.get('/:id/stats', getUserStats);
 
 // @route   GET /api/users/:id/followers
 // @desc    Get user followers

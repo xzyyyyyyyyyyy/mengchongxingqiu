@@ -248,5 +248,113 @@ exports.getFollowing = async (req, res) => {
   }
 };
 
+// @desc    Get user statistics
+// @route   GET /api/users/:id/stats
+// @access  Public
+exports.getUserStats = async (req, res) => {
+  try {
+    const Post = require('../models/Post');
+    const Pet = require('../models/Pet');
+    const Order = require('../models/Order');
+    const Booking = require('../models/Booking');
+    
+    const userId = req.params.id;
+    
+    // Get user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: '用户不存在'
+      });
+    }
+    
+    // Get counts
+    const [posts, pets, orders, bookings] = await Promise.all([
+      Post.find({ author: userId }),
+      Pet.find({ owner: userId }),
+      Order.find({ user: userId }),
+      Booking.find({ user: userId })
+    ]);
+    
+    // Calculate total likes received on all posts
+    const totalLikes = posts.reduce((sum, post) => sum + (post.likesCount || 0), 0);
+    
+    // Calculate order statistics
+    const orderStats = {
+      pending: orders.filter(o => o.paymentStatus === 'pending').length,
+      shipping: orders.filter(o => o.status === 'processing' || o.status === 'shipped').length,
+      delivered: orders.filter(o => o.status === 'delivered').length,
+      completed: orders.filter(o => o.status === 'completed').length,
+      total: orders.length
+    };
+    
+    // Calculate booking statistics
+    const bookingStats = {
+      pending: bookings.filter(b => b.status === 'pending').length,
+      ongoing: bookings.filter(b => b.status === 'confirmed').length,
+      completed: bookings.filter(b => b.status === 'completed').length,
+      total: bookings.length
+    };
+    
+    // Calculate user level based on activity
+    const activityScore = (posts.length * 10) + (totalLikes * 2) + (user.followers.length * 5);
+    let level = 1;
+    let levelName = '新手铲屎官';
+    
+    if (activityScore >= 10000) {
+      level = 10;
+      levelName = '传奇铲屎官';
+    } else if (activityScore >= 5000) {
+      level = 9;
+      levelName = '大师级铲屎官';
+    } else if (activityScore >= 2000) {
+      level = 8;
+      levelName = '专家级铲屎官';
+    } else if (activityScore >= 1000) {
+      level = 7;
+      levelName = '高级铲屎官';
+    } else if (activityScore >= 500) {
+      level = 6;
+      levelName = '进阶铲屎官';
+    } else if (activityScore >= 200) {
+      level = 5;
+      levelName = '资深铲屎官';
+    } else if (activityScore >= 100) {
+      level = 4;
+      levelName = '熟练铲屎官';
+    } else if (activityScore >= 50) {
+      level = 3;
+      levelName = '初级铲屎官';
+    } else if (activityScore >= 20) {
+      level = 2;
+      levelName = '见习铲屎官';
+    }
+    
+    res.json({
+      success: true,
+      data: {
+        followers: user.followers.length,
+        following: user.following.length,
+        posts: posts.length,
+        likes: totalLikes,
+        pets: pets.length,
+        orders: orderStats,
+        bookings: bookingStats,
+        level: {
+          number: level,
+          name: levelName,
+          score: activityScore
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
 // Export multer upload middleware
 exports.avatarUpload = upload.single('avatar');

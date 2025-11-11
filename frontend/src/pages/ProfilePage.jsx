@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import { petService } from '../api/petService';
-import { postService } from '../api/postService';
-import { orderService } from '../api/orderService';
-import { bookingService } from '../api/bookingService';
+import { userService } from '../api/userService';
 import { getImageUrl } from '../utils/imageUtils';
 
 const EnhancedProfilePage = () => {
@@ -14,64 +11,53 @@ const EnhancedProfilePage = () => {
   const isOwnProfile = !userId || userId === user?._id;
   
   const [stats, setStats] = useState({
-    followers: 12000,
-    following: 108,
-    posts: 345,
-    likes: 888000,
+    followers: 0,
+    following: 0,
+    posts: 0,
+    likes: 0,
     pets: 0,
-    orders: { pending: 0, shipping: 0, delivered: 0, completed: 0 },
-    bookings: { pending: 0, ongoing: 0, completed: 0 }
+    orders: { pending: 0, shipping: 0, delivered: 0, completed: 0, total: 0 },
+    bookings: { pending: 0, ongoing: 0, completed: 0, total: 0 },
+    level: { number: 1, name: '新手铲屎官', score: 0 }
   });
 
   const [profileUser, setProfileUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const loadUserStats = useCallback(async () => {
     if (!user) return;
     
     try {
-      // Load pets count
-      const petsResponse = await petService.getPets();
-      const petsCount = petsResponse.data?.length || 0;
-
-      // Load posts count
-      const postsResponse = await postService.getUserPosts(user._id);
-      const postsCount = postsResponse.data?.count || postsResponse.data?.data?.length || 0;
-
-      // Load orders
-      const ordersResponse = await orderService.getOrders();
-      const orders = ordersResponse.data?.data || [];
-      const orderStats = {
-        pending: orders.filter(o => o.paymentStatus === 'pending').length,
-        shipping: orders.filter(o => o.status === 'processing' || o.status === 'shipped').length,
-        delivered: orders.filter(o => o.status === 'delivered').length,
-        completed: orders.filter(o => o.status === 'completed').length,
-      };
-
-      // Load bookings
-      const bookingsResponse = await bookingService.getBookings();
-      const bookings = bookingsResponse.data?.data || [];
-      const bookingStats = {
-        pending: bookings.filter(b => b.status === 'pending').length,
-        ongoing: bookings.filter(b => b.status === 'confirmed').length,
-        completed: bookings.filter(b => b.status === 'completed').length,
-      };
-
-      setStats(prevStats => ({
-        ...prevStats,
-        pets: petsCount,
-        posts: postsCount,
-        orders: orderStats,
-        bookings: bookingStats
-      }));
+      setLoading(true);
+      const targetUserId = userId || user._id;
+      
+      // Load user stats from backend
+      const statsResponse = await userService.getUserStats(targetUserId);
+      if (statsResponse.data?.success) {
+        setStats(statsResponse.data.data);
+      }
+      
+      // Load user profile if viewing another user
+      if (userId && userId !== user._id) {
+        const profileResponse = await userService.getUserProfile(userId);
+        if (profileResponse.data?.success) {
+          setProfileUser(profileResponse.data.data);
+        }
+      } else {
+        setProfileUser(user);
+      }
     } catch (error) {
       console.error('Failed to load user stats:', error);
+      // Set default values on error
+      setProfileUser(user);
+    } finally {
+      setLoading(false);
     }
-  }, [user]);
+  }, [user, userId]);
 
   useEffect(() => {
     loadUserStats();
-    setProfileUser(user);
-  }, [loadUserStats, user]);
+  }, [loadUserStats]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -93,21 +79,20 @@ const EnhancedProfilePage = () => {
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
-                    <span className="font-medium">Lv.5 资深铲屎官</span>
+                    <span className="font-medium">Lv.{stats.level.number} {stats.level.name}</span>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-2">家有两只布偶猫，欢迎来吸！</p>
+                <p className="text-gray-600 mb-2">{profileUser?.bio || '这个人很懒，还没有写简介'}</p>
               </div>
             </div>
 
             {isOwnProfile && (
               <div className="flex items-center space-x-2">
-                <button className="p-2 hover:bg-gray-100 rounded-lg">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                  </svg>
-                </button>
-                <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <button 
+                  onClick={() => navigate('/settings')}
+                  className="p-2 hover:bg-gray-100 rounded-lg"
+                  title="设置"
+                >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -124,15 +109,19 @@ const EnhancedProfilePage = () => {
               <div className="text-sm text-gray-600">粉丝</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold">{stats.following}</div>
+              <div className="text-2xl font-bold">{stats.following.toLocaleString()}</div>
               <div className="text-sm text-gray-600">关注</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold">{stats.posts}</div>
+              <div className="text-2xl font-bold">{stats.posts.toLocaleString()}</div>
               <div className="text-sm text-gray-600">动态</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold">{(stats.likes / 10000).toFixed(1)}w</div>
+              <div className="text-2xl font-bold">
+                {stats.likes >= 10000 
+                  ? `${(stats.likes / 10000).toFixed(1)}w` 
+                  : stats.likes.toLocaleString()}
+              </div>
               <div className="text-sm text-gray-600">获赞</div>
             </div>
           </div>
