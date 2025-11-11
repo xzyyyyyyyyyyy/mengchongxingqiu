@@ -87,32 +87,34 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background-light">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="min-h-screen bg-background-light pb-20 sm:pb-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-text-primary mb-2">⚙️ 设置</h1>
-          <p className="text-text-secondary">个性化您的萌宠星球体验</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-1 sm:mb-2">⚙️ 设置</h1>
+          <p className="text-sm sm:text-base text-text-secondary">个性化您的萌宠星球体验</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="card space-y-1">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${
-                    activeTab === tab.id
-                      ? 'bg-primary text-white'
-                      : 'text-text-secondary hover:bg-gray-50'
-                  }`}
-                >
-                  <span className="text-xl">{tab.icon}</span>
-                  <span className="font-medium">{tab.name}</span>
-                </button>
-              ))}
+            <div className="card space-y-1 overflow-x-auto">
+              <div className="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-1 min-w-max lg:min-w-0">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`text-left px-3 py-2 sm:px-4 sm:py-3 rounded-lg transition-colors flex items-center gap-2 sm:gap-3 whitespace-nowrap ${
+                      activeTab === tab.id
+                        ? 'bg-primary text-white'
+                        : 'text-text-secondary hover:bg-gray-50'
+                    }`}
+                  >
+                    <span className="text-lg sm:text-xl">{tab.icon}</span>
+                    <span className="font-medium text-sm sm:text-base">{tab.name}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 

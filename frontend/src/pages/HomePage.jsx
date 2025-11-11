@@ -168,44 +168,47 @@ const EnhancedHomePage = () => {
           </div>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation with Quick Categories */}
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex space-x-6 border-b">
-            {['recommend', 'follow'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`pb-3 font-medium transition-colors relative ${
-                  activeTab === tab
-                    ? 'text-primary'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                {tab === 'recommend' && '推荐'}
-                {tab === 'follow' && '关注'}
-                {activeTab === tab && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
-                )}
-              </button>
-            ))}
+          <div className="flex items-center justify-between border-b">
+            <div className="flex space-x-6">
+              {['recommend', 'follow'].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`pb-3 font-medium transition-colors relative ${
+                    activeTab === tab
+                      ? 'text-primary'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  {tab === 'recommend' && '推荐'}
+                  {tab === 'follow' && '关注'}
+                  {activeTab === tab && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                  )}
+                </button>
+              ))}
+            </div>
+            
+            {/* Quick Categories in same row */}
+            <div className="flex space-x-2 pb-2">
+              {quickCategories.map((cat, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => navigate(cat.path)}
+                  className="flex items-center space-x-1 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-full text-xs transition-colors"
+                >
+                  <span className="text-base">{cat.icon}</span>
+                  <span className="text-gray-700">{cat.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-4">
-        {/* Quick Categories */}
-        <div className="flex space-x-3 mb-4 overflow-x-auto pb-2">
-          {quickCategories.map((cat, idx) => (
-            <button
-              key={idx}
-              onClick={() => navigate(cat.path)}
-              className="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-white rounded-lg hover:shadow-md transition-shadow"
-            >
-              <span className="text-2xl mb-1">{cat.icon}</span>
-              <span className="text-xs text-gray-600">{cat.label}</span>
-            </button>
-          ))}
-        </div>
 
         {/* Banner */}
         <div className="mb-4 relative overflow-hidden rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 p-6 text-white">

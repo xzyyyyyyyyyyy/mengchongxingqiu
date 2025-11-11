@@ -6,6 +6,11 @@ export const userService = {
     return axios.get(`/users/${userId}`);
   },
 
+  // Get user statistics
+  getUserStats: (userId) => {
+    return axios.get(`/users/${userId}/stats`);
+  },
+
   // Get user followers
   getFollowers: (userId) => {
     return axios.get(`/users/${userId}/followers`);
