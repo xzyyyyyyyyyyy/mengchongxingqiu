@@ -138,29 +138,3 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
-
-      {/* Bottom Navigation (Mobile) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-        <div className="flex justify-around items-center h-16">
-          {mobileNavItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex flex-col items-center justify-center space-y-1 flex-1 ${
-                isActive(item.path) ? 'text-primary' : 'text-gray-600'
-              }`}
-            >
-              <span className="text-xl">{item.icon}</span>
-              <span className="text-xs font-medium">{item.label}</span>
-            </Link>
-          ))}
-        </div>
-      </nav>
-
-      {/* Add padding at bottom for mobile nav */}
-      <div className="md:hidden h-16"></div>
-    </div>
-  );
-};
-
-export default Layout;

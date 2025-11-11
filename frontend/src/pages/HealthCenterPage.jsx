@@ -404,19 +404,25 @@ const EnhancedHealthCenterPage = () => {
               <p className="text-sm text-gray-500 mt-1">AI会持续监控您宠物的健康状况</p>
             </div>
           )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <button className="w-full mt-4 py-2 text-primary hover:text-primary/80 font-medium flex items-center justify-center space-x-2">
-            <span>查看全部健康分析</span>
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-            </svg>
-          </button>
         </div>
+
+        {/* AI Recommendations */}
+        {aiAnalysis?.insights?.recommendations && aiAnalysis.insights.recommendations.length > 0 && (
+          <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
+            <h2 className="text-xl font-bold mb-4 flex items-center">
+              <span className="text-2xl mr-2">💡</span>
+              AI健康建议
+            </h2>
+            <ul className="space-y-2">
+              {aiAnalysis.insights.recommendations.map((rec, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-primary mr-2">•</span>
+                  <span className="text-gray-700">{rec}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-4">
