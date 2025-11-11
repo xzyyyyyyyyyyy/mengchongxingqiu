@@ -1,365 +1,239 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RemindersPage = () => {
-  const [reminders, setReminders] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newReminder, setNewReminder] = useState({
-    type: 'vaccine',
-    title: '',
-    date: '',
-    notes: '',
-    repeat: 'once',
-  });
-
-  // Mock reminders data
-  const mockReminders = [
-    {
-      id: 1,
-      type: 'vaccine',
-      title: '狂犬疫苗加强针',
-      petName: '旺财',
-      date: '2025-11-15',
-      status: 'pending',
-      notes: '建议使用进口疫苗',
-      icon: '💉',
-    },
-    {
-      id: 2,
-      type: 'deworming',
-      title: '体内驱虫',
-      petName: '小橘',
-      date: '2025-11-12',
-      status: 'pending',
-      notes: '',
-      icon: '💊',
-    },
-    {
-      id: 3,
-      type: 'grooming',
-      title: '美容洗澡',
-      petName: '旺财',
-      date: '2025-11-18',
-      status: 'pending',
-      notes: '剪指甲+洗澡',
-      icon: '✂️',
-    },
-    {
-      id: 4,
-      type: 'checkup',
-      title: '年度体检',
-      petName: '小橘',
-      date: '2025-12-01',
-      status: 'pending',
-      notes: '全面体检套餐',
-      icon: '🏥',
-    },
-    {
-      id: 5,
-      type: 'feeding',
-      title: '喂食提醒',
-      petName: '小橘',
-      date: '2025-11-10',
-      time: '18:00',
-      status: 'completed',
-      notes: '晚餐时间',
-      icon: '🍖',
-      repeat: 'daily',
-    },
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('upcoming');
+  
+  const upcomingReminders = [
+    { id: 1, title: '体内驱虫', petName: '豆豆', daysLeft: 3, icon: '💊', type: 'deworming' },
+    { id: 2, title: '疫苗接种', petName: '旺财', daysLeft: 7, icon: '💉', type: 'vaccine' },
+    { id: 3, title: '洗澡清洁', petName: '豆豆', daysLeft: 10, icon: '🛁', type: 'grooming' },
   ];
 
-  useEffect(() => {
-    setReminders(mockReminders);
-  }, []);
-
-  const reminderTypes = [
-    { id: 'vaccine', name: '疫苗接种', icon: '💉', color: 'bg-blue-100 text-blue-600' },
-    { id: 'deworming', name: '驱虫', icon: '💊', color: 'bg-green-100 text-green-600' },
-    { id: 'grooming', name: '美容', icon: '✂️', color: 'bg-purple-100 text-purple-600' },
-    { id: 'checkup', name: '体检', icon: '🏥', color: 'bg-red-100 text-red-600' },
-    { id: 'feeding', name: '喂食', icon: '🍖', color: 'bg-yellow-100 text-yellow-600' },
-    { id: 'training', name: '训练', icon: '🎓', color: 'bg-indigo-100 text-indigo-600' },
-    { id: 'seasonal', name: '季节性', icon: '🌸', color: 'bg-pink-100 text-pink-600' },
+  const basicReminders = [
+    { id: 'dr1', icon: '💊', title: '体内驱虫', interval: '每3个月', color: 'bg-blue-100 text-blue-600' },
+    { id: 'dr2', icon: '💉', title: '疫苗接种', interval: '每年', color: 'bg-green-100 text-green-600' },
+    { id: 'dr3', icon: '🛁', title: '洗澡清洁', interval: '每2周', color: 'bg-purple-100 text-purple-600' },
+    { id: 'dr4', icon: '🦟', title: '体外驱虫', interval: '每月', color: 'bg-orange-100 text-orange-600' },
   ];
 
-  const getStatusBadge = (status) => {
-    if (status === 'completed') {
-      return <span className="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs">已完成</span>;
-    }
-    return <span className="px-2 py-1 bg-yellow-100 text-yellow-600 rounded-full text-xs">待办</span>;
-  };
+  const customReminders = [
+    { id: 'cr1', icon: '🍖', title: '喂食计划', interval: '每日', color: 'bg-yellow-100 text-yellow-600' },
+    { id: 'cr2', icon: '✂️', title: '美容护理', interval: '自定义', color: 'bg-pink-100 text-pink-600' },
+    { id: 'cr3', icon: '🐾', title: '训练互动', interval: '自定义', color: 'bg-indigo-100 text-indigo-600' },
+    { id: 'cr4', icon: '⛅', title: '季节健康', interval: '换季时', color: 'bg-teal-100 text-teal-600' },
+  ];
 
-  const getDaysUntil = (date) => {
-    const today = new Date();
-    const targetDate = new Date(date);
-    const diffTime = targetDate - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) return '已过期';
-    if (diffDays === 0) return '今天';
-    if (diffDays === 1) return '明天';
-    return `${diffDays}天后`;
-  };
+  const services = [
+    { id: 's1', icon: '🎨', title: 'AI扫描定制宠物3D形象', subtitle: '上传宠物照片，生成专属3D萌宠', action: '立即生成', path: '/avatar' },
+    { id: 's2', icon: '❤️', title: '健康监测中心', subtitle: '记录饮食饮水，关注健康趋势', action: '查看', path: '/health' },
+  ];
 
-  const handleAddReminder = () => {
-    // Add reminder logic here
-    setShowAddModal(false);
-    alert('提醒已添加！');
-  };
-
-  const handleCompleteReminder = (id) => {
-    setReminders(prev =>
-      prev.map(r => r.id === id ? { ...r, status: 'completed' } : r)
-    );
-  };
+  const todayTasks = [
+    { id: 't1', icon: '💉', title: '驱虫提醒', desc: '该给波比体内驱虫啦', color: 'bg-purple-50' },
+    { id: 't2', icon: '📅', title: '预约进度', desc: '洗护美容已预约，明天下午2点', color: 'bg-blue-50' },
+    { id: 't3', icon: '✅', title: '添加新日程', desc: '别忘了把新计划加入日历哦', color: 'bg-green-50' },
+  ];
 
   return (
-    <div className="min-h-screen bg-background-light">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="min-h-screen bg-background-light pb-20 sm:pb-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         {/* Header */}
-        <div className="mb-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-text-primary mb-2">⏰ 智能提醒</h1>
-            <p className="text-text-secondary">从不错过重要的宠物护理时刻</p>
-          </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="btn-primary flex items-center gap-2"
-          >
-            <span>➕</span>
-            <span>添加提醒</span>
-          </button>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-1 sm:mb-2">⏰ 日历提醒</h1>
+          <p className="text-sm sm:text-base text-text-secondary">智能管理宠物日程</p>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="card text-center bg-gradient-to-br from-red-50 to-orange-50">
-            <div className="text-3xl mb-2">🔔</div>
-            <div className="text-2xl font-bold text-primary">{reminders.filter(r => r.status === 'pending').length}</div>
-            <div className="text-sm text-text-secondary">待办提醒</div>
-          </div>
-          <div className="card text-center bg-gradient-to-br from-blue-50 to-cyan-50">
-            <div className="text-3xl mb-2">✅</div>
-            <div className="text-2xl font-bold text-primary">{reminders.filter(r => r.status === 'completed').length}</div>
-            <div className="text-sm text-text-secondary">已完成</div>
-          </div>
-          <div className="card text-center bg-gradient-to-br from-yellow-50 to-amber-50">
-            <div className="text-3xl mb-2">⚠️</div>
-            <div className="text-2xl font-bold text-primary">
-              {reminders.filter(r => {
-                const days = new Date(r.date) - new Date();
-                return days < 3 * 24 * 60 * 60 * 1000 && days > 0;
-              }).length}
-            </div>
-            <div className="text-sm text-text-secondary">即将到期</div>
-          </div>
-          <div className="card text-center bg-gradient-to-br from-purple-50 to-pink-50">
-            <div className="text-3xl mb-2">🔁</div>
-            <div className="text-2xl font-bold text-primary">
-              {reminders.filter(r => r.repeat && r.repeat !== 'once').length}
-            </div>
-            <div className="text-sm text-text-secondary">循环提醒</div>
+        {/* Tabs */}
+        <div className="mb-6 bg-white rounded-lg p-1">
+          <div className="flex space-x-2">
+            {[
+              { id: 'upcoming', label: '即将到来' },
+              { id: 'basic', label: '基础提醒' },
+              { id: 'services', label: '服务中心' },
+              { id: 'today', label: '今日待办' }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeTab === tab.id
+                    ? 'bg-primary text-white'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Reminders List */}
-        <div className="space-y-4 mb-8">
-          {reminders.map((reminder) => (
-            <div key={reminder.id} className="card hover:shadow-lg transition-all">
-              <div className="flex items-start gap-4">
-                {/* Icon */}
-                <div className="text-4xl flex-shrink-0">{reminder.icon}</div>
-
-                {/* Content */}
-                <div className="flex-1">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h3 className="text-lg font-bold text-text-primary">{reminder.title}</h3>
-                      <div className="flex items-center gap-2 text-sm text-text-secondary mt-1">
-                        <span>🐾 {reminder.petName}</span>
-                        <span>·</span>
-                        <span>📅 {reminder.date}</span>
-                        {reminder.time && (
-                          <>
-                            <span>·</span>
-                            <span>🕐 {reminder.time}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    {getStatusBadge(reminder.status)}
+        {/* Upcoming Reminders */}
+        {activeTab === 'upcoming' && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold mb-3">📍 即将到来</h2>
+            {upcomingReminders.map(reminder => (
+              <div key={reminder.id} className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div className="flex items-center space-x-4">
+                  <div className="text-4xl">{reminder.icon}</div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg">{reminder.title}</h3>
+                    <p className="text-gray-600 text-sm">{reminder.petName} - 还有{reminder.daysLeft}天</p>
                   </div>
-
-                  {reminder.notes && (
-                    <p className="text-sm text-text-secondary mb-2">
-                      📝 {reminder.notes}
-                    </p>
-                  )}
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className={`text-sm font-medium ${
-                        getDaysUntil(reminder.date) === '今天' || getDaysUntil(reminder.date) === '明天'
-                          ? 'text-red-600'
-                          : 'text-text-secondary'
-                      }`}>
-                        {getDaysUntil(reminder.date)}
-                      </span>
-                      {reminder.repeat && reminder.repeat !== 'once' && (
-                        <span className="text-xs px-2 py-1 bg-purple-100 text-purple-600 rounded-full">
-                          🔁 {reminder.repeat === 'daily' ? '每天' : reminder.repeat === 'weekly' ? '每周' : '每月'}
-                        </span>
-                      )}
-                    </div>
-
-                    {reminder.status === 'pending' && (
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleCompleteReminder(reminder.id)}
-                          className="px-3 py-1 bg-green-100 text-green-600 rounded-lg text-sm hover:bg-green-200 transition-colors"
-                        >
-                          完成
-                        </button>
-                        <button className="px-3 py-1 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition-colors">
-                          编辑
-                        </button>
-                      </div>
-                    )}
+                  <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    reminder.daysLeft <= 3 ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
+                  }`}>
+                    {reminder.daysLeft}天后
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        {/* Reminder Settings */}
-        <div className="card bg-gradient-to-br from-indigo-50 to-blue-50">
-          <h3 className="text-lg font-bold text-text-primary mb-4">⚙️ 提醒设置</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium text-text-primary">APP推送提醒</div>
-                <div className="text-sm text-text-secondary">在应用内接收提醒通知</div>
+        {/* Basic Reminders */}
+        {activeTab === 'basic' && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-xl font-bold mb-3">🔔 基础提醒</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {basicReminders.map(reminder => (
+                  <div key={reminder.id} className={`${reminder.color} rounded-lg p-4`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <span className="text-3xl">{reminder.icon}</span>
+                        <div>
+                          <h3 className="font-bold">{reminder.title}</h3>
+                          <p className="text-sm opacity-80">{reminder.interval}</p>
+                        </div>
+                      </div>
+                      <button className="p-2 hover:bg-white/50 rounded-full transition-colors">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-              </label>
             </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium text-text-primary">短信提醒</div>
-                <div className="text-sm text-text-secondary">通过短信接收重要提醒</div>
+
+            <div>
+              <h2 className="text-xl font-bold mb-3">➕ 新增提醒</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {customReminders.map(reminder => (
+                  <div key={reminder.id} className={`${reminder.color} rounded-lg p-4`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <span className="text-3xl">{reminder.icon}</span>
+                        <div>
+                          <h3 className="font-bold">{reminder.title}</h3>
+                          <p className="text-sm opacity-80">{reminder.interval}</p>
+                        </div>
+                      </div>
+                      <button className="p-2 hover:bg-white/50 rounded-full transition-colors">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-              </label>
             </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium text-text-primary">日历同步</div>
-                <div className="text-sm text-text-secondary">同步到手机日历</div>
+
+            <button className="w-full py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center space-x-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>添加新提醒</span>
+            </button>
+          </div>
+        )}
+
+        {/* Services */}
+        {activeTab === 'services' && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold mb-3">🎯 服务中心</h2>
+            {services.map(service => (
+              <div key={service.id} className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <span className="text-4xl">{service.icon}</span>
+                      <div>
+                        <h3 className="font-bold text-lg">{service.title}</h3>
+                        <p className="text-gray-600 text-sm">{service.subtitle}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => navigate(service.path)}
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center space-x-1"
+                  >
+                    <span>{service.action}</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-              </label>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium text-text-primary">提前提醒</div>
-                <div className="text-sm text-text-secondary">在到期前提前通知</div>
-              </div>
-              <select className="px-3 py-1 border border-gray-300 rounded-lg text-sm">
-                <option value="1">提前1天</option>
-                <option value="3" selected>提前3天</option>
-                <option value="7">提前7天</option>
-              </select>
+            ))}
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+              <button 
+                onClick={() => navigate('/health')}
+                className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow text-center"
+              >
+                <div className="text-3xl mb-2">🏥</div>
+                <p className="font-medium text-sm">医疗记录</p>
+              </button>
+              <button 
+                onClick={() => navigate('/services')}
+                className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow text-center"
+              >
+                <div className="text-3xl mb-2">🏪</div>
+                <p className="font-medium text-sm">附近服务</p>
+              </button>
+              <button 
+                onClick={() => navigate('/services?type=home')}
+                className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow text-center"
+              >
+                <div className="text-3xl mb-2">🚪</div>
+                <p className="font-medium text-sm">上门喂养</p>
+              </button>
+              <button className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow text-center">
+                <div className="text-3xl mb-2">⚙️</div>
+                <p className="font-medium text-sm">更多功能</p>
+              </button>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Today Tasks */}
+        {activeTab === 'today' && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold mb-3">📋 今日待办</h2>
+            {todayTasks.map(task => (
+              <div key={task.id} className={`${task.color} rounded-lg p-4 border-l-4 border-primary`}>
+                <div className="flex items-start space-x-3">
+                  <span className="text-3xl">{task.icon}</span>
+                  <div className="flex-1">
+                    <h3 className="font-bold mb-1">{task.title}</h3>
+                    <p className="text-gray-600 text-sm">{task.desc}</p>
+                  </div>
+                  <button className="text-primary hover:text-primary/80">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-
-      {/* Add Reminder Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6">
-            <h2 className="text-2xl font-bold text-text-primary mb-4">添加提醒</h2>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">提醒类型</label>
-                <select
-                  className="input-field w-full"
-                  value={newReminder.type}
-                  onChange={(e) => setNewReminder({ ...newReminder, type: e.target.value })}
-                >
-                  {reminderTypes.map((type) => (
-                    <option key={type.id} value={type.id}>
-                      {type.icon} {type.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">标题</label>
-                <input
-                  type="text"
-                  className="input-field w-full"
-                  placeholder="例如：狂犬疫苗"
-                  value={newReminder.title}
-                  onChange={(e) => setNewReminder({ ...newReminder, title: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">日期</label>
-                <input
-                  type="date"
-                  className="input-field w-full"
-                  value={newReminder.date}
-                  onChange={(e) => setNewReminder({ ...newReminder, date: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">重复</label>
-                <select
-                  className="input-field w-full"
-                  value={newReminder.repeat}
-                  onChange={(e) => setNewReminder({ ...newReminder, repeat: e.target.value })}
-                >
-                  <option value="once">仅一次</option>
-                  <option value="daily">每天</option>
-                  <option value="weekly">每周</option>
-                  <option value="monthly">每月</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">备注</label>
-                <textarea
-                  className="input-field w-full"
-                  rows="3"
-                  placeholder="添加备注信息..."
-                  value={newReminder.notes}
-                  onChange={(e) => setNewReminder({ ...newReminder, notes: e.target.value })}
-                />
-              </div>
-            </div>
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="flex-1 py-2 border border-gray-300 rounded-lg text-text-secondary hover:bg-gray-50 transition-colors"
-              >
-                取消
-              </button>
-              <button
-                onClick={handleAddReminder}
-                className="flex-1 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-              >
-                添加
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
