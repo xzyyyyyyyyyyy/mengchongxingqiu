@@ -42,6 +42,7 @@ import PetDocumentsPage from './pages/PetDocumentsPage';
 import SettingsPage from './pages/SettingsPage';
 import BookmarksPage from './pages/BookmarksPage';
 import BrowsingHistoryPage from './pages/BrowsingHistoryPage';
+import QRScannerPage from './pages/QRScannerPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -441,6 +442,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <SettingsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/qr-scanner"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <QRScannerPage />
                 </Layout>
               </ProtectedRoute>
             }
