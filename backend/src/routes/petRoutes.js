@@ -11,6 +11,10 @@ const {
 } = require('../controllers/petController');
 const { protect } = require('../middleware/auth');
 
+// Pet rating routes
+const petRatingRoutes = require('./petRatingRoutes');
+router.use('/:petId/ratings', petRatingRoutes);
+
 router.use(protect);
 
 router.route('/')

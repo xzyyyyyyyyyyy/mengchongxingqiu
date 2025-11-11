@@ -28,6 +28,8 @@ import AvatarPage from './pages/AvatarPage';
 import HelpPage from './pages/HelpPage';
 import CategoryPage from './pages/CategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
+import NotificationsPage from './pages/NotificationsPage';
+import PetSpeciesPage from './pages/PetSpeciesPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
 import CreateBookingPage from './pages/CreateBookingPage';
@@ -38,6 +40,8 @@ import PointsMallPage from './pages/PointsMallPage';
 import RemindersPage from './pages/RemindersPage';
 import PetDocumentsPage from './pages/PetDocumentsPage';
 import SettingsPage from './pages/SettingsPage';
+import BookmarksPage from './pages/BookmarksPage';
+import BrowsingHistoryPage from './pages/BrowsingHistoryPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -268,6 +272,26 @@ function App() {
             }
           />
           <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <NotificationsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/species/:species"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PetSpeciesPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/shop/:id"
             element={
               <ProtectedRoute>
@@ -417,6 +441,26 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <SettingsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookmarks"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BookmarksPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BrowsingHistoryPage />
                 </Layout>
               </ProtectedRoute>
             }

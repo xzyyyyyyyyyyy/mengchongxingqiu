@@ -1,50 +1,54 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { petService } from '../api/petService';
+import { petRatingService } from '../api/petRatingService';
+import { historyService } from '../api/historyService';
+import { getImageUrl } from '../utils/imageUtils';
+import AIFeedingRecommendations from '../components/ai/AIFeedingRecommendations';
 
 const EnhancedPetDetailPage = () => {
   const { id } = useParams();
   const [pet, setPet] = useState(null);
   const [activeTab, setActiveTab] = useState('info');
   const [loading, setLoading] = useState(true);
-
-  // Mock rating data
-  const ratings = {
-    overall: 4.8,
-    stickiness: 4,
-    intelligence: 5,
-    activeness: 4,
-    shedding: 3
-  };
-
-  const stats = {
-    wantToAdopt: 12000,
-    views: 8600,
-    size: '小型犬'
-  };
-
-  const reviews = [
-    {
-      id: 1,
-      user: { name: '小明', avatar: '/default-avatar.png' },
-      rating: 4.5,
-      date: '2天前',
-      content: '这只柯基也太可爱了吧！性格超好！照片拍得真棒！'
-    },
-    {
-      id: 2,
-      user: { name: '爱宠人士', avatar: '/default-avatar.png' },
-      rating: 5,
-      date: '5天前',
-      content: '旺仔是社区的小明星，每次看到它心情都变好了！'
-    }
-  ];
+  const [ratings, setRatings] = useState({
+    overall: 0,
+    stickiness: 0,
+    intelligence: 0,
+    activeness: 0,
+    shedding: 0,
+    count: 0
+  });
+  const [reviews, setReviews] = useState([]);
+  const [myRating, setMyRating] = useState(null);
+  const [showRatingModal, setShowRatingModal] = useState(false);
 
   const loadPetData = useCallback(async () => {
     try {
       setLoading(true);
-      const petResponse = await petService.getPet(id);
+      const [petResponse, ratingsResponse] = await Promise.all([
+        petService.getPet(id),
+        petRatingService.getPetRatings(id, { limit: 10 })
+      ]);
+      
       setPet(petResponse.data);
+      setRatings(ratingsResponse.averages || ratings);
+      setReviews(ratingsResponse.data || []);
+      
+      // Track browsing history
+      try {
+        await historyService.addToHistory('pet', id);
+      } catch (err) {
+        console.log('Failed to track history:', err);
+      }
+      
+      // Load user's rating
+      try {
+        const myRatingResponse = await petRatingService.getMyRating(id);
+        setMyRating(myRatingResponse.data);
+      } catch (err) {
+        // User hasn't rated yet, that's okay
+      }
     } catch (error) {
       console.error('Failed to load pet data:', error);
     } finally {
@@ -274,13 +278,7 @@ const EnhancedPetDetailPage = () => {
 
         {activeTab === 'feeding' && (
           <div className="bg-white rounded-lg p-6">
-            <h2 className="text-xl font-bold mb-4">喂养建议</h2>
-            <div className="space-y-4 text-gray-700">
-              <p>• 每日喂食2-3次，控制食量避免肥胖</p>
-              <p>• 提供充足的清水，保持水分</p>
-              <p>• 适量运动，每天散步1-2次</p>
-              <p>• 定期梳理毛发，保持清洁</p>
-            </div>
+            <AIFeedingRecommendations pet={pet} />
           </div>
         )}
 

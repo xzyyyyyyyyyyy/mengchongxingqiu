@@ -54,6 +54,8 @@ app.use('/api/points', require('./routes/points'));
 app.use('/api/reminders', require('./routes/reminders'));
 app.use('/api/documents', require('./routes/documents'));
 app.use('/api/settings', require('./routes/settings'));
+app.use('/api/bookmarks', require('./routes/bookmarkRoutes'));
+app.use('/api/history', require('./routes/historyRoutes'));
 
 // Health check
 app.get('/health', (req, res) => {

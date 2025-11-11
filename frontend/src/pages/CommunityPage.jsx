@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
+import { getImageUrl } from '../utils/imageUtils';
 
 const CommunityPage = () => {
   const navigate = useNavigate();
@@ -119,18 +120,33 @@ const CommunityPage = () => {
         {/* Category Selection */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-8">
           {categories.map((category) => (
-            <button
+            <div
               key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`${category.color} p-4 rounded-xl transition-all ${
-                selectedCategory === category.id
-                  ? 'ring-2 ring-primary scale-105'
-                  : 'hover:scale-105'
-              }`}
+              className="relative"
             >
-              <div className="text-4xl mb-2">{category.icon}</div>
-              <p className="font-medium text-gray-800">{category.name}</p>
-            </button>
+              <button
+                onClick={() => setSelectedCategory(category.id)}
+                className={`w-full ${category.color} p-4 rounded-xl transition-all ${
+                  selectedCategory === category.id
+                    ? 'ring-2 ring-primary scale-105'
+                    : 'hover:scale-105'
+                }`}
+              >
+                <div className="text-4xl mb-2">{category.icon}</div>
+                <p className="font-medium text-gray-800">{category.name}</p>
+              </button>
+              {category.id !== 'all' && (
+                <button
+                  onClick={() => navigate(`/species/${category.id}`)}
+                  className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
+                  title="进入专栏"
+                >
+                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
+            </div>
           ))}
         </div>
 
@@ -174,7 +190,7 @@ const CommunityPage = () => {
                           </div>
                           <div className="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
                             {post.author?.avatar && (
-                              <img src={post.author.avatar} alt="" className="w-full h-full object-cover" />
+                              <img src={getImageUrl(post.author.avatar)} alt="" className="w-full h-full object-cover" />
                             )}
                           </div>
                           <div className="flex-1">

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { serviceService } from '../api/serviceService';
+import { getImageUrl } from '../utils/imageUtils';
 
 const ServicesPage = () => {
   const navigate = useNavigate();
@@ -141,7 +142,7 @@ const ServicesPage = () => {
                 <div className="w-full h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg mb-4 flex items-center justify-center">
                   {service.images && service.images.length > 0 ? (
                     <img
-                      src={service.images[0]}
+                      src={getImageUrl(service.images[0])}
                       alt={service.name}
                       className="w-full h-full object-cover rounded-lg"
                     />

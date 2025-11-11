@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postService } from '../api/postService';
+import { bookmarkService } from '../api/bookmarkService';
+import { userService } from '../api/userService';
+import { getImageUrl, getMediaUrl } from '../utils/imageUtils';
 
 const EnhancedHomePage = () => {
   const navigate = useNavigate();
@@ -8,7 +11,10 @@ const EnhancedHomePage = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('recommend');
   const [searchQuery, setSearchQuery] = useState('');
-  const [location] = useState('上海'); // Static for now, can be made dynamic later
+  const [location, setLocation] = useState(() => {
+    return localStorage.getItem('userLocation') || '北京';
+  });
+  const [showLocationModal, setShowLocationModal] = useState(false);
 
   const loadPosts = useCallback(async () => {
     try {
@@ -51,13 +57,65 @@ const EnhancedHomePage = () => {
     }
   };
 
+  const handleBookmark = async (postId, e) => {
+    e.stopPropagation();
+    try {
+      // Find the post to check current bookmark status
+      const post = posts.find(p => p._id === postId);
+      if (post) {
+        await bookmarkService.toggleBookmark(postId, post.isBookmarked);
+        // Update local state
+        setPosts(prevPosts => prevPosts.map(p => 
+          p._id === postId 
+            ? { 
+                ...p, 
+                isBookmarked: !p.isBookmarked,
+                bookmarksCount: p.isBookmarked ? (p.bookmarksCount || 1) - 1 : (p.bookmarksCount || 0) + 1
+              }
+            : p
+        ));
+      }
+    } catch (error) {
+      console.error('Failed to bookmark post:', error);
+    }
+  };
+
+  const handleFollow = async (authorId, e) => {
+    e.stopPropagation();
+    try {
+      // Find the post to check current follow status
+      const post = posts.find(p => p.author?._id === authorId);
+      if (post) {
+        if (post.author.isFollowing) {
+          await userService.unfollowUser(authorId);
+        } else {
+          await userService.followUser(authorId);
+        }
+        // Update local state
+        setPosts(prevPosts => prevPosts.map(p => 
+          p.author?._id === authorId 
+            ? { 
+                ...p, 
+                author: { ...p.author, isFollowing: !p.author.isFollowing }
+              }
+            : p
+        ));
+      }
+    } catch (error) {
+      console.error('Failed to follow/unfollow user:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Bar with Location and Notifications */}
       <div className="bg-white border-b sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 cursor-pointer hover:text-primary">
+            <div 
+              onClick={() => setShowLocationModal(true)}
+              className="flex items-center space-x-2 cursor-pointer hover:text-primary"
+            >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
               </svg>
@@ -67,7 +125,10 @@ const EnhancedHomePage = () => {
               </svg>
             </div>
 
-            <button className="relative p-2 hover:bg-gray-100 rounded-full">
+            <button 
+              onClick={() => navigate('/notifications')}
+              className="relative p-2 hover:bg-gray-100 rounded-full"
+            >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
@@ -191,7 +252,7 @@ const EnhancedHomePage = () => {
                 <div className="p-4 flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <img
-                      src={post.author?.avatar || '/default-avatar.png'}
+                      src={getImageUrl(post.author?.avatar) || '/default-avatar.png'}
                       alt={post.author?.username}
                       className="w-10 h-10 rounded-full cursor-pointer"
                       onClick={() => navigate(`/profile/${post.author?._id}`)}
@@ -203,8 +264,15 @@ const EnhancedHomePage = () => {
                       )}
                     </div>
                   </div>
-                  <button className="px-4 py-1 bg-primary text-white rounded-full text-sm hover:bg-primary/90">
-                    关注
+                  <button 
+                    onClick={(e) => handleFollow(post.author?._id, e)}
+                    className={`px-4 py-1 rounded-full text-sm transition-colors ${
+                      post.author?.isFollowing 
+                        ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
+                        : 'bg-primary text-white hover:bg-primary/90'
+                    }`}
+                  >
+                    {post.author?.isFollowing ? '已关注' : '关注'}
                   </button>
                 </div>
 
@@ -239,7 +307,7 @@ const EnhancedHomePage = () => {
                           {item.type === 'video' ? (
                             <div className="relative w-full h-full bg-black">
                               <video
-                                src={item.url}
+                                src={getMediaUrl(item)}
                                 className="w-full h-full object-cover"
                                 controls
                                 preload="metadata"
@@ -247,7 +315,7 @@ const EnhancedHomePage = () => {
                             </div>
                           ) : (
                             <img
-                              src={item.url}
+                              src={getMediaUrl(item)}
                               alt=""
                               className="w-full h-full object-cover"
                             />
@@ -287,8 +355,15 @@ const EnhancedHomePage = () => {
                       <span className="text-sm">{post.commentsCount || 0}</span>
                     </button>
 
-                    <button className="flex items-center space-x-1 text-gray-600 hover:text-yellow-500 transition-colors">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button 
+                      onClick={(e) => handleBookmark(post._id, e)}
+                      className={`flex items-center space-x-1 transition-colors ${
+                        post.isBookmarked 
+                          ? 'text-yellow-500 hover:text-yellow-600' 
+                          : 'text-gray-600 hover:text-yellow-500'
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill={post.isBookmarked ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                       </svg>
                       <span className="text-sm">{post.bookmarksCount || 0}</span>
@@ -314,6 +389,50 @@ const EnhancedHomePage = () => {
           </div>
         )}
       </div>
+
+      {/* Location Selector Modal */}
+      {showLocationModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b p-4 flex items-center justify-between">
+              <h3 className="text-lg font-bold">选择城市</h3>
+              <button
+                onClick={() => setShowLocationModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-4">
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  '北京', '上海', '广州', '深圳', '杭州', '成都',
+                  '重庆', '武汉', '西安', '南京', '苏州', '天津',
+                  '郑州', '长沙', '沈阳', '青岛', '宁波', '厦门'
+                ].map((city) => (
+                  <button
+                    key={city}
+                    onClick={() => {
+                      setLocation(city);
+                      localStorage.setItem('userLocation', city);
+                      setShowLocationModal(false);
+                    }}
+                    className={`px-4 py-2 rounded-lg transition-colors ${
+                      location === city
+                        ? 'bg-primary text-white'
+                        : 'bg-gray-100 hover:bg-gray-200'
+                    }`}
+                  >
+                    {city}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

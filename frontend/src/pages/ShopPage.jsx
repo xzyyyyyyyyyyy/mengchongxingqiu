@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { productService } from '../api/productService';
+import { getMediaUrl } from '../utils/imageUtils';
 
 const ShopPage = () => {
   const navigate = useNavigate();
@@ -152,7 +153,7 @@ const ShopPage = () => {
                 <div className="w-full aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative">
                   {product.images && product.images.length > 0 ? (
                     <img
-                      src={product.images[0].url}
+                      src={getMediaUrl(product.images[0])}
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />
